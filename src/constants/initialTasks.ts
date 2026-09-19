@@ -1,0 +1,60 @@
+import type { Task } from '../types/todo';
+
+export const INITIAL_TASKS: Task[] = [
+  {
+    id: 'task-1',
+    title: 'Finish the FocusFlow design review',
+    completed: false,
+    category: 'focus',
+    priority: 'High',
+    createdAt: 1726700000000,
+  },
+  {
+    id: 'task-2',
+    title: 'Write the project brief',
+    completed: false,
+    category: 'focus',
+    priority: 'High',
+    createdAt: 1726700100000,
+  },
+  {
+    id: 'task-3',
+    title: 'Take a focused 30-minute walk',
+    completed: false,
+    category: 'focus',
+    priority: 'Medium',
+    createdAt: 1726700200000,
+  },
+  {
+    id: 'task-4',
+    title: 'Send the September invoice',
+    completed: false,
+    category: 'inbox',
+    priority: 'Medium',
+    createdAt: 1726700300000,
+  },
+  {
+    id: 'task-5',
+    title: 'Save article notes for Friday',
+    completed: false,
+    category: 'inbox',
+    priority: 'Low',
+    createdAt: 1726700400000,
+  },
+  {
+    id: 'task-6',
+    title: 'Book a class for this evening',
+    completed: true,
+    category: 'focus',
+    priority: 'Low',
+    createdAt: 1726700500000,
+  },
+  {
+    id: 'task-7',
+    title: 'Reply to Maya about next week',
+    completed: true,
+    category: 'inbox',
+    priority: 'Low',
+    createdAt: 1726700600000,
+  },
+];

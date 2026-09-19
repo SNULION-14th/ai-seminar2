@@ -1,184 +1,769 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+/* ==========================================================================
+   FocusFlow App Styles - Matching Figma "세미나-FocusFlow" (node-id: 1:2)
+   ========================================================================== */
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-}
-
-.hero {
+.focusflow-app {
+  width: 100%;
+  max-width: 688px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 56px 32px 140px;
   position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
-}
-
-#center {
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
 }
 
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
-}
-
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
-
-.ticks {
-  position: relative;
+.focusflow-card {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
+/* --------------------------------------------------------------------------
+   Header Section
+   -------------------------------------------------------------------------- */
+.app-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 28px;
+  border-bottom: 0.67px solid var(--border-light);
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-date {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #8a929d;
+  margin-bottom: 6px;
+}
+
+.header-title {
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.05em;
+  color: #1b202a;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.progress-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.progress-icon {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.progress-text {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #69727f;
+}
+
+.progress-track {
+  width: 176px;
+  height: 4px;
+  background: #e4e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #6754e6;
+  border-radius: 9999px;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Main Content Area
+   -------------------------------------------------------------------------- */
+.focusflow-main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  padding-top: 36px;
+}
+
+/* --------------------------------------------------------------------------
+   Focus Section ("Your top three")
+   -------------------------------------------------------------------------- */
+.focus-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+.section-header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.tag-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.tag-label {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  color: #6754e6;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.04em;
+  color: #252b35;
+}
+
+.section-counter {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #9299a3;
+}
+
+.focus-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.focus-card {
+  width: 100%;
+  min-height: 61.33px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0px 8px 24px 0px rgba(38, 45, 55, 0.04);
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  gap: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.015);
+}
+
+.focus-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0px 10px 28px 0px rgba(38, 45, 55, 0.07);
+}
+
+.focus-checkbox {
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  border: 2px solid #c9ced5;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.focus-checkbox:hover {
+  border-color: #6754e6;
+}
+
+.focus-checkbox.checked {
+  background: #6754e6;
+  border-color: #6754e6;
+}
+
+.focus-card-title {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22.5px;
+  letter-spacing: -0.015em;
+  color: #202632;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.focus-card.completed .focus-card-title {
+  text-decoration: line-through;
+  color: #8a929d;
+}
+
+.focus-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.priority-badge {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16.5px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-high {
+  background: #f1edff;
+  color: #5544c9;
+}
+
+.badge-medium {
+  background: #e5f5ee;
+  color: #16744c;
+}
+
+.badge-low {
+  background: #f2f3f5;
+  color: #7f8791;
+}
+
+.card-delete-btn {
+  opacity: 0;
+  color: #9aa2ad;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.focus-card:hover .card-delete-btn {
+  opacity: 1;
+}
+
+.card-delete-btn:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   Inbox Section ("Later / Inbox")
+   -------------------------------------------------------------------------- */
+.inbox-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.inbox-header-btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  cursor: pointer;
+}
+
+.inbox-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inbox-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.inbox-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #3a4350;
+}
+
+.inbox-counter {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 15px;
+  color: #7d8794;
+  background: #e8eaed;
+  padding: 2px 7px;
+  border-radius: 9999px;
+}
+
+.inbox-chevron {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.inbox-chevron.open {
+  transform: rotate(0deg);
+}
+
+.inbox-chevron:not(.open) {
+  transform: rotate(-90deg);
+}
+
+.inbox-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+
+.inbox-item {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 4px;
+  transition: background 0.15s ease;
+}
+
+.inbox-item-bordered {
+  border-top: 0.67px solid #eceef0;
+}
+
+.inbox-checkbox {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.inbox-item-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #4b5563;
+}
+
+.inbox-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.inbox-priority-label {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16.5px;
+  color: #9aa2ad;
+}
+
+.inbox-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.item-action-btn {
+  opacity: 0;
+  color: #9aa2ad;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.inbox-item:hover .item-action-btn {
+  opacity: 1;
+}
+
+.item-action-btn:hover {
+  color: #6754e6;
+}
+
+.item-action-btn.delete:hover {
+  color: #ef4444;
+}
+
+/* --------------------------------------------------------------------------
+   Completed Section
+   -------------------------------------------------------------------------- */
+.completed-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.completed-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 12px 0 16px;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: #e4e6e9;
+}
+
+.divider-text {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16.5px;
+  letter-spacing: 0.1em;
+  color: #9aa1ab;
+}
+
+.completed-list {
+  display: flex;
+  flex-direction: column;
+  opacity: 0.6;
+}
+
+.completed-item {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 4px;
+}
+
+.completed-item-bordered {
+  border-top: 0.67px solid #eceef0;
+}
+
+.completed-checkbox {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.completed-item-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #7f8791;
+  text-decoration: line-through;
+}
+
+.completed-item-actions {
+  display: flex;
+  align-items: center;
+}
+
+.completed-item:hover .item-action-btn {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Empty states
+   -------------------------------------------------------------------------- */
+.empty-state {
+  padding: 24px;
+  text-align: center;
+  color: #9aa2ad;
+  font-size: 14px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px dashed #e8eaed;
+}
+
+.empty-state-muted {
+  padding: 14px 0;
+  color: #9aa2ad;
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   Floating Bottom Toolbar
+   -------------------------------------------------------------------------- */
+.bottom-toolbar-container {
+  position: fixed;
+  bottom: 28px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 100;
+  padding: 0 16px;
+}
+
+.bottom-toolbar {
+  pointer-events: auto;
+  width: 640px;
+  max-width: 100%;
+  height: 73.33px;
+  background: rgba(252, 252, 250, 0.92);
+  border: 0.67px solid rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0px 20px 50px 0px rgba(31, 38, 48, 0.12);
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10.66px;
+  gap: 12px;
+}
+
+/* Task Input Box */
+.task-input-box {
+  flex: 1;
+  max-width: 350px;
+  height: 52px;
+  background: #ffffff;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0 14px;
+  gap: 10px;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.04);
+}
+
+.input-plus-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.task-text-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: #1b202a;
+}
+
+.task-text-input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.input-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Priority Selector in Input */
+.priority-select-wrapper {
+  position: relative;
+}
+
+.priority-select-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  transition: filter 0.15s ease;
+}
+
+.priority-select-btn:hover {
+  filter: brightness(0.95);
+}
+
+.priority-menu-dropdown {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 200;
+  border: 1px solid #e8eaed;
+}
+
+.priority-menu-item {
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.priority-menu-item.active {
+  outline: 2px solid #6754e6;
+}
+
+.priority-high {
+  background: #f1edff;
+  color: #5544c9;
+}
+
+.priority-medium {
+  background: #e5f5ee;
+  color: #16744c;
+}
+
+.priority-low {
+  background: #f2f3f5;
+  color: #7f8791;
+}
+
+.enter-badge {
+  font-size: 11px;
+  font-weight: 500;
+  color: #a0a6af;
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.15s ease;
+}
+
+.enter-badge:hover {
+  color: #6754e6;
+}
+
+.add-submit-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: not-allowed;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.add-arrow-svg {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+
+.add-submit-btn.active {
+  cursor: pointer;
+}
+
+.add-submit-btn.active .add-arrow-svg g {
+  opacity: 1;
+}
+
+.add-submit-btn.active:hover {
+  transform: scale(1.05);
+}
+
+.add-submit-btn.active:active {
+  transform: scale(0.96);
+}
+
+/* Filter Segmented Control */
+.filter-segmented-control {
+  background: #f2f3f5;
+  border-radius: 15px;
+  height: 40px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.filter-tab-btn {
+  height: 32px;
+  border-radius: 11px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #858d98;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-tab-btn .filter-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.filter-tab-btn:hover {
+  color: #303743;
+}
+
+.filter-tab-btn.active {
+  background: #ffffff;
+  color: #303743;
+  box-shadow: 0px 1px 3px 0px rgba(31, 38, 48, 0.1);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 700px) {
+  .focusflow-app {
+    padding: 32px 16px 140px;
   }
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
+  .header-title {
+    font-size: 30px;
   }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+
+  .bottom-toolbar {
+    flex-direction: column;
+    height: auto;
+    padding: 12px;
+    gap: 10px;
+    border-radius: 18px;
+  }
+
+  .task-input-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .filter-segmented-control {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .filter-tab-btn {
+    flex: 1;
+    justify-content: center;
   }
 }

@@ -1,122 +1,132 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import type { Task, Priority, FilterType } from './types/todo';
+import { INITIAL_TASKS } from './constants/initialTasks';
+import { Header } from './components/Header';
+import { FocusSection } from './components/FocusSection';
+import { InboxSection } from './components/InboxSection';
+import { CompletedSection } from './components/CompletedSection';
+import { BottomToolbar } from './components/BottomToolbar';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const LOCAL_STORAGE_KEY = 'focusflow_tasks_v1';
+
+export function App() {
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    try {
+      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch {
+      // ignore
+    }
+    return INITIAL_TASKS;
+  });
+
+  const [filter, setFilter] = useState<FilterType>('all');
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
+    } catch {
+      // ignore
+    }
+  }, [tasks]);
+
+  const handleToggle = (id: string) => {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
+    );
+  };
+
+  const handleDelete = (id: string) => {
+    setTasks((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  const handleAddTask = (title: string, priority: Priority) => {
+    // If fewer than 3 active focus tasks, assign to focus, else inbox
+    const activeFocusCount = tasks.filter(
+      (t) => t.category === 'focus' && !t.completed
+    ).length;
+    const category = activeFocusCount < 3 ? 'focus' : 'inbox';
+
+    const newTask: Task = {
+      id: `task-${Date.now()}`,
+      title,
+      completed: false,
+      category,
+      priority,
+      createdAt: Date.now(),
+    };
+
+    setTasks((prev) => [newTask, ...prev]);
+  };
+
+  const handlePromoteToFocus = (id: string) => {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, category: 'focus' } : t))
+    );
+  };
+
+  const totalCount = tasks.length;
+  const completedCount = tasks.filter((t) => t.completed).length;
+
+  const focusTasks = tasks.filter((t) => t.category === 'focus' && !t.completed);
+  const inboxTasks = tasks.filter((t) => t.category === 'inbox' && !t.completed);
+  const completedTasks = tasks.filter((t) => t.completed);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="focusflow-app">
+      <div className="focusflow-card">
+        <Header totalCount={totalCount} completedCount={completedCount} />
 
-      <div className="ticks"></div>
+        <main className="focusflow-main">
+          {filter === 'all' && (
+            <>
+              <FocusSection
+                tasks={focusTasks}
+                onToggle={handleToggle}
+                onDelete={handleDelete}
+              />
+              <InboxSection
+                tasks={inboxTasks}
+                onToggle={handleToggle}
+                onDelete={handleDelete}
+                onPromoteToFocus={handlePromoteToFocus}
+              />
+              <CompletedSection
+                tasks={completedTasks}
+                onToggle={handleToggle}
+                onDelete={handleDelete}
+              />
+            </>
+          )}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          {filter === 'focus' && (
+            <FocusSection
+              tasks={focusTasks}
+              onToggle={handleToggle}
+              onDelete={handleDelete}
+            />
+          )}
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          {filter === 'completed' && (
+            <CompletedSection
+              tasks={completedTasks}
+              onToggle={handleToggle}
+              onDelete={handleDelete}
+            />
+          )}
+        </main>
+      </div>
+
+      <BottomToolbar
+        currentFilter={filter}
+        onFilterChange={setFilter}
+        onAddTask={handleAddTask}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;
