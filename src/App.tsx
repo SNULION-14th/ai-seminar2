@@ -1,122 +1,155 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState, useMemo } from 'react';
+import { useLocalStorage } from './hooks/useLocalStorage';
+import { INITIAL_TODOS } from './data/initialTodos';
+import type { Todo } from './types/todo';
+
+import { Header } from './components/Header';
+import { ProgressBar } from './components/ProgressBar';
+import { FocusCard } from './components/FocusCard';
+import { TodoList } from './components/TodoList';
+import { QuickInput } from './components/QuickInput';
+import { ZenModal } from './components/ZenModal';
+
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [todos, setTodos] = useLocalStorage<Todo[]>('focusflow_todos_v1', INITIAL_TODOS);
+  const [zenTarget, setZenTarget] = useState<Todo | null>(null);
+
+  // 1. 오늘의 1순위 포커스 태스크
+  const focusTodo = useMemo(() => {
+    // 명시적으로 isFocus가 true인 태스크 우선
+    const explicitFocus = todos.find((t) => t.isFocus && t.section === 'today');
+    if (explicitFocus) return explicitFocus;
+
+    // 없으면 today 태스크 중 첫 번째 미완료 태스크
+    return todos.find((t) => t.section === 'today' && !t.completed) || todos.find((t) => t.section === 'today');
+  }, [todos]);
+
+  // 2. Today 태스크 목록 (Focus 카드로 올라간 태스크 제외)
+  const todayTodos = useMemo(() => {
+    return todos.filter((t) => t.section === 'today' && t.id !== focusTodo?.id);
+  }, [todos, focusTodo]);
+
+  // 3. Later 보관함 태스크 목록
+  const laterTodos = useMemo(() => {
+    return todos.filter((t) => t.section === 'later');
+  }, [todos]);
+
+  // 4. 오늘의 진척률 통계
+  const stats = useMemo(() => {
+    const allTodayTasks = todos.filter((t) => t.section === 'today');
+    const totalCount = allTodayTasks.length;
+    const completedCount = allTodayTasks.filter((t) => t.completed).length;
+    return { totalCount, completedCount };
+  }, [todos]);
+
+  // 완료 토글
+  const handleToggle = (id: string) => {
+    setTodos((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
+    );
+  };
+
+  // 삭제
+  const handleDelete = (id: string) => {
+    setTodos((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  // 1순위 포커스로 지정
+  const handleSetFocus = (id: string) => {
+    setTodos((prev) =>
+      prev.map((t) => ({
+        ...t,
+        isFocus: t.id === id,
+      }))
+    );
+  };
+
+  // Later 태스크를 Today로 이동
+  const handleMoveToToday = (id: string) => {
+    setTodos((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, section: 'today' } : t))
+    );
+  };
+
+  // 새 할 일 추가
+  const handleAddTodo = ({
+    title,
+    tag,
+    dueTime,
+    section,
+  }: {
+    title: string;
+    tag?: string;
+    dueTime?: string;
+    section: 'today' | 'later';
+  }) => {
+    const newTodo: Todo = {
+      id: `todo-${Date.now()}`,
+      title,
+      completed: false,
+      tag,
+      dueTime,
+      section,
+      createdAt: Date.now(),
+    };
+
+    setTodos((prev) => [...prev, newTodo]);
+  };
+
+  // Zen Mode 열기
+  const handleStartZenMode = (todo: Todo) => {
+    setZenTarget(todo);
+  };
+
+  // Zen Mode 완료 처리
+  const handleCompleteInZen = (id: string) => {
+    setTodos((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, completed: true } : t))
+    );
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <main className="app-wrapper">
+      {/* 1. 상단 헤더 */}
+      <Header customDate="9월 18일, 금요일" />
 
-      <div className="ticks"></div>
+      {/* 2. 오늘의 진척률 프로그레스 바 */}
+      <ProgressBar
+        completedCount={stats.completedCount}
+        totalCount={stats.totalCount}
+      />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      {/* 3. 오늘의 1순위 포커스 카드 */}
+      <FocusCard
+        todo={focusTodo}
+        onToggle={handleToggle}
+        onStartZenMode={handleStartZenMode}
+      />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {/* 4. Today 목록 및 Later 아코디언 */}
+      <TodoList
+        todayTodos={todayTodos}
+        laterTodos={laterTodos}
+        onToggle={handleToggle}
+        onDelete={handleDelete}
+        onSetFocus={handleSetFocus}
+        onMoveToToday={handleMoveToToday}
+      />
+
+      {/* 5. 하단 플로팅 인라인 입력창 */}
+      <QuickInput onAddTodo={handleAddTodo} />
+
+      {/* 6. Zen Mode 몰입 뽀모도로 모달 */}
+      <ZenModal
+        isOpen={Boolean(zenTarget)}
+        todo={zenTarget}
+        onClose={() => setZenTarget(null)}
+        onComplete={handleCompleteInZen}
+      />
+    </main>
+  );
 }
 
-export default App
+export default App;
