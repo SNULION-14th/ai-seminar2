@@ -1,122 +1,91 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useEffect } from 'react';
+import type { ThemeMode } from './types/todo';
+import { STORAGE_KEY_THEME } from './constants/storage';
+import { useLocalStorage } from './hooks/useLocalStorage';
+import { useTodos } from './hooks/useTodos';
+import { TodoHeader } from './components/todo/TodoHeader';
+import { TodoInput } from './components/todo/TodoInput';
+import { TodoList } from './components/todo/TodoList';
+import { TodoFilter } from './components/todo/TodoFilter';
+import { NudgeBanner } from './components/common/NudgeBanner';
+import { Confetti } from './components/common/Confetti';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
+  const {
+    todos,
+    stats,
+    filter,
+    setFilter,
+    shouldShowNudge,
+    showCelebration,
+    dismissCelebration,
+    addTodo,
+    toggleTodo,
+    toggleStar,
+    editTodo,
+    deleteTodo,
+    clearCompleted,
+    reorderTodos,
+  } = useTodos();
+
+  const getSystemTheme = (): ThemeMode => {
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
+  };
+
+  const [theme, setTheme] = useLocalStorage<ThemeMode>(
+    STORAGE_KEY_THEME,
+    getSystemTheme()
+  );
+
+  // Apply data-theme attribute to root document
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const handleToggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="app-container">
+      {/* Confetti Celebration on 100% complete */}
+      {showCelebration && <Confetti onComplete={dismissCelebration} />}
 
-      <div className="ticks"></div>
+      <main className="dashboard-wrapper">
+        <TodoHeader
+          stats={stats}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
+        />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        {/* Daily Focus Mode Nudge (when >= 7 active items) */}
+        {shouldShowNudge && <NudgeBanner activeCount={stats.active} />}
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <TodoInput onAddTodo={addTodo} />
+
+        <TodoList
+          todos={todos}
+          onToggleTodo={toggleTodo}
+          onToggleStar={toggleStar}
+          onDeleteTodo={deleteTodo}
+          onEditTodo={editTodo}
+          onReorderTodos={reorderTodos}
+        />
+
+        <TodoFilter
+          activeCount={stats.active}
+          completedCount={stats.completed}
+          currentFilter={filter}
+          onFilterChange={setFilter}
+          onClearCompleted={clearCompleted}
+        />
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
