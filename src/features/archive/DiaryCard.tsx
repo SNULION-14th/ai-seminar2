@@ -1,0 +1,3 @@
+import { Star } from 'lucide-react'
+import type { DiaryEntry } from '../../types/diary'
+export function DiaryCard({entry,onClick}:{entry:DiaryEntry;onClick:()=>void}) { const result={WIN:'승리',LOSS:'패배',DRAW:'무승부',UPCOMING:'예정'}[entry.result]; return <button className="diary-card" onClick={onClick}><div className="diary-image">{entry.photos[0]?<img src={entry.photos[0]} alt="관람 일기 첨부 사진"/>:<span className="empty-photo">GAME<br/>NIGHT</span>}<em>{result}</em></div><div className="diary-copy"><p>{entry.gameDate}</p><h3>{entry.favoriteTeam} vs {entry.opponentTeam}</h3><span className="card-rating"><Star size={14} fill="currentColor"/> {entry.rating}점 · {entry.mood ?? '기록'}</span><small>{entry.note || '남긴 감상이 없어요.'}</small></div></button> }

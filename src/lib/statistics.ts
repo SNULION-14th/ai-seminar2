@@ -1,0 +1,2 @@
+import type { DiaryEntry } from '../types/diary'
+export function getDiaryStats(entries: DiaryEntry[]) { const completed = entries.filter((entry) => entry.result !== 'UPCOMING'); const decided = entries.filter((entry) => entry.result === 'WIN' || entry.result === 'LOSS'); const wins = decided.filter((entry) => entry.result === 'WIN').length; return { total: completed.length, wins, winRate: decided.length ? Math.round((wins / decided.length) * 100) : null } }

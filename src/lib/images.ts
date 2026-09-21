@@ -1,0 +1,2 @@
+const MAX_BYTES = 1_500_000
+export async function fileToDataUrl(file: File): Promise<string> { if (!file.type.startsWith('image/')) throw new Error('이미지 파일만 첨부할 수 있어요.'); if (file.size > MAX_BYTES) throw new Error('이미지는 1.5MB 이하 파일만 선택해 주세요.'); return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onerror = () => reject(new Error('이미지를 읽지 못했어요. 다시 선택해 주세요.')); reader.onload = () => typeof reader.result === 'string' ? resolve(reader.result) : reject(new Error('이미지 형식이 올바르지 않아요.')); reader.readAsDataURL(file) }) }
