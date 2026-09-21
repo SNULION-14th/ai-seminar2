@@ -1,122 +1,18 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import { useEffect, useMemo, useState } from 'react'
+import { Archive, ArrowLeft, ArrowRight, Bell, CalendarDays, ChevronRight, Home, MoreHorizontal, PenLine, Plus, Star, Trophy, Trash2 } from 'lucide-react'
+import gameHero from './assets/figma/game-hero.png'
+import { DiaryCard } from './features/archive/DiaryCard'
+import { DiaryForm } from './features/diary/DiaryForm'
+import { getDiaryStats } from './lib/statistics'
+import { loadDiaries, saveDiaries } from './lib/storage'
+import { nbaService } from './services/nbaService'
+import type { DiaryDraft, DiaryEntry } from './types/diary'
+import type { NbaGame, PlayerSpotlight } from './types/nba'
 import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
-}
-
-export default App
+type Screen = 'home'|'form'|'archive'|'detail'
+const viewNames = { HOME:'집관', ARENA:'직관', PUB:'스포츠 펍', POPUP:'팝업' } as const
+function App() { const [screen,setScreen]=useState<Screen>('home'); const [diaries,setDiaries]=useState<DiaryEntry[]>(()=>loadDiaries()); const [games,setGames]=useState<NbaGame[]>([]); const [players,setPlayers]=useState<PlayerSpotlight[]>([]); const [dataError,setDataError]=useState(''); const [selectedId,setSelectedId]=useState<string>(); const [toast,setToast]=useState(''); useEffect(()=>{Promise.all([nbaService.getGames(),nbaService.getPlayers()]).then(([g,p])=>{setGames(g);setPlayers(p)}).catch(()=>setDataError('경기 데이터를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.'))},[]); const stats=useMemo(()=>getDiaryStats(diaries),[diaries]); const selected=diaries.find(item=>item.id===selectedId); const notify=(msg:string)=>{setToast(msg);window.setTimeout(()=>setToast(''),2000)}; const persist=(next:DiaryEntry[])=>{setDiaries(next);try{saveDiaries(next)}catch{notify('저장 공간이 부족해요. 사진 수를 줄이고 다시 저장해 주세요.')}}; const save=(draft:DiaryDraft)=>{const now=new Date().toISOString();const existing=selected;const item:DiaryEntry=existing?{...existing,...draft,updatedAt:now}:{...draft,id:crypto.randomUUID(),createdAt:now,updatedAt:now};persist(existing?diaries.map(entry=>entry.id===item.id?item:entry):[item,...diaries]);setSelectedId(item.id);setScreen('detail');notify('관람 일기를 저장했어요.')}; const open=(id:string)=>{setSelectedId(id);setScreen('detail')}; const remove=()=>{if(!selected)return;if(!window.confirm('이 관람 일기를 삭제할까요?'))return;persist(diaries.filter(item=>item.id!==selected.id));setScreen('archive');notify('일기를 삭제했어요.')}; if(screen==='form')return <Layout screen={screen} setScreen={setScreen}><DiaryForm games={games} players={players} entry={selected} onSave={save} onBack={()=>setScreen(selected?'detail':'home')}/>{toast&&<Toast text={toast}/>}</Layout>; if(screen==='detail'&&selected)return <Layout screen={screen} setScreen={setScreen}><section className="screen detail-screen"><button className="back-button" onClick={()=>setScreen('archive')}><ArrowLeft size={18}/> 아카이브</button><p className="eyebrow">{selected.gameDate}</p><h1>{selected.favoriteTeam} vs {selected.opponentTeam}</h1><div className="detail-result"><b>{selected.result==='WIN'?'승리':selected.result==='LOSS'?'패배':selected.result==='UPCOMING'?'경기 예정':'무승부'}</b>{selected.homeScore!==undefined&&<span>{selected.homeScore} : {selected.awayScore}</span>}</div><div className="detail-meta"><span>{viewNames[selected.viewingMode]} · {selected.venue||'장소 미기록'}</span><span><Star size={16} fill="currentColor"/> {selected.rating}점</span></div><article className="note-box"><p className="eyebrow">{selected.mood||'GAME NIGHT'}</p><p>{selected.note||'남긴 감상이 없어요.'}</p>{selected.favoritePlayer&&<small>오늘의 최애 선수 · {selected.favoritePlayer}</small>}</article>{selected.photos.length>0&&<div className="gallery">{selected.photos.map((photo,index)=><img key={photo.slice(-16)} src={photo} alt={`관람 사진 ${index+1}`}/>)}</div>}{selected.ticketImage&&<div className="ticket"><p>티켓 이미지</p><img src={selected.ticketImage} alt="첨부한 티켓 이미지"/></div>}<div className="detail-actions"><button onClick={()=>setScreen('form')}>수정하기</button><button className="danger" onClick={remove}><Trash2 size={17}/> 삭제</button></div></section>{toast&&<Toast text={toast}/>}</Layout>; return <Layout screen={screen} setScreen={setScreen}>{screen==='archive'?<ArchiveScreen diaries={diaries} stats={stats} onOpen={open} onWrite={()=>{setSelectedId(undefined);setScreen('form')}}/>:<HomeScreen games={games} players={players} diaries={diaries} stats={stats} error={dataError} onWrite={()=>{setSelectedId(undefined);setScreen('form')}} onArchive={()=>setScreen('archive')} onOpen={open}/>}</Layout> }
+function Layout({children,screen,setScreen}:{children:React.ReactNode;screen:Screen;setScreen:(screen:Screen)=>void}) { return <main className="app-shell"><header className="topbar"><button className="brand" onClick={()=>setScreen('home')}><span className="brand-mark"><Trophy size={20}/></span><span><b>게임 나이트</b><small>NBA 관람 기록</small></span></button><div className="header-actions"><button className="icon-button" aria-label="알림"><Bell size={19}/></button><button className="avatar">JD</button></div></header>{children}<nav className="bottom-nav">{[{label:'홈',Icon:Home,screen:'home'},{label:'아카이브',Icon:Archive,screen:'archive'},{label:'기록',Icon:Plus,screen:'form'},{label:'캘린더',Icon:CalendarDays,screen:'archive'},{label:'더보기',Icon:MoreHorizontal,screen:'home'}].map(item=><button key={item.label} className={`${screen===item.screen?'active':''} ${item.label==='기록'?'record':''}`} onClick={()=>setScreen(item.screen as Screen)}><span><item.Icon size={item.label==='기록'?25:20}/></span>{item.label!=='기록'&&<small>{item.label}</small>}</button>)}</nav></main> }
+function HomeScreen({games,players,diaries,stats,error,onWrite,onArchive,onOpen}:{games:NbaGame[];players:PlayerSpotlight[];diaries:DiaryEntry[];stats:ReturnType<typeof getDiaryStats>;error:string;onWrite:()=>void;onArchive:()=>void;onOpen:(id:string)=>void}) { const game=games[0]; return <><section className="content intro"><div><p className="eyebrow">이번 시즌 {stats.total}번째 관람</p><h1>오늘의 NBA</h1></div><button className="archive-link" onClick={onArchive}>시즌 아카이브 <ChevronRight size={17}/></button></section>{error?<div className="content state-card error-state">{error}</div>:!game?<div className="content state-card">경기 정보를 불러오는 중이에요.</div>:<section className="content match-card"><div className="match-visual" style={{backgroundImage:`linear-gradient(90deg,rgba(7,18,31,.3),rgba(7,18,31,.66)),url(${gameHero})`}}><span className="time-pill">{game.startTime}</span><p>{game.venue}</p></div><div className="match-info"><p className="conference">TODAY'S MATCHUP</p><div className="teams"><Team team={game.homeTeam}/><div className="versus"><b>{game.status==='FINAL'?`${game.homeScore}:${game.awayScore}`:'VS'}</b><span>{game.status==='UPCOMING'?'오늘 밤':'경기 종료'}</span></div><Team team={game.awayTeam}/></div><div className="match-footer"><span>실제 NBA 경기 정보</span><button onClick={onWrite}>이 경기 기록하기</button></div></div></section>}<section className="content journal-cta"><div className="cta-icon"><PenLine size={21}/></div><h2>오늘 경기도<br/>기억으로 남길까요?</h2><p>점수만으로는 남지 않는 순간들.<br/>나만의 게임 나이트를 기록해 보세요.</p><button onClick={onWrite}><PenLine size={18}/> 관람 일기 쓰기 <ArrowRight size={18}/></button></section><section className="player-section"><div className="content section-head"><div><p className="eyebrow">NBA PLAYER STATS</p><h2>오늘 주목할 선수</h2></div></div><div className="content player-row">{players.map(player=><article className="player-card" style={{borderLeftColor:player.color}} key={player.id}><div className="player-orb" style={{backgroundColor:player.color}}>{player.name.slice(0,1)}</div><h3>{player.name}</h3><p>{player.team} · {player.position}</p><div><strong>{player.headlineValue}</strong><span>{player.headlineLabel}</span></div></article>)}</div></section><section className="content diary-section"><div className="section-head"><div><p className="eyebrow">나의 이번 시즌</p><h2>최근의 게임 나이트</h2></div><button onClick={onArchive}>모두 보기</button></div>{diaries.length?<div className="diary-list">{diaries.slice(0,2).map(entry=><DiaryCard entry={entry} onClick={()=>onOpen(entry.id)} key={entry.id}/>)}</div>:<div className="empty-state"><p>아직 남긴 관람 일기가 없어요.</p><button onClick={onWrite}>첫 기록 남기기</button></div>}</section></> }
+function ArchiveScreen({diaries,stats,onOpen,onWrite}:{diaries:DiaryEntry[];stats:ReturnType<typeof getDiaryStats>;onOpen:(id:string)=>void;onWrite:()=>void}){const [month,setMonth]=useState('all');const filtered=month==='all'?diaries:diaries.filter(entry=>entry.gameDate.startsWith(month));const months=[...new Set(diaries.map(entry=>entry.gameDate.slice(0,7)))];return <section className="content archive-screen"><p className="eyebrow">MY SEASON ARCHIVE</p><h1>나의 게임 나이트</h1><div className="stats-grid"><div><small>총 관람</small><b>{stats.total}<em>회</em></b></div><div><small>응원 팀 승률</small><b>{stats.winRate===null?'-':`${stats.winRate}%`}</b></div></div><label className="filter-label">월별 기록<select value={month} onChange={e=>setMonth(e.target.value)}><option value="all">전체 보기</option>{months.map(item=><option key={item}>{item}</option>)}</select></label>{filtered.length?<div className="diary-list">{filtered.map(entry=><DiaryCard entry={entry} onClick={()=>onOpen(entry.id)} key={entry.id}/>)}</div>:<div className="empty-state"><p>선택한 기간의 기록이 없어요.</p><button onClick={onWrite}>관람 일기 쓰기</button></div>}</section>}
+function Team({team}:{team:NbaGame['homeTeam']}){return <div className="team"><span className="team-badge" style={{backgroundColor:team.color}}>{team.shortName}</span><b>{team.name}</b><small>{team.record}</small></div>}; function Toast({text}:{text:string}){return <div className="toast" role="status">{text}</div>}; export default App
