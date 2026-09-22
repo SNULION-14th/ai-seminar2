@@ -1,75 +1,182 @@
-# React + TypeScript + Vite
+# 카드뉴스
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**이미 만들어 둔 카드뉴스를 레퍼런스로 삼아, 같은 결을 유지하면서 새 카드뉴스를 만듭니다.**
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+보는 사람이 "이 계정의 그 시리즈구나"라고 알아볼 수 있어야 하고, 그러면서 매번 똑같지는 않아야 합니다.
+잡지에 가깝습니다. 매호 표지가 다르지만 누가 봐도 같은 잡지죠.
 
 ```
+Figma에 있는 기존 카드뉴스  →  읽어서 디자인 규칙 추출
+                                    ↓
+        브랜드 자료 · 전할 내용 · 타겟 · 어투 입력
+                                    ↓
+              에이전트가 배치를 설계 · 검사
+                                    ↓
+                   Figma에 카드 생성
+```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## 이게 어떤 도구인지 (그리고 무엇이 아닌지)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **API 키가 필요 없습니다.** OpenAI·Gemini 키를 넣는 곳이 없습니다.
+- 대신 **파일을 읽고 쓸 수 있는 AI 에이전트**가 필요합니다. [Claude Code](https://claude.com/claude-code) 같은 것이요.
+  이 도구는 에이전트에게 넘길 자료를 정리해 파일로 떨구고, 에이전트가 만든 결과를 받아 Figma로 넘기는 판입니다.
+- **내 컴퓨터에서 실행하는 도구입니다.** 앱은 AI 서비스로 자료를 자동 전송하지 않습니다. 사용 중인 AI 에이전트에 브리프를 전달하면 해당 도구의 처리 정책이 적용됩니다. 웹 미리보기 글꼴은 외부 CDN에서 불러옵니다.
+- 디자인 규칙을 **본인의 기존 디자인에서 재어 뽑습니다.** 개발자가 정한 색이나 배치가 들어가지 않습니다.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 준비물
+
+| | |
+| --- | --- |
+| **Figma 데스크톱 앱** | 브라우저 Figma에는 플러그인 개발 메뉴가 없습니다 |
+| **이미 만든 카드뉴스** | 레퍼런스가 됩니다. 없으면 이 도구는 할 일이 없습니다 |
+| **Node.js 24 권장** | `.nvmrc` 제공. 지원 범위: 20.19 이상인 20.x, 22.13 이상인 22.x, 24 이상 |
+| **AI 에이전트** | 이 폴더의 파일을 읽고 쓸 수 있어야 합니다 |
+
+## 설치
+
+```bash
+npm ci
+npm run build:plugin
+```
+
+그다음 Figma 데스크톱 앱에서:
 
 ```
+Plugins → Development → Import plugin from manifest...
+→ 이 폴더의 figma-plugin/manifest.json 선택
+```
+
+한 번만 하면 됩니다. 코드를 고쳤을 때만 `npm run build:plugin`을 다시 실행하세요.
+
+## 쓰는 법
+
+```bash
+npm run dev      # http://localhost:5173
+```
+
+### ① 레퍼런스 읽기 — 디자인을 바꿀 때만
+
+Figma에서 기존 카드뉴스 파일을 엽니다.
+
+1. **카드 한 장에 해당하는 프레임**을 선택합니다(예: 1080×1350). 정리용 프레임·그룹 안에 들어 있어도 됩니다. 선택한 프레임의 크기가 카드 판형이 되므로 플러그인에 표시되는 크기를 확인합니다.
+   → 프레임 위쪽 이름표를 클릭하면 카드 전체가 잡힙니다.
+2. `Plugins → Development → 카드뉴스 생성` 실행
+3. **① 레퍼런스 읽기** 탭 → **선택한 프레임 읽기**
+
+글자 칸마다 임시 복제본에서 **몇 자가 들어가는지 실제 폰트로 재기 때문에** 몇 초 걸립니다. 원본 텍스트·서식·크기는 수정하지 않습니다. 혼합 서식은 측정 대신 원문 글자 수를 사용하고 안내를 남깁니다.
+
+> **읽은 대로 다시 그리기**를 누르면 읽은 값을 원본 옆에 재현합니다.
+> 원본과 다른 곳이 있으면 그게 읽기가 놓친 것입니다. 처음 한 번은 꼭 확인해 보세요.
+
+4. **결과 복사**
+
+### ② 내용 넣고 생성
+
+`http://localhost:5173`에서:
+
+1. **레퍼런스** 칸에 방금 복사한 것을 붙여넣습니다.
+2. 브랜드 자료, 전달할 내용과 목적, 타겟, 어투, 장수를 채웁니다.
+   입력은 이 브라우저에 남아 다음에 열면 채워져 있습니다.
+3. **브리프 저장** — `brief/latest.json`이 만들어집니다.
+
+프레임·레이어 이름이 같거나 부가 정보가 조금 빠져 있어도 가져올 수 있습니다. 숫자·색상 표기와 글자 예산은 가능한 범위에서 보완합니다. 사용할 수 없는 레이어는 해당 부분만 제외하고 참고 사항에 표시합니다. JSON 자체가 깨졌거나 카드의 폭·높이를 알 수 없을 때는 수정이 필요합니다.
+
+### ③ 에이전트에게 맡기기
+
+에이전트에게 이렇게 말하면 됩니다:
+
+> `brief/latest.json` 읽고 카드뉴스 만들어줘
+
+에이전트가 하는 일:
+
+1. 레퍼런스에서 고정 규칙을 뽑습니다 — 색 역할, 폰트 위계, 여백, 반복되는 장식
+2. 선택한 레퍼런스 적용 방식에 따라 유지할 장과 재구성할 장을 구분합니다
+3. `validateLayout(deck, extractTokens(manifest), input.templateMode)`으로 검사합니다 — 넘침·겹침·대비·화면 밖·줄 수
+4. 걸리면 고쳐서 다시 검사합니다
+5. `brief/latest.json`의 `briefId`와 `templateHash`를 그대로 복사해, `schemaVersion`, `cards`와 함께 `brief/layout.json` 최상위에 씁니다
+
+웹앱은 저장된 결과의 작업 정보·카드 장수·순서를 확인한 뒤, 결과를 만들 때의 레퍼런스로 미리보기를 만듭니다. 현재 화면의 입력·레퍼런스가 달라도 **결과 불러오기**로 바로 확인하고 복사할 수 있습니다.
+
+레퍼런스나 입력이 다르면 결과 위에 차이를 안내합니다. 미리보기·검증·Figma 복사는 저장된 결과의 레퍼런스와 적용 방식을 사용하고 현재 입력은 그대로 둡니다. 새 브리프를 저장하면 이전 화면 결과를 비우며, 새 작업의 결과가 완성된 뒤 불러옵니다.
+
+미리보기는 사이트에서 확인합니다. 별도 PNG 미리보기는 만들지 않으며, 최종 이미지는 Figma에서 확인하고 내보냅니다.
+
+업데이트 이전의 작업 정보 없는 브리프·결과는 자동 변환하지 않습니다. **브리프 저장 → 에이전트에게 다시 생성 요청**을 해 주세요. 기존 파일을 자동 삭제하지는 않습니다.
+
+### ④ 확인하고 Figma로
+
+1. 사이트에서 **결과 불러오기** → 미리보기와 검사 결과
+2. 오류가 있으면 복사 버튼이 잠깁니다. 에이전트에게 고쳐 달라고 하세요
+3. **결과 복사**
+4. 플러그인 **② 카드 만들기**에 붙여넣기
+5. 사진 파일을 고릅니다 (선택)
+6. **이 페이지에 카드 생성**
+
+## 사진
+
+파일 이름으로 자리가 정해집니다.
+
+```
+photo-1.jpg      1번 카드의 첫 사진
+photo-3-2.jpg    3번 카드의 두 번째 사진
+```
+
+**사진은 칸보다 크게** 준비하세요. 작으면 늘어나서 흐려집니다. 몇 배 늘어났는지는 생성 후 알려 줍니다.
+
+고르지 않으면 회색 자리로 들어갑니다. Figma에서 그 사각형에 사진을 직접 끌어다 놓아도 됩니다.
+
+## 레퍼런스 적용 방식
+
+| 옵션 | 유지하는 것 | 바꾸는 것 |
+| --- | --- | --- |
+| **레퍼런스 유지** | 모든 장의 배치와 구성 흐름 | 새 내용에 맞춘 문구·사진·분량 조정. 기존 결과 정도의 유사성을 목표로 합니다 |
+| **본문 재구성** | 첫 장과 마지막 장의 배치 | 중간 장의 정보 위계·사진 위치·글자 블록 수·구성 |
+| **전체 재구성** | 브랜드 색·글꼴·판형 | 첫 장과 마지막 장을 포함한 모든 장의 배치·구성 |
+
+기존의 ‘참고용으로만’ 선택은 ‘레퍼런스 유지’로 옮깁니다. 더 다른 디자인을 원하면 ‘본문 재구성’ 또는 ‘전체 재구성’을 선택하고 새 브리프를 저장하세요.
+
+자유롭게 재구성할 장은 원본 여백·사진 면적·글자 채움 비율을 따르지 않아도 됩니다. 넘침·겹침·대비 검사는 모든 옵션에서 유지합니다. 이 옵션은 에이전트에게 전달하는 설계 지시이며, 새 디자인의 차이는 생성 후 미리보기와 Figma에서 확인해야 합니다.
+
+## 잘 안 될 때
+
+| 증상 | 원인 |
+| --- | --- |
+| "카드 안쪽 묶음을 선택하셨습니다" | 이전 버전의 안내입니다. 플러그인을 다시 열어 v24 이상인지 확인하세요. 다른 프레임·그룹 안의 카드 프레임도 읽을 수 있습니다 |
+| 미리보기 글자가 잘림 | 상자보다 글자가 큽니다. 검사에 걸렸다면 에이전트가 고쳐야 합니다 |
+| 사진이 흐림 | 원본이 칸보다 작습니다. 최소 1080 폭 이상 |
+| 플러그인 오류 | 창 안에 전문이 뜹니다. **글자를 클릭하면 전체 복사**됩니다 |
+| 결과가 안 보임 | `brief/layout.json`이 있는지 확인. 현재 화면과 레퍼런스가 달라도 바로 조회 가능. 저장된 브리프의 결과가 아직 없으면 해당 브리프로 생성 |
+
+## 담기지 않는 것
+
+레퍼런스를 읽을 때 **그라디언트·그림자·마스크·혼합 모드**는 담지 못합니다.
+읽은 뒤 메모로 알려 주고, 카드를 만든 다음 Figma에서 직접 얹으시면 됩니다.
+
+## 명령
+
+```bash
+npm run dev            # 사이트 + /api/brief (이것만 있으면 됩니다)
+npm test               # 단위 테스트
+npm run lint
+npm run build          # 사이트 빌드
+npm run build:plugin   # 플러그인 번들 (코드 고쳤을 때만)
+npm run check          # 린트 + 테스트 + 웹/플러그인 빌드
+```
+
+브리프 저장·결과 조회는 `npm run dev`에서 동작합니다. `npm run preview`와 정적 배포는 파일 API를 제공하지 않습니다.
+개발 서버는 이 컴퓨터의 루프백 주소에서만 열립니다. 다른 웹사이트의 요청과 브리프·렌더 파일의 직접 URL 접근은 차단합니다.
+
+## 남지 않는 것
+
+- `brief/` — 입력과 결과. **gitignore 되어 있습니다.** 브랜드 자료가 들어가므로 커밋하지 마세요
+- 입력값은 브라우저 localStorage에 남고, 브리프 저장 시 로컬 개발 서버가 `brief/latest.json`에도 저장합니다
+- Figma 플러그인은 외부 통신을 하지 않습니다(`networkAccess.allowedDomains: ["none"]`). 웹 화면은 글꼴 CDN을 사용합니다
+
+## 더 읽을 것
+
+[docs/input-manual.md](docs/input-manual.md) — **AI에게 정보를 주는 법**.
+각 입력 칸이 왜 있는지, 비우면 무엇이 나빠지는지, 정보가 충돌하면 무엇이 이기는지 적혀 있습니다.
+
+[ANTIGRAVITY.md](ANTIGRAVITY.md) — 에이전트용 핵심 규칙과 문서 색인.
+[docs/architecture.md](docs/architecture.md) — 현재 구조와 파일 계약.
+[docs/acceptance.md](docs/acceptance.md) — 자동 검사, Figma 수동 확인, 공개·과제 제출 기준.
