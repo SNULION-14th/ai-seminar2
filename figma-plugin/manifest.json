@@ -1,0 +1,17 @@
+{
+  "name": "카드뉴스 생성",
+  "id": "card-news-5",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "ui.html",
+  "editorType": [
+    "figma"
+  ],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": [
+      "none"
+    ],
+    "reasoning": "웹앱에서 복사한 결과를 붙여넣어 사용한다. 외부 통신을 하지 않는다."
+  }
+}

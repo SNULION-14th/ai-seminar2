@@ -1,0 +1,1194 @@
+{
+  "schemaVersion": 1,
+  "readAt": "2026-09-22T10:33:21.845Z",
+  "fileName": "예시 카드뉴스",
+  "pageName": "샘플",
+  "frames": [
+    {
+      "frameName": "0",
+      "width": 1080,
+      "height": 1350,
+      "textSlots": [
+        {
+          "nodePath": [
+            1,
+            1
+          ],
+          "name": "처음엔 몰랐고 지금은 아는",
+          "characters": "처음엔 몰랐고 지금은 아는",
+          "rect": {
+            "x": 90,
+            "y": 873,
+            "width": 725,
+            "height": 48
+          },
+          "fontSize": 40,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "SemiBold",
+          "autoResize": "HEIGHT",
+          "budget": {
+            "min": 13,
+            "max": 22
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#ffffff",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            2
+          ],
+          "name": "미리 알았다면 좋았을 6가지",
+          "characters": "미리 알았다면\n좋았을 6가지",
+          "rect": {
+            "x": 68,
+            "y": 949,
+            "width": 628,
+            "height": 238
+          },
+          "fontSize": 100,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "ExtraBold",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 13,
+            "max": 22
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#ffffff",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            4,
+            0
+          ],
+          "name": "6가지",
+          "characters": "6가지",
+          "rect": {
+            "x": 68,
+            "y": 1074,
+            "width": 346,
+            "height": 100
+          },
+          "fontSize": 100,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "ExtraBold",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 4,
+            "max": 9
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#ffffff",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": {
+            "value": 100,
+            "unit": "PERCENT"
+          }
+        }
+      ],
+      "imageSlots": [
+        {
+          "nodePath": [
+            3
+          ],
+          "name": "Logo",
+          "rect": {
+            "x": 96,
+            "y": 101,
+            "width": 86,
+            "height": 108
+          },
+          "scaleMode": "FILL"
+        }
+      ],
+      "background": {
+        "hex": "#9f9f9f",
+        "alpha": 1
+      },
+      "shapes": [
+        {
+          "nodePath": [
+            1,
+            0
+          ],
+          "name": "Rectangle 2",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 68,
+            "y": 873,
+            "width": 7,
+            "height": 48
+          },
+          "fill": {
+            "hex": "#ffffff",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        },
+        {
+          "nodePath": [
+            4
+          ],
+          "name": "Text Box Blue",
+          "kind": "FRAME",
+          "rect": {
+            "x": 68,
+            "y": 1074,
+            "width": 346,
+            "height": 100
+          },
+          "fill": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        }
+      ]
+    },
+    {
+      "frameName": "34",
+      "width": 1080,
+      "height": 1350,
+      "textSlots": [
+        {
+          "nodePath": [
+            1
+          ],
+          "name": "SAMPLE",
+          "characters": "SAMPLE",
+          "rect": {
+            "x": 329,
+            "y": 607,
+            "width": 423,
+            "height": 135
+          },
+          "fontSize": 90,
+          "fontFamily": "Poppins",
+          "fontStyle": "Bold",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 5,
+            "max": 8
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#ffffff",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        }
+      ],
+      "imageSlots": [],
+      "background": {
+        "hex": "#ffffff",
+        "alpha": 1
+      },
+      "shapes": [
+        {
+          "nodePath": [
+            0
+          ],
+          "name": "Rectangle 1",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1080,
+            "height": 1350
+          },
+          "fill": {
+            "hex": "#000000",
+            "alpha": 0.3
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        }
+      ]
+    },
+    {
+      "frameName": "35",
+      "width": 1080,
+      "height": 1350,
+      "textSlots": [
+        {
+          "nodePath": [
+            3,
+            0,
+            0
+          ],
+          "name": "01",
+          "characters": "01",
+          "rect": {
+            "x": 480,
+            "y": 145,
+            "width": 119,
+            "height": 137
+          },
+          "fontSize": 115,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "Regular",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 1,
+            "max": 2
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            3,
+            1
+          ],
+          "name": "소개를 조금 부탁드립니다",
+          "characters": "소개를 조금\n부탁드립니다",
+          "rect": {
+            "x": 634,
+            "y": 165,
+            "width": 213,
+            "height": 98
+          },
+          "fontSize": 41,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "SemiBold",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 10,
+            "max": 25
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#000000",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            4,
+            0
+          ],
+          "name": "한 단어로 나를 말한다면?",
+          "characters": "한 단어로\n나를 말한다면?",
+          "rect": {
+            "x": 101,
+            "y": 723,
+            "width": 244,
+            "height": 98
+          },
+          "fontSize": 41,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "SemiBold",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 14,
+            "max": 54
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#000000",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            4,
+            1,
+            0
+          ],
+          "name": "02",
+          "characters": "02",
+          "rect": {
+            "x": 375,
+            "y": 703,
+            "width": 137,
+            "height": 137
+          },
+          "fontSize": 115,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "Regular",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 2,
+            "max": 3
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            5
+          ],
+          "name": "자기소개 본문",
+          "characters": "모아스터디에서 함께 공부할 방향을 찾고 있는 스터디 메이트입니다. 올해 처음 합류했고 주로 저녁 시간대에 모임을 엽니다. 편하게 인사 나눠 주세요!\r",
+          "rect": {
+            "x": 485,
+            "y": 467,
+            "width": 519,
+            "height": 144
+          },
+          "fontSize": 30,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "Regular",
+          "autoResize": "HEIGHT",
+          "budget": {
+            "min": 53,
+            "max": 88
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#000000",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            6
+          ],
+          "name": "별명 본문",
+          "characters": "모임을 열 때마다 이름을 하나씩 붙이곤 했는데, 그 습관이 남아서 지금도 방마다 짧은 별명을 지어 두고 부르게 되었습니다.",
+          "rect": {
+            "x": 80,
+            "y": 908,
+            "width": 429,
+            "height": 360
+          },
+          "fontSize": 30,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "Regular",
+          "autoResize": "HEIGHT",
+          "budget": {
+            "min": 117,
+            "max": 195
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#000000",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            7
+          ],
+          "name": "메이트",
+          "characters": "메이트",
+          "rect": {
+            "x": 80,
+            "y": 861,
+            "width": 78,
+            "height": 36
+          },
+          "fontSize": 30,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "Bold",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 3,
+            "max": 33
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        }
+      ],
+      "imageSlots": [
+        {
+          "nodePath": [
+            0,
+            1
+          ],
+          "name": "logo_Simple 2",
+          "rect": {
+            "x": 11,
+            "y": 0,
+            "width": 97,
+            "height": 69
+          },
+          "scaleMode": "CROP"
+        }
+      ],
+      "background": {
+        "hex": "#ffffff",
+        "alpha": 1
+      },
+      "shapes": [
+        {
+          "nodePath": [
+            0,
+            0
+          ],
+          "name": "Rectangle 4037",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1079,
+            "height": 69
+          },
+          "fill": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        },
+        {
+          "nodePath": [
+            1
+          ],
+          "name": "image 3",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 80,
+            "y": 145,
+            "width": 360,
+            "height": 480
+          },
+          "fill": {
+            "hex": "#d9d9d9",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        },
+        {
+          "nodePath": [
+            2
+          ],
+          "name": "image 2",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 540,
+            "y": 703,
+            "width": 464,
+            "height": 540
+          },
+          "fill": {
+            "hex": "#d9d9d9",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        },
+        {
+          "nodePath": [
+            3,
+            0,
+            1
+          ],
+          "name": "Rectangle 2",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 595,
+            "y": 275,
+            "width": 2,
+            "height": 110
+          },
+          "fill": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        },
+        {
+          "nodePath": [
+            4,
+            1,
+            1
+          ],
+          "name": "Rectangle 2",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 504,
+            "y": 834,
+            "width": 2,
+            "height": 120
+          },
+          "fill": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        }
+      ]
+    },
+    {
+      "frameName": "36",
+      "width": 1080,
+      "height": 1350,
+      "textSlots": [
+        {
+          "nodePath": [
+            0,
+            0,
+            0
+          ],
+          "name": "03",
+          "characters": "03",
+          "rect": {
+            "x": 102,
+            "y": 119,
+            "width": 140,
+            "height": 137
+          },
+          "fontSize": 115,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "Regular",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 2,
+            "max": 11
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            0,
+            1
+          ],
+          "name": "꾸준히 이어 온 것이 있다면 들려주시겠어요",
+          "characters": "꾸준히 이어 온 것이 있다면\n들려주시겠어요",
+          "rect": {
+            "x": 276,
+            "y": 139,
+            "width": 429,
+            "height": 98
+          },
+          "fontSize": 41,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "SemiBold",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 20,
+            "max": 34
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#000000",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            1
+          ],
+          "name": "꾸준히 이어 온 것 본문",
+          "characters": "짧게라도 매일 기록을 남기는 일을 몇 해 전부터 지금까지 계속 이어 오고 있어요.",
+          "rect": {
+            "x": 89,
+            "y": 351,
+            "width": 901,
+            "height": 216
+          },
+          "fontSize": 30,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "Regular",
+          "autoResize": "HEIGHT",
+          "budget": {
+            "min": 147,
+            "max": 245
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#000000",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        }
+      ],
+      "imageSlots": [],
+      "background": {
+        "hex": "#ffffff",
+        "alpha": 1
+      },
+      "shapes": [
+        {
+          "nodePath": [
+            0,
+            0,
+            1
+          ],
+          "name": "Rectangle 2",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 232,
+            "y": 249,
+            "width": 2,
+            "height": 120
+          },
+          "fill": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        },
+        {
+          "nodePath": [
+            2
+          ],
+          "name": "image 14",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 0,
+            "y": 629,
+            "width": 1080,
+            "height": 721
+          },
+          "fill": {
+            "hex": "#d9d9d9",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        }
+      ]
+    },
+    {
+      "frameName": "37",
+      "width": 1080,
+      "height": 1350,
+      "textSlots": [
+        {
+          "nodePath": [
+            0,
+            0,
+            0
+          ],
+          "name": "05",
+          "characters": "05",
+          "rect": {
+            "x": 106,
+            "y": 1100,
+            "width": 138,
+            "height": 137
+          },
+          "fontSize": 115,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "Regular",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 2,
+            "max": 11
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            0,
+            1
+          ],
+          "name": "앞으로 어떤 모습을 바라고 있나요?",
+          "characters": "앞으로 어떤 모습을\n바라고 있나요?",
+          "rect": {
+            "x": 280,
+            "y": 1120,
+            "width": 304,
+            "height": 98
+          },
+          "fontSize": 41,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "SemiBold",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 16,
+            "max": 31
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#000000",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            2
+          ],
+          "name": "되고 싶은 사람 본문",
+          "characters": "저는 제가 맡은 일이 좋아서 매일 조금씩 나아가는 사람이 되고 싶어요. 억지로 붙잡지 않고, 스스로 즐거워서 하는 거니까 자연히 계속하게 되는 거죠. 전 제가 좋아하는 것만 오래 붙듭니다. 조금 더 구체적으로는 나중에 누군가의 다음 걸음을 거드는 일이 좋아서, 또 그 일을 더 잘하고 싶어서 시간을 기꺼이 쓰는 사람이 되고 싶어요.",
+          "rect": {
+            "x": 106,
+            "y": 881,
+            "width": 880,
+            "height": 180
+          },
+          "fontSize": 30,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "Regular",
+          "autoResize": "HEIGHT",
+          "budget": {
+            "min": 121,
+            "max": 202
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#000000",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        }
+      ],
+      "imageSlots": [],
+      "background": {
+        "hex": "#ffffff",
+        "alpha": 1
+      },
+      "shapes": [
+        {
+          "nodePath": [
+            0,
+            0,
+            1
+          ],
+          "name": "Rectangle 2",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 236,
+            "y": 1230,
+            "width": 2,
+            "height": 120
+          },
+          "fill": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        },
+        {
+          "nodePath": [
+            1
+          ],
+          "name": "image 17",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1079,
+            "height": 826
+          },
+          "fill": {
+            "hex": "#d9d9d9",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        }
+      ]
+    },
+    {
+      "frameName": "38",
+      "width": 1080,
+      "height": 1350,
+      "textSlots": [
+        {
+          "nodePath": [
+            0,
+            0
+          ],
+          "name": "04",
+          "characters": "04",
+          "rect": {
+            "x": 95,
+            "y": 92,
+            "width": 141,
+            "height": 137
+          },
+          "fontSize": 115,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "Regular",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 2,
+            "max": 11
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            1
+          ],
+          "name": "하루를 붙잡아 준 습관이 있다면 무엇인가요?",
+          "characters": "하루를 붙잡아 준\n습관이 있다면\n무엇인가요?",
+          "rect": {
+            "x": 105,
+            "y": 252,
+            "width": 258,
+            "height": 147
+          },
+          "fontSize": 41,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "SemiBold",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 21,
+            "max": 79
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#000000",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            3,
+            1
+          ],
+          "name": "아침 루틴 인용",
+          "characters": "“아침에 조금 일찍 일어나\n한 끼 차려 먹고 나서기\"",
+          "rect": {
+            "x": 345,
+            "y": 254,
+            "width": 390,
+            "height": 98
+          },
+          "fontSize": 41,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "SemiBold",
+          "autoResize": "WIDTH_AND_HEIGHT",
+          "budget": {
+            "min": 16,
+            "max": 26
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#ffffff",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        },
+        {
+          "nodePath": [
+            4
+          ],
+          "name": "아침 습관 본문",
+          "characters": "아침에 조금 일찍 일어나 한 끼 차려 먹고 나서기. 냉장고에 남은 재료를 털어서 어떻게든 한 접시를 만들어 두고 움직입니다. \n\n원래 저는 밤에 더 잘 깨어 있는 편이라 아침 시간이 늘 버거웠는데, 올해 생긴 이 습관 덕분에 하루를 훨씬 가볍게 열 수 있게 되었습니다!\r",
+          "rect": {
+            "x": 491,
+            "y": 399,
+            "width": 455,
+            "height": 360
+          },
+          "fontSize": 30,
+          "fontFamily": "Pretendard Variable",
+          "fontStyle": "Regular",
+          "autoResize": "HEIGHT",
+          "budget": {
+            "min": 119,
+            "max": 198
+          },
+          "mixedStyles": false,
+          "color": {
+            "hex": "#ffffff",
+            "alpha": 1
+          },
+          "letterSpacing": {
+            "value": 0,
+            "unit": "PERCENT"
+          },
+          "lineHeight": "auto"
+        }
+      ],
+      "imageSlots": [],
+      "background": {
+        "hex": "#ffffff",
+        "alpha": 1
+      },
+      "shapes": [
+        {
+          "nodePath": [
+            0,
+            1
+          ],
+          "name": "Rectangle 2",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 225,
+            "y": 222,
+            "width": 2,
+            "height": 120
+          },
+          "fill": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        },
+        {
+          "nodePath": [
+            2
+          ],
+          "name": "image 16",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 0,
+            "y": 607,
+            "width": 891,
+            "height": 743
+          },
+          "fill": {
+            "hex": "#d9d9d9",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        },
+        {
+          "nodePath": [
+            3,
+            0
+          ],
+          "name": "Rectangle 4038",
+          "kind": "RECTANGLE",
+          "rect": {
+            "x": 440,
+            "y": 190,
+            "width": 558,
+            "height": 647
+          },
+          "fill": {
+            "hex": "#0055ff",
+            "alpha": 1
+          },
+          "stroke": null,
+          "cornerRadius": 0,
+          "rotation": 0
+        }
+      ]
+    }
+  ],
+  "notes": [],
+  "system": {
+    "colors": [
+      {
+        "hex": "#0055ff",
+        "uses": 14
+      },
+      {
+        "hex": "#ffffff",
+        "uses": 12
+      },
+      {
+        "hex": "#000000",
+        "uses": 10
+      },
+      {
+        "hex": "#d9d9d9",
+        "uses": 5
+      },
+      {
+        "hex": "#9f9f9f",
+        "uses": 1
+      }
+    ],
+    "typeScale": [
+      {
+        "fontSize": 115,
+        "fontFamily": "Pretendard Variable",
+        "fontStyle": "Regular",
+        "uses": 5
+      },
+      {
+        "fontSize": 100,
+        "fontFamily": "Pretendard Variable",
+        "fontStyle": "ExtraBold",
+        "uses": 2
+      },
+      {
+        "fontSize": 90,
+        "fontFamily": "Poppins",
+        "fontStyle": "Bold",
+        "uses": 1
+      },
+      {
+        "fontSize": 41,
+        "fontFamily": "Pretendard Variable",
+        "fontStyle": "SemiBold",
+        "uses": 6
+      },
+      {
+        "fontSize": 40,
+        "fontFamily": "Pretendard Variable",
+        "fontStyle": "SemiBold",
+        "uses": 1
+      },
+      {
+        "fontSize": 30,
+        "fontFamily": "Pretendard Variable",
+        "fontStyle": "Regular",
+        "uses": 5
+      },
+      {
+        "fontSize": 30,
+        "fontFamily": "Pretendard Variable",
+        "fontStyle": "Bold",
+        "uses": 1
+      }
+    ],
+    "margins": [
+      {
+        "value": 0,
+        "uses": 5
+      },
+      {
+        "value": 68,
+        "uses": 4
+      },
+      {
+        "value": 80,
+        "uses": 3
+      },
+      {
+        "value": 106,
+        "uses": 2
+      }
+    ],
+    "cardSize": {
+      "width": 1080,
+      "height": 1350
+    }
+  }
+}
