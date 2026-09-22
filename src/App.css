@@ -1,184 +1,835 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+/* ==========================================================================
+   FlowDo Main Stylesheet (Strictly derived from Figma Node 4:2)
+   ========================================================================== */
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+.flowdo-app-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px 64px 16px;
+  background-color: var(--bg-page);
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
-}
-
-#center {
+.flowdo-main-container {
+  width: 100%;
+  max-width: 640px;
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  gap: 20px;
 }
 
-#next-steps {
+/* --------------------------------------------------------------------------
+   Header Component
+   -------------------------------------------------------------------------- */
+.flowdo-header {
   display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 4px;
+  user-select: none;
 }
 
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
-  padding: 0;
+.flowdo-header-left {
   display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+  align-items: center;
+  gap: 12px;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
+.flowdo-logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: #15203a;
+  letter-spacing: -0.02em;
+  margin: 0;
 }
 
-.ticks {
-  position: relative;
+.flowdo-header-divider {
+  width: 1px;
+  height: 16px;
+  background-color: #ece5db;
+}
+
+.flowdo-date {
+  font-size: 14px;
+  color: #5a6383;
+}
+
+.flowdo-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.flowdo-header-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.flowdo-header-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: #15203a;
+  line-height: 1.2;
+}
+
+.flowdo-header-sub {
+  font-size: 12px;
+  color: #8e96ae;
+}
+
+.flowdo-header-circle {
+  width: 34px;
+  height: 34px;
+}
+
+.flowdo-circle-svg {
   width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
+.flowdo-circle-bg {
+  fill: none;
+  stroke: #e4e0ff;
+  stroke-width: 3;
+}
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
+.flowdo-circle-bar {
+  fill: none;
+  stroke: #5b54e8;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.4s ease-out;
+}
+
+/* --------------------------------------------------------------------------
+   Common Card
+   -------------------------------------------------------------------------- */
+.flowdo-card {
+  background-color: #ffffff;
+  border-radius: 24px;
+  border: 1px solid #ece5db;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+/* --------------------------------------------------------------------------
+   Task Input
+   -------------------------------------------------------------------------- */
+.task-input-card {
+  transition: border-color 0.2s ease;
+}
+
+.task-input-card:focus-within {
+  border-color: #cfc9fb;
+}
+
+.task-input-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.task-input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 580px) {
+  .task-input-row {
+    flex-direction: column;
+    align-items: stretch;
   }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+}
+
+.task-input-field-wrap {
+  flex: 1;
+}
+
+.task-input-field {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: rgba(250, 247, 242, 0.75);
+  border-radius: 14px;
+  border: 1px solid transparent;
+  font-size: 15px;
+  color: #15203a;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.task-input-field:focus {
+  background-color: #ffffff;
+  border-color: #cfc9fb;
+  box-shadow: 0 0 0 2px rgba(207, 201, 251, 0.3);
+}
+
+.task-input-field::placeholder {
+  color: #9ca3af;
+}
+
+.task-input-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.priority-selector-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background-color: #faf7f2;
+  padding: 4px;
+  border-radius: 9999px;
+  border: 1px solid #ece5db;
+}
+
+.priority-select-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #8e96ae;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.priority-select-btn:hover {
+  color: #5a6383;
+}
+
+.priority-select-btn.is-selected {
+  background-color: #ffffff;
+  color: #15203a;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.priority-select-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+}
+
+.flowdo-btn-add {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #e4e0ff;
+  color: #3a34ae;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.flowdo-btn-add:hover {
+  background-color: #d8d1ff;
+}
+
+.flowdo-btn-add:active {
+  transform: scale(0.96);
+}
+
+.flowdo-btn-add:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.task-input-hint {
+  font-size: 12px;
+  color: #8e96ae;
+  padding-left: 4px;
+}
+
+.task-input-hint-full {
+  color: #8e96ae;
+}
+
+.task-input-hint-normal {
+  color: #8e96ae;
+}
+
+.hint-kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  background-color: #faf7f2;
+  border: 1px solid #ece5db;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 11px;
+  color: #5a6383;
+}
+
+/* --------------------------------------------------------------------------
+   Focus Section
+   -------------------------------------------------------------------------- */
+.focus-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.focus-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.focus-section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #15203a;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.focus-section-desc {
+  font-size: 14px;
+  color: #8e96ae;
+  margin: 0;
+}
+
+.focus-section-desc .highlight {
+  font-weight: 500;
+  color: #5a6383;
+}
+
+.focus-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.focus-empty-box {
+  padding: 36px 16px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  border: 1px dashed #ece5db;
+  color: #8e96ae;
+  font-size: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   Todo Item Component
+   -------------------------------------------------------------------------- */
+.todo-item-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ece5db;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.todo-item-card:hover {
+  border-color: #cfc9fb;
+}
+
+.todo-item-card.is-completed {
+  background-color: #ddf2e5;
+  border-color: #ddf2e5;
+}
+
+.todo-item-main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.todo-checkbox-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  border: 2px solid #8e96ae;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.todo-checkbox-btn:hover {
+  border-color: #5b54e8;
+}
+
+.todo-checkbox-btn:active {
+  transform: scale(0.92);
+}
+
+.todo-checkbox-btn.is-checked {
+  background-color: #3f9a6e;
+  border-color: #3f9a6e;
+  color: #ffffff;
+}
+
+.todo-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.todo-item-title {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  color: #15203a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  user-select: none;
+}
+
+.todo-item-card.is-completed .todo-item-title {
+  color: #2f7454;
+  text-decoration: line-through;
+  opacity: 0.85;
+}
+
+.todo-edit-input {
+  width: 100%;
+  padding: 4px 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #15203a;
+  border-radius: 6px;
+  border: 1.5px solid #5b54e8;
+  outline: none;
+  background-color: #ffffff;
+}
+
+.todo-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.todo-action-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8e96ae;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.todo-action-icon-btn:hover {
+  color: #5b54e8;
+  background-color: #faf7f2;
+}
+
+.todo-action-icon-btn.is-delete:hover {
+  color: #c9603f;
+  background-color: #faf7f2;
+}
+
+/* --------------------------------------------------------------------------
+   Priority Badge
+   -------------------------------------------------------------------------- */
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 400;
+  background-color: #faf7f2;
+  border: 1px solid #ece5db;
+  color: #5a6383;
+  user-select: none;
+}
+
+.priority-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.priority-badge.priority-high .priority-dot {
+  background-color: #c9603f;
+}
+
+.priority-badge.priority-normal .priority-dot {
+  background-color: #5b54e8;
+}
+
+.priority-badge.priority-low .priority-dot {
+  background-color: #3f9a6e;
+}
+
+/* --------------------------------------------------------------------------
+   Inbox Section
+   -------------------------------------------------------------------------- */
+.inbox-card {
+  transition: all 0.2s ease;
+}
+
+.inbox-header-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+}
+
+.inbox-header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inbox-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #2b3757;
+}
+
+.inbox-count-badge {
+  font-size: 14px;
+  color: #8e96ae;
+}
+
+.inbox-toggle-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8e96ae;
+  transition: color 0.15s ease;
+}
+
+.inbox-header-btn:hover .inbox-toggle-icon {
+  color: #2b3757;
+}
+
+.inbox-warning-alert {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background-color: #faf7f2;
+  border: 1px solid #ece5db;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #c9603f;
+  animation: fadeIn 0.2s ease;
+}
+
+.inbox-content-list {
+  margin-top: 14px;
+  border-top: 1px solid rgba(236, 229, 219, 0.7);
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.inbox-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 4px;
+  border-radius: 10px;
+  transition: background-color 0.15s ease;
+}
+
+.inbox-item-row:hover {
+  background-color: rgba(250, 247, 242, 0.65);
+}
+
+.inbox-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.inbox-item-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.inbox-item-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #2b3757;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.inbox-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.inbox-promote-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #8e96ae;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.inbox-promote-btn:hover {
+  color: #3a34ae;
+  background-color: rgba(228, 224, 255, 0.6);
+}
+
+.inbox-promote-btn:active {
+  transform: scale(0.95);
+}
+
+.inbox-empty-notice {
+  padding: 24px 0;
+  text-align: center;
+  font-size: 13px;
+  color: #8e96ae;
+}
+
+/* --------------------------------------------------------------------------
+   Progress Card
+   -------------------------------------------------------------------------- */
+.progress-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+  user-select: none;
+}
+
+.progress-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-card-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #5a6383;
+}
+
+.progress-card-pct-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background-color: #faf7f2;
+  border: 1px solid #ece5db;
+  color: #5b54e8;
+}
+
+.progress-card-numbers {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.progress-card-completed {
+  font-size: 40px;
+  font-weight: 700;
+  color: #15203a;
+  line-height: 1;
+}
+
+.progress-card-total {
+  font-size: 22px;
+  font-weight: 500;
+  color: #8e96ae;
+}
+
+.progress-bar-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 9999px;
+  background-color: #e4e0ff;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background-color: #5b54e8;
+  transition: width 0.4s ease-out;
+}
+
+.progress-card-encouragement {
+  font-size: 14px;
+  color: #5a6383;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Sunset Review Card
+   -------------------------------------------------------------------------- */
+.sunset-card {
+  background-color: #ede9fe;
+  border-radius: 28px;
+  border: 1px solid #e2dcfe;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sunset-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sunset-moon-icon {
+  color: #3a34ae;
+}
+
+.sunset-header-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #3a34ae;
+}
+
+.sunset-quote {
+  font-size: 16px;
+  font-weight: 500;
+  color: #2b3757;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.sunset-quote-sub {
+  color: #5a6383;
+}
+
+.sunset-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sunset-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #5a6383;
+}
+
+.sunset-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #d8d2fc;
+  font-size: 14px;
+  color: #15203a;
+  outline: none;
+  resize: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.sunset-textarea:focus {
+  border-color: #5b54e8;
+  box-shadow: 0 0 0 2px rgba(91, 84, 232, 0.15);
+}
+
+.sunset-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.sunset-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.sunset-privacy-note {
+  font-size: 12px;
+  color: #5a6383;
+}
+
+.sunset-finish-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 18px;
+  height: 36px;
+  border-radius: 20px;
+  background-color: #cfc9fb;
+  color: #3a34ae;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sunset-finish-btn:hover {
+  background-color: #beabfa;
+}
+
+.sunset-finish-btn:active {
+  transform: scale(0.96);
+}
+
+.sunset-toast-notice {
+  margin-top: 4px;
+  padding: 10px 16px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #cfc9fb;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #3a34ae;
+  text-align: center;
+  animation: fadeIn 0.25s ease;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
