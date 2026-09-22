@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local MCP credentials must not be committed.
+.agents/mcp_config.json
