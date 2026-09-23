@@ -36,7 +36,7 @@ Google Calendar는 API 키가 아닌 OAuth 2.0이 필요합니다. Antigravity�
 Google OAuth 클라이언트에는 다음 리디렉션 URI를 등록해야 합니다.
 
 ```text
-http://localhost:5173/api/calendar/callback
+http://localhost:5174/api/calendar/callback
 ```
 
 개발 서버를 켠 뒤 화면의 **Calendar 연결** 버튼을 누르면 Google 권한 승인 화면으로 이동합니다. API 키는 개인 일정 읽기·생성에 사용하지 않습니다.
