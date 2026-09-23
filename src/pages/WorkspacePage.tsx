@@ -1,84 +1,137 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useWorkspace } from '../context/WorkspaceContext';
-import { EventCard } from '../components/EventCard';
-import { TaskCard } from '../components/TaskCard';
+import { CalendarGrid } from '../components/CalendarGrid';
+import { TasksSidebar } from '../components/TasksSidebar';
 import { EventActionContextView } from '../components/EventActionContextView';
-import { Calendar, CheckSquare } from 'lucide-react';
+import { CreateEventModal } from '../components/CreateEventModal';
+import { Calendar as CalendarIcon, GitFork, CheckCircle2 } from 'lucide-react';
 
 export const WorkspacePage: React.FC = () => {
-  const { events, tasks, startPreparation, deleteEvent, toggleTask, deleteTask } =
-    useWorkspace();
+  const {
+    events,
+    tasks,
+    startPreparation,
+    deleteEvent,
+    toggleTask,
+    deleteTask,
+    addTask
+  } = useWorkspace();
+
+  const [activeTab, setActiveTab] = useState<'calendar' | 'relationship'>('calendar');
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [createEventDate, setCreateEventDate] = useState<string | null>(null);
+  const [mobilePane, setMobilePane] = useState<'calendar' | 'tasks'>('calendar');
+
+  const selectedEvent = events.find((e) => e.id === selectedEventId);
+  const activeTaskCount = tasks.filter((t) => !t.completed).length;
+
+  const handleOpenCreateEventWithDate = (dateStr?: string) => {
+    setCreateEventDate(dateStr || null);
+  };
+
+  const handleAddTask = (title: string, eventId?: string, eventTitle?: string) => {
+    addTask({
+      title,
+      completed: false,
+      eventId,
+      eventTitle
+    });
+  };
 
   return (
     <div className="workspace-page" data-testid="workspace-page">
+      {/* Workspace Hero & View Switcher */}
       <div className="workspace-hero">
-        <h1 className="hero-title">Personal Event-to-Action Workspace</h1>
-        <p className="hero-desc">
-          Bridge what’s coming up on your calendar directly to the tasks and Notion documentation
-          you need to complete them.
-        </p>
+        <div className="hero-text">
+          <h1 className="hero-title">Calendar & Tasks</h1>
+          <p className="hero-desc">
+            Organize calendar events and execute decomposed tasks linked with Notion.
+          </p>
+        </div>
+
+        <div className="view-mode-tabs">
+          <button
+            className={`tab-pill ${activeTab === 'calendar' ? 'active' : ''}`}
+            onClick={() => setActiveTab('calendar')}
+            data-testid="tab-calendar-view"
+          >
+            <CalendarIcon size={14} />
+            <span>Calendar View</span>
+          </button>
+          <button
+            className={`tab-pill ${activeTab === 'relationship' ? 'active' : ''}`}
+            onClick={() => setActiveTab('relationship')}
+            data-testid="tab-relationship-view"
+          >
+            <GitFork size={14} />
+            <span>Event → Action Tree</span>
+          </button>
+        </div>
       </div>
 
-      <div className="workspace-grid">
-        {/* Left Column: Upcoming Events */}
-        <section className="workspace-section events-column">
-          <div className="section-header">
-            <div className="header-title-wrap">
-              <Calendar size={18} className="text-accent" />
-              <h2 className="section-title">Upcoming Events</h2>
-              <span className="count-pill">{events.length}</span>
+      {activeTab === 'calendar' ? (
+        <>
+          {/* Mobile Pane Switcher (Visible only on screens <= 768px) */}
+          <div className="mobile-pane-switcher" role="tablist" aria-label="Mobile view switcher">
+            <button
+              className={`mobile-pane-btn ${mobilePane === 'calendar' ? 'active' : ''}`}
+              onClick={() => setMobilePane('calendar')}
+              data-testid="mobile-tab-calendar"
+            >
+              <CalendarIcon size={14} />
+              <span>Calendar</span>
+            </button>
+            <button
+              className={`mobile-pane-btn ${mobilePane === 'tasks' ? 'active' : ''}`}
+              onClick={() => setMobilePane('tasks')}
+              data-testid="mobile-tab-tasks"
+            >
+              <CheckCircle2 size={14} />
+              <span>Tasks</span>
+              <span className="mobile-badge">{activeTaskCount}</span>
+            </button>
+          </div>
+
+          <div className={`calendar-workspace-layout mobile-view-${mobilePane}`}>
+            {/* Main Calendar Grid */}
+            <div className="calendar-main-pane">
+              <CalendarGrid
+                events={events}
+                selectedEventId={selectedEventId}
+                onSelectEvent={setSelectedEventId}
+                onPrepareEvent={startPreparation}
+                onOpenCreateEvent={handleOpenCreateEventWithDate}
+                onDeleteEvent={deleteEvent}
+              />
+            </div>
+
+            {/* Right Tasks Side Panel */}
+            <div className="calendar-side-pane">
+              <TasksSidebar
+                tasks={tasks}
+                selectedEventId={selectedEventId}
+                selectedEventTitle={selectedEvent?.title}
+                onClearSelectedEvent={() => setSelectedEventId(null)}
+                onToggleTask={toggleTask}
+                onDeleteTask={deleteTask}
+                onAddTask={handleAddTask}
+              />
             </div>
           </div>
-
-          <div className="cards-stack">
-            {events.length === 0 ? (
-              <div className="empty-state">No upcoming events found.</div>
-            ) : (
-              events.map((event) => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  onPrepare={startPreparation}
-                  onDelete={deleteEvent}
-                />
-              ))
-            )}
-          </div>
+        </>
+      ) : (
+        <section className="relationship-view-wrap">
+          <EventActionContextView events={events} tasks={tasks} />
         </section>
+      )}
 
-        {/* Right Column: Google Tasks */}
-        <section className="workspace-section tasks-column">
-          <div className="section-header">
-            <div className="header-title-wrap">
-              <CheckSquare size={18} className="text-accent" />
-              <h2 className="section-title">Google Tasks</h2>
-              <span className="count-pill">
-                {tasks.filter((t) => !t.completed).length} open
-              </span>
-            </div>
-          </div>
-
-          <div className="cards-stack">
-            {tasks.length === 0 ? (
-              <div className="empty-state">No tasks created yet.</div>
-            ) : (
-              tasks.map((task) => (
-                <TaskCard
-                  key={task.id}
-                  task={task}
-                  onToggle={toggleTask}
-                  onDelete={deleteTask}
-                />
-              ))
-            )}
-          </div>
-        </section>
-      </div>
-
-      {/* Visual Relationship Hierarchy */}
-      <section className="eac-wrapper-section">
-        <EventActionContextView events={events} tasks={tasks} />
-      </section>
+      {/* Date-specific Create Event Modal */}
+      {createEventDate && (
+        <CreateEventModal
+          onClose={() => setCreateEventDate(null)}
+          initialDate={createEventDate}
+        />
+      )}
     </div>
   );
 };

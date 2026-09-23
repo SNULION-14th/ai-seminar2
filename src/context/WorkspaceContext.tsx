@@ -267,6 +267,9 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       return;
     }
 
+    const event = events.find(e => e.id === activePlan.eventId);
+    const dueDate = event?.date;
+
     // Explicit confirmation: commit actions to Google Tasks
     const newTasks: TaskItem[] = activePlan.actions
       .filter(a => a.title.trim().length > 0)
@@ -276,6 +279,7 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         completed: false,
         eventId: activePlan.eventId,
         eventTitle: activePlan.eventTitle,
+        dueDate: dueDate,
         notionContext: a.notionContext
       }));
 

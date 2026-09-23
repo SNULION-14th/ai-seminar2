@@ -1,16 +1,29 @@
 import React from 'react';
 import type { TaskItem } from '../types';
-import { Check, ExternalLink, FileText, Trash2, Calendar } from 'lucide-react';
+import { Check, ExternalLink, FileText, Trash2, Calendar, AlertCircle } from 'lucide-react';
 
 interface TaskCardProps {
   task: TaskItem;
   onToggle: (id: string) => void;
   onDelete?: (id: string) => void;
+  showEventTitle?: boolean;
 }
 
-export const TaskCard: React.FC<TaskCardProps> = ({ task, onToggle, onDelete }) => {
+export const TaskCard: React.FC<TaskCardProps> = ({
+  task,
+  onToggle,
+  onDelete,
+  showEventTitle = true
+}) => {
+  // Check if overdue: for semester mock, reference date is mid-October 2026 (e.g., 2026-10-14) or current date
+  const referenceDate = '2026-10-14';
+  const isOverdue = !task.completed && task.dueDate && task.dueDate < referenceDate;
+
   return (
-    <div className={`task-card ${task.completed ? 'completed' : ''}`} data-testid={`task-card-${task.id}`}>
+    <div
+      className={`task-card ${task.completed ? 'completed' : ''} ${isOverdue ? 'overdue' : ''}`}
+      data-testid={`task-card-${task.id}`}
+    >
       <div className="task-main">
         <button
           className={`task-checkbox ${task.completed ? 'checked' : ''}`}
@@ -29,19 +42,28 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onToggle, onDelete }) 
           </div>
 
           <div className="task-meta-row">
-            {task.eventTitle && (
+            {/* Due Date / Overdue Indicator */}
+            {task.dueDate && (
+              <span className={`task-date-pill ${isOverdue ? 'overdue-pill' : ''}`}>
+                {isOverdue ? <AlertCircle size={10} /> : <Calendar size={10} />}
+                <span>{isOverdue ? `Overdue (${task.dueDate})` : `Due ${task.dueDate}`}</span>
+              </span>
+            )}
+
+            {/* Parent Event Tag (optional if grouped) */}
+            {showEventTitle && task.eventTitle && (
               <span className="task-event-pill">
-                <Calendar size={11} />
                 <span>{task.eventTitle}</span>
               </span>
             )}
 
+            {/* Notion Context Pill */}
             {task.notionContext && (
               <span
                 className={`task-notion-pill type-${task.notionContext.type.toLowerCase()}`}
                 data-testid={`task-notion-${task.id}`}
               >
-                <FileText size={11} />
+                <FileText size={10} />
                 <span className="context-type-badge">{task.notionContext.type}</span>
                 <span className="context-title">{task.notionContext.pageTitle}</span>
                 {task.notionContext.url && (

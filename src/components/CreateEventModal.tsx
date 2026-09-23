@@ -4,12 +4,13 @@ import { X, Calendar as CalendarIcon } from 'lucide-react';
 
 interface CreateEventModalProps {
   onClose: () => void;
+  initialDate?: string;
 }
 
-export const CreateEventModal: React.FC<CreateEventModalProps> = ({ onClose }) => {
+export const CreateEventModal: React.FC<CreateEventModalProps> = ({ onClose, initialDate }) => {
   const { addEvent } = useWorkspace();
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(initialDate || new Date().toISOString().split('T')[0]);
   const [time, setTime] = useState('14:00');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
