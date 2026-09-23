@@ -29,6 +29,18 @@ npm run dev
 
 Google Calendar는 API 키가 아닌 OAuth 2.0이 필요합니다. Antigravity에서 `agy`를 실행한 뒤 `/mcp` 메뉴에서 `calendar`를 인증하세요.
 
+## 웹앱 실제 연동
+
+`vite.config.ts`의 로컬 API는 GitHub의 열린 작업을 조회하고, Google Calendar OAuth 완료 후 free/busy 조회와 일정 생성을 처리합니다. `.env.local.example`을 복사해 `.env.local`로 만들고 값을 입력하세요. 이 파일은 Git에서 제외됩니다.
+
+Google OAuth 클라이언트에는 다음 리디렉션 URI를 등록해야 합니다.
+
+```text
+http://localhost:5173/api/calendar/callback
+```
+
+개발 서버를 켠 뒤 화면의 **Calendar 연결** 버튼을 누르면 Google 권한 승인 화면으로 이동합니다. API 키는 개인 일정 읽기·생성에 사용하지 않습니다.
+
 ```text
 이번 주 참여자 전원이 가능한 30분을 찾아줘.
 화요일 14:00–14:30으로 팀 싱크 미팅을 만들어줘.

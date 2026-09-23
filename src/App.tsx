@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   ArrowUpRight,
   CalendarDays,
@@ -30,15 +30,31 @@ const slots: Slot[] = [
   { id: 3, day: '목', date: '9/25', time: '16:30 – 17:00', score: '모두 가능', people: '4명' },
 ]
 
+type IntegrationStatus = { calendar: boolean; googleConfigured: boolean; github: boolean }
+type GithubItem = { number: number; title: string; type: string }
+
 function App() {
   const [selectedSlot, setSelectedSlot] = useState(1)
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [isCreated, setIsCreated] = useState(false)
+  const [integration, setIntegration] = useState<IntegrationStatus>({ calendar: false, googleConfigured: false, github: false })
+  const [githubItems, setGithubItems] = useState<GithubItem[]>([])
 
   const selected = useMemo(
     () => slots.find((slot) => slot.id === selectedSlot) ?? slots[0],
     [selectedSlot],
   )
+
+  useEffect(() => {
+    void fetch('/api/integrations/status')
+      .then((response) => response.json())
+      .then((data: IntegrationStatus) => setIntegration(data))
+      .catch(() => undefined)
+    void fetch('/api/github/context')
+      .then((response) => response.json())
+      .then((data: { items: GithubItem[] }) => setGithubItems(data.items))
+      .catch(() => undefined)
+  }, [])
 
   const createSchedule = () => {
     setIsCreated(true)
@@ -66,9 +82,10 @@ function App() {
           <p className="hero-copy">캘린더의 상세 내용은 보지 않고, 팀원 모두가 가능한<br className="desktop-only" /> 시간만 모아 보여드려요.</p>
         </div>
         <div className="connection-status" aria-label="연동 상태">
-          <div className="status-title"><span className="live-dot" /> 연결 준비</div>
-          <div className="connection-row"><CalendarDays size={17} /> Google Calendar <span>OAuth 필요</span></div>
-          <div className="connection-row"><GitBranch size={17} /> GitHub <span>토큰 필요</span></div>
+          <div className="status-title"><span className={`live-dot ${integration.calendar ? 'connected' : ''}`} /> {integration.calendar ? '연결됨' : '연결 준비'}</div>
+          <div className="connection-row"><CalendarDays size={17} /> Google Calendar <span>{integration.calendar ? '연결됨' : 'OAuth 필요'}</span></div>
+          <div className="connection-row"><GitBranch size={17} /> GitHub <span>{integration.github ? '조회 가능' : '준비 중'}</span></div>
+          {!integration.calendar && integration.googleConfigured && <button className="connect-button" type="button" onClick={() => { window.location.href = '/api/calendar/auth' }}>Calendar 연결</button>}
         </div>
       </section>
 
@@ -121,13 +138,13 @@ function App() {
             <p className="card-description">연결된 레포의 진행 중인 작업을 함께 확인해요.</p>
             <div className="repository">
               <div className="repo-icon"><GitBranch size={18} /></div>
-              <div><strong>SNULION-14th / ai-seminar2</strong><span>이번 주 업데이트 3건</span></div>
+              <div><strong>SNULION-14th / ai-seminar2</strong><span>{githubItems.length ? `열린 작업 ${githubItems.length}건` : '작업 불러오는 중'}</span></div>
               <ArrowUpRight size={17} />
             </div>
             <ul className="issue-list">
-              <li><span className="issue-number">#12</span><span>Google Calendar MCP 연동</span><span className="issue-tag progress">진행 중</span></li>
-              <li><span className="issue-number">#9</span><span>일정 후보 추천 화면</span><span className="issue-tag review">리뷰 중</span></li>
-              <li><span className="issue-number">#7</span><span>초대 링크 공유 기능</span><span className="issue-tag done">완료</span></li>
+              {(githubItems.length ? githubItems : [{ number: 0, title: 'GitHub 작업을 불러오는 중이에요.', type: '...' }]).map((item) => (
+                <li key={item.number}><span className="issue-number">{item.number ? `#${item.number}` : '...'}</span><span>{item.title}</span><span className="issue-tag progress">{item.type}</span></li>
+              ))}
             </ul>
           </article>
         </div>
