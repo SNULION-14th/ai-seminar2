@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { useWorkspace } from '../context/WorkspaceContext';
-import { EventCard } from '../components/EventCard';
-import { CreateEventModal } from '../components/CreateEventModal';
-import { Calendar, Plus } from 'lucide-react';
+import React, { useState } from "react";
+import { useWorkspace } from "../context/WorkspaceContext";
+import { EventCard } from "../components/EventCard";
+import { CreateEventModal } from "../components/CreateEventModal";
+import { Calendar, Plus } from "lucide-react";
+import type { EventItem } from "../types";
 
 export const EventsPage: React.FC = () => {
   const { events, startPreparation, deleteEvent } = useWorkspace();
+  const [editingEvent, setEditingEvent] = useState<EventItem | undefined>();
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   return (
@@ -39,6 +41,7 @@ export const EventsPage: React.FC = () => {
               key={event.id}
               event={event}
               onPrepare={startPreparation}
+              onEdit={setEditingEvent}
               onDelete={deleteEvent}
             />
           ))
@@ -47,6 +50,12 @@ export const EventsPage: React.FC = () => {
 
       {showCreateModal && (
         <CreateEventModal onClose={() => setShowCreateModal(false)} />
+      )}
+      {editingEvent && (
+        <CreateEventModal
+          event={editingEvent}
+          onClose={() => setEditingEvent(undefined)}
+        />
       )}
     </div>
   );

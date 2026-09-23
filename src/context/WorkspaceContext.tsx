@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { EventItem, TaskItem, ActionPlan, NotionContext } from '../types';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import type { EventItem, TaskItem, ActionPlan, NotionContext } from "../types";
 
 interface WorkspaceContextType {
   events: EventItem[];
   tasks: TaskItem[];
   activePlan: ActionPlan | null;
-  addEvent: (event: Omit<EventItem, 'id'>) => void;
+  addEvent: (event: Omit<EventItem, "id">) => void;
   updateEvent: (id: string, event: Partial<EventItem>) => void;
   deleteEvent: (id: string) => void;
-  addTask: (task: Omit<TaskItem, 'id'>) => void;
+  addTask: (task: Omit<TaskItem, "id">) => void;
   updateTask: (id: string, task: Partial<TaskItem>) => void;
   toggleTask: (id: string) => void;
   deleteTask: (id: string) => void;
@@ -23,153 +23,178 @@ interface WorkspaceContextType {
   searchNotionPages: (query: string) => NotionContext[];
 }
 
-const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
+const WorkspaceContext = createContext<WorkspaceContextType | undefined>(
+  undefined,
+);
 
 const INITIAL_EVENTS: EventItem[] = [
   {
-    id: 'evt-1',
-    title: 'Operating Systems Assignment 3',
-    date: '2026-10-15',
-    time: '23:59',
-    location: 'Canvas Submission',
-    description: 'Kernel Synchronization & Multithreading implementation in C.',
+    id: "evt-1",
+    title: "Operating Systems Assignment 3",
+    date: "2026-10-15",
+    time: "23:59",
+    location: "Canvas Submission",
+    description: "Kernel Synchronization & Multithreading implementation in C.",
     needsPreparation: true,
   },
   {
-    id: 'evt-2',
-    title: 'Computer Architecture Midterm',
-    date: '2026-10-20',
-    time: '10:00',
-    location: 'Building 301, Room 102',
-    description: 'Pipelining, Cache memory, and Branch Prediction.',
+    id: "evt-2",
+    title: "Computer Architecture Midterm",
+    date: "2026-10-20",
+    time: "10:00",
+    location: "Building 301, Room 102",
+    description: "Pipelining, Cache memory, and Branch Prediction.",
     needsPreparation: true,
   },
   {
-    id: 'evt-3',
-    title: 'Lunch with Minsoo',
-    date: '2026-10-16',
-    time: '12:30',
-    location: 'Student Cafeteria',
-    description: 'Catch up over lunch.',
+    id: "evt-3",
+    title: "Lunch with Minsoo",
+    date: "2026-10-16",
+    time: "12:30",
+    location: "Student Cafeteria",
+    description: "Catch up over lunch.",
     needsPreparation: false,
-  }
+  },
 ];
 
 const INITIAL_TASKS: TaskItem[] = [
   {
-    id: 'task-1',
-    title: 'Read Pintos Project 2 Documentation',
+    id: "task-1",
+    title: "Read Pintos Project 2 Documentation",
     completed: true,
-    eventId: 'evt-1',
-    eventTitle: 'Operating Systems Assignment 3',
-    dueDate: '2026-10-10',
+    eventId: "evt-1",
+    eventTitle: "Operating Systems Assignment 3",
+    dueDate: "2026-10-10",
     notionContext: {
-      id: 'ctx-1',
-      type: 'LINK',
-      pageTitle: 'OS Coursework & Notes',
-      url: 'https://notion.so/os-coursework',
-      snippet: 'Pintos synchronization primitives overview and requirements.'
-    }
+      id: "ctx-1",
+      type: "LINK",
+      pageTitle: "OS Coursework & Notes",
+      url: "https://notion.so/os-coursework",
+      snippet: "Pintos synchronization primitives overview and requirements.",
+    },
   },
   {
-    id: 'task-2',
-    title: 'Review Lecture 8 Slides on Cache Hierarchy',
+    id: "task-2",
+    title: "Review Lecture 8 Slides on Cache Hierarchy",
     completed: false,
-    eventId: 'evt-2',
-    eventTitle: 'Computer Architecture Midterm',
-    dueDate: '2026-10-18',
+    eventId: "evt-2",
+    eventTitle: "Computer Architecture Midterm",
+    dueDate: "2026-10-18",
     notionContext: {
-      id: 'ctx-2',
-      type: 'LINK',
-      pageTitle: 'Architecture Exam Prep',
-      url: 'https://notion.so/arch-exam-prep',
-      snippet: 'Direct mapped vs set-associative cache formulas.'
-    }
-  }
+      id: "ctx-2",
+      type: "LINK",
+      pageTitle: "Architecture Exam Prep",
+      url: "https://notion.so/arch-exam-prep",
+      snippet: "Direct mapped vs set-associative cache formulas.",
+    },
+  },
 ];
 
 const MOCK_NOTION_PAGES = [
   {
-    id: 'page-1',
-    title: 'OS Coursework & Notes',
-    url: 'https://notion.so/os-coursework',
-    snippet: 'Pintos synchronization primitives, thread scheduling, and kernel notes.'
+    id: "page-1",
+    title: "OS Coursework & Notes",
+    url: "https://notion.so/os-coursework",
+    snippet:
+      "Pintos synchronization primitives, thread scheduling, and kernel notes.",
   },
   {
-    id: 'page-2',
-    title: 'Operating Systems Lab Workspace',
-    url: 'https://notion.so/os-lab',
-    snippet: 'Code snippets, GDB test commands, and debugging diary.'
+    id: "page-2",
+    title: "Operating Systems Lab Workspace",
+    url: "https://notion.so/os-lab",
+    snippet: "Code snippets, GDB test commands, and debugging diary.",
   },
   {
-    id: 'page-3',
-    title: 'Architecture Exam Prep',
-    url: 'https://notion.so/arch-exam-prep',
-    snippet: 'Formula sheets, past exam reviews, and flashcards.'
+    id: "page-3",
+    title: "Architecture Exam Prep",
+    url: "https://notion.so/arch-exam-prep",
+    snippet: "Formula sheets, past exam reviews, and flashcards.",
   },
   {
-    id: 'page-4',
-    title: 'Fall 2026 Semester Dashboard',
-    url: 'https://notion.so/fall-2026',
-    snippet: 'Course schedules, credit breakdown, and syllabus links.'
-  }
+    id: "page-4",
+    title: "Fall 2026 Semester Dashboard",
+    url: "https://notion.so/fall-2026",
+    snippet: "Course schedules, credit breakdown, and syllabus links.",
+  },
 ];
 
-export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [events, setEvents] = useState<EventItem[]>(() => {
-    const saved = localStorage.getItem('antigravity_events');
+    const saved = localStorage.getItem("antigravity_events");
     return saved ? JSON.parse(saved) : INITIAL_EVENTS;
   });
 
   const [tasks, setTasks] = useState<TaskItem[]>(() => {
-    const saved = localStorage.getItem('antigravity_tasks');
+    const saved = localStorage.getItem("antigravity_tasks");
     return saved ? JSON.parse(saved) : INITIAL_TASKS;
   });
 
   const [activePlan, setActivePlan] = useState<ActionPlan | null>(null);
 
   useEffect(() => {
-    localStorage.setItem('antigravity_events', JSON.stringify(events));
+    localStorage.setItem("antigravity_events", JSON.stringify(events));
   }, [events]);
 
   useEffect(() => {
-    localStorage.setItem('antigravity_tasks', JSON.stringify(tasks));
+    localStorage.setItem("antigravity_tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  const addEvent = (eventData: Omit<EventItem, 'id'>) => {
+  const addEvent = (eventData: Omit<EventItem, "id">) => {
     const newEvent: EventItem = {
       ...eventData,
-      id: `evt-${Date.now()}`
+      id: `evt-${Date.now()}`,
     };
-    setEvents(prev => [...prev, newEvent]);
+    setEvents((prev) => [...prev, newEvent]);
   };
 
   const updateEvent = (id: string, updated: Partial<EventItem>) => {
-    setEvents(prev => prev.map(e => (e.id === id ? { ...e, ...updated } : e)));
+    setEvents((prev) =>
+      prev.map((e) => (e.id === id ? { ...e, ...updated } : e)),
+    );
+    if (updated.title !== undefined) {
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.eventId === id ? { ...task, eventTitle: updated.title } : task,
+        ),
+      );
+    }
   };
 
   const deleteEvent = (id: string) => {
-    setEvents(prev => prev.filter(e => e.id !== id));
+    setEvents((prev) => prev.filter((e) => e.id !== id));
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.eventId === id
+          ? { ...task, eventId: undefined, eventTitle: undefined }
+          : task,
+      ),
+    );
   };
 
-  const addTask = (taskData: Omit<TaskItem, 'id'>) => {
+  const addTask = (taskData: Omit<TaskItem, "id">) => {
     const newTask: TaskItem = {
       ...taskData,
-      id: `task-${Date.now()}`
+      id: `task-${Date.now()}`,
     };
-    setTasks(prev => [newTask, ...prev]);
+    setTasks((prev) => [newTask, ...prev]);
   };
 
   const updateTask = (id: string, updated: Partial<TaskItem>) => {
-    setTasks(prev => prev.map(t => (t.id === id ? { ...t, ...updated } : t)));
+    setTasks((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, ...updated } : t)),
+    );
   };
 
   const toggleTask = (id: string) => {
-    setTasks(prev => prev.map(t => (t.id === id ? { ...t, completed: !t.completed } : t)));
+    setTasks((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
+    );
   };
 
   const deleteTask = (id: string) => {
-    setTasks(prev => prev.filter(t => t.id !== id));
+    setTasks((prev) => prev.filter((t) => t.id !== id));
   };
 
   const generatePlanForEvent = (event: EventItem): ActionPlan => {
@@ -178,32 +203,59 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         eventId: event.id,
         eventTitle: event.title,
         actions: [],
-        noPreparationNeeded: true
+        noPreparationNeeded: true,
       };
     }
 
-    if (event.title.toLowerCase().includes('assignment') || event.title.toLowerCase().includes('project')) {
+    if (
+      event.title.toLowerCase().includes("assignment") ||
+      event.title.toLowerCase().includes("project")
+    ) {
       return {
         eventId: event.id,
         eventTitle: event.title,
         actions: [
-          { id: `act-${Date.now()}-1`, title: 'Review assignment requirements & specifications' },
-          { id: `act-${Date.now()}-2`, title: 'Implement solution and write tests' },
-          { id: `act-${Date.now()}-3`, title: 'Verify test suite and write report' },
-          { id: `act-${Date.now()}-4`, title: 'Submit code and report to portal' }
-        ]
+          {
+            id: `act-${Date.now()}-1`,
+            title: "Review assignment requirements & specifications",
+          },
+          {
+            id: `act-${Date.now()}-2`,
+            title: "Implement solution and write tests",
+          },
+          {
+            id: `act-${Date.now()}-3`,
+            title: "Verify test suite and write report",
+          },
+          {
+            id: `act-${Date.now()}-4`,
+            title: "Submit code and report to portal",
+          },
+        ],
       };
     }
 
-    if (event.title.toLowerCase().includes('midterm') || event.title.toLowerCase().includes('exam')) {
+    if (
+      event.title.toLowerCase().includes("midterm") ||
+      event.title.toLowerCase().includes("exam")
+    ) {
       return {
         eventId: event.id,
         eventTitle: event.title,
         actions: [
-          { id: `act-${Date.now()}-1`, title: 'Consolidate lecture notes and lecture slides' },
-          { id: `act-${Date.now()}-2`, title: 'Solve past exam questions (2024-2025)' },
-          { id: `act-${Date.now()}-3`, title: 'Review mock questions and weak concepts' }
-        ]
+          {
+            id: `act-${Date.now()}-1`,
+            title: "Consolidate lecture notes and lecture slides",
+          },
+          {
+            id: `act-${Date.now()}-2`,
+            title: "Solve past exam questions (2024-2025)",
+          },
+          {
+            id: `act-${Date.now()}-3`,
+            title: "Review mock questions and weak concepts",
+          },
+        ],
       };
     }
 
@@ -211,14 +263,20 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       eventId: event.id,
       eventTitle: event.title,
       actions: [
-        { id: `act-${Date.now()}-1`, title: `Outline agenda and materials for ${event.title}` },
-        { id: `act-${Date.now()}-2`, title: `Review background context and prior notes` }
-      ]
+        {
+          id: `act-${Date.now()}-1`,
+          title: `Outline agenda and materials for ${event.title}`,
+        },
+        {
+          id: `act-${Date.now()}-2`,
+          title: `Review background context and prior notes`,
+        },
+      ],
     };
   };
 
   const startPreparation = (eventId: string) => {
-    const event = events.find(e => e.id === eventId);
+    const event = events.find((e) => e.id === eventId);
     if (!event) return;
     const plan = generatePlanForEvent(event);
     setActivePlan(plan);
@@ -235,9 +293,12 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     if (!activePlan) return;
     const newAction = {
       id: `act-${Date.now()}`,
-      title: title.trim() || 'New Action'
+      title: title.trim() || "New Action",
     };
-    setActivePlan({ ...activePlan, actions: [...activePlan.actions, newAction] });
+    setActivePlan({
+      ...activePlan,
+      actions: [...activePlan.actions, newAction],
+    });
   };
 
   const removeActionFromPlan = (index: number) => {
@@ -248,16 +309,22 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const regeneratePlan = () => {
     if (!activePlan) return;
-    const event = events.find(e => e.id === activePlan.eventId);
+    const event = events.find((e) => e.id === activePlan.eventId);
     if (!event) return;
     const newPlan = generatePlanForEvent(event);
     setActivePlan(newPlan);
   };
 
-  const setActionContext = (index: number, context: NotionContext | undefined) => {
+  const setActionContext = (
+    index: number,
+    context: NotionContext | undefined,
+  ) => {
     if (!activePlan) return;
     const updatedActions = [...activePlan.actions];
-    updatedActions[index] = { ...updatedActions[index], notionContext: context };
+    updatedActions[index] = {
+      ...updatedActions[index],
+      notionContext: context,
+    };
     setActivePlan({ ...activePlan, actions: updatedActions });
   };
 
@@ -267,23 +334,23 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       return;
     }
 
-    const event = events.find(e => e.id === activePlan.eventId);
+    const event = events.find((e) => e.id === activePlan.eventId);
     const dueDate = event?.date;
 
     // Explicit confirmation: commit actions to Google Tasks
     const newTasks: TaskItem[] = activePlan.actions
-      .filter(a => a.title.trim().length > 0)
-      .map(a => ({
+      .filter((a) => a.title.trim().length > 0)
+      .map((a) => ({
         id: `task-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
         title: a.title,
         completed: false,
         eventId: activePlan.eventId,
         eventTitle: activePlan.eventTitle,
         dueDate: dueDate,
-        notionContext: a.notionContext
+        notionContext: a.notionContext,
       }));
 
-    setTasks(prev => [...newTasks, ...prev]);
+    setTasks((prev) => [...newTasks, ...prev]);
     setActivePlan(null);
   };
 
@@ -294,27 +361,29 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const searchNotionPages = (query: string): NotionContext[] => {
     const q = query.toLowerCase().trim();
     if (!q) {
-      return MOCK_NOTION_PAGES.map(p => ({
+      return MOCK_NOTION_PAGES.map((p) => ({
         id: `ctx-${p.id}`,
-        type: 'LINK',
+        type: "LINK",
         pageTitle: p.title,
         url: p.url,
         snippet: p.snippet,
-        pageId: p.id
+        pageId: p.id,
       }));
     }
 
     const filtered = MOCK_NOTION_PAGES.filter(
-      p => p.title.toLowerCase().includes(q) || p.snippet.toLowerCase().includes(q)
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.snippet.toLowerCase().includes(q),
     );
 
-    return filtered.map(p => ({
+    return filtered.map((p) => ({
       id: `ctx-${p.id}`,
-      type: 'LINK',
+      type: "LINK",
       pageTitle: p.title,
       url: p.url,
       snippet: p.snippet,
-      pageId: p.id
+      pageId: p.id,
     }));
   };
 
@@ -339,7 +408,7 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setActionContext,
         confirmActionPlan,
         cancelPreparation,
-        searchNotionPages
+        searchNotionPages,
       }}
     >
       {children}
@@ -351,7 +420,7 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 export const useWorkspace = () => {
   const context = useContext(WorkspaceContext);
   if (!context) {
-    throw new Error('useWorkspace must be used within a WorkspaceProvider');
+    throw new Error("useWorkspace must be used within a WorkspaceProvider");
   }
   return context;
 };

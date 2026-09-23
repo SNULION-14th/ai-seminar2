@@ -10,6 +10,7 @@ import {
   MapPin,
   Trash2,
   X,
+  Pencil,
 } from "lucide-react";
 
 interface CalendarGridProps {
@@ -18,6 +19,7 @@ interface CalendarGridProps {
   onSelectEvent: (eventId: string | null) => void;
   onPrepareEvent: (eventId: string) => void;
   onOpenCreateEvent: (dateStr?: string) => void;
+  onEditEvent?: (event: EventItem) => void;
   onDeleteEvent?: (eventId: string) => void;
 }
 
@@ -27,15 +29,18 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
   onSelectEvent,
   onPrepareEvent,
   onOpenCreateEvent,
+  onEditEvent,
   onDeleteEvent,
 }) => {
-  // Default to Fall 2026 (October 2026)
-  const [currentYear, setCurrentYear] = useState(2026);
-  const [currentMonth, setCurrentMonth] = useState(9); // 0-indexed: 9 = October
-
-  const referenceToday = "2026-10-14";
+  const today = new Date();
+  const [currentYear, setCurrentYear] = useState(today.getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+  const referenceToday = `${today.getFullYear()}-${String(
+    today.getMonth() + 1,
+  ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
   const handlePrevMonth = () => {
+    onSelectEvent(null);
     if (currentMonth === 0) {
       setCurrentYear((y) => y - 1);
       setCurrentMonth(11);
@@ -45,6 +50,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
   };
 
   const handleNextMonth = () => {
+    onSelectEvent(null);
     if (currentMonth === 11) {
       setCurrentYear((y) => y + 1);
       setCurrentMonth(0);
@@ -128,6 +134,9 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
   }
 
   const selectedEvent = events.find((e) => e.id === selectedEventId);
+  const mobileAgendaDays = cells.filter(
+    (cell) => cell.isCurrentMonth && cell.events.length > 0,
+  );
 
   return (
     <div className="calendar-container">
@@ -142,16 +151,6 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
               title="Previous month"
             >
               <ChevronLeft size={16} />
-            </button>
-            <button
-              className="btn btn-secondary btn-sm cal-semester-btn"
-              onClick={() => {
-                setCurrentYear(2026);
-                setCurrentMonth(9);
-              }}
-              title="Jump to current semester"
-            >
-              Current Semester
             </button>
             <button
               className="icon-btn"
@@ -248,6 +247,87 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
         ))}
       </div>
 
+      <div className="mobile-calendar-agenda" aria-label="Events this month">
+        {mobileAgendaDays.length === 0 ? (
+          <div className="mobile-agenda-empty">
+            <CalendarIcon size={22} />
+            <p>No events this month</p>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={() => onOpenCreateEvent()}
+            >
+              <Plus size={14} />
+              <span>Add Event</span>
+            </button>
+          </div>
+        ) : (
+          mobileAgendaDays.map((day) => (
+            <section className="mobile-agenda-day" key={day.dateStr}>
+              <div className="mobile-agenda-day-header">
+                <div>
+                  <strong>
+                    {new Date(`${day.dateStr}T12:00:00`).toLocaleDateString(
+                      undefined,
+                      { weekday: "short", month: "short", day: "numeric" },
+                    )}
+                  </strong>
+                  {day.isToday && <span className="today-badge">Today</span>}
+                </div>
+                <button
+                  type="button"
+                  className="icon-btn cell-add-quick-btn"
+                  title={`Add event on ${day.dateStr}`}
+                  aria-label={`Add event on ${day.dateStr}`}
+                  onClick={() => onOpenCreateEvent(day.dateStr)}
+                >
+                  <Plus size={14} />
+                </button>
+              </div>
+              <div className="mobile-agenda-events">
+                {[...day.events]
+                  .sort((a, b) =>
+                    (a.time || "99:99").localeCompare(b.time || "99:99"),
+                  )
+                  .map((event) => {
+                    const isSelected = event.id === selectedEventId;
+                    const sameTimeCount = day.events.filter(
+                      (candidate) =>
+                        candidate.time && candidate.time === event.time,
+                    ).length;
+                    return (
+                      <button
+                        type="button"
+                        key={event.id}
+                        className={`mobile-agenda-event ${isSelected ? "selected" : ""}`}
+                        onClick={() =>
+                          onSelectEvent(isSelected ? null : event.id)
+                        }
+                        data-testid={`mobile-event-${event.id}`}
+                      >
+                        <span className="event-dot" />
+                        <span className="mobile-agenda-time">
+                          {event.time || "All day"}
+                        </span>
+                        <span className="mobile-agenda-event-content">
+                          <strong>{event.title}</strong>
+                          <span>{event.location || "No location"}</span>
+                          {sameTimeCount > 1 && (
+                            <em>Same time · {sameTimeCount} events</em>
+                          )}
+                        </span>
+                        {event.needsPreparation && (
+                          <Sparkles size={14} className="event-prep-sparkle" />
+                        )}
+                      </button>
+                    );
+                  })}
+              </div>
+            </section>
+          ))
+        )}
+      </div>
+
       {/* Selected Event Action Card */}
       {selectedEvent && (
         <div
@@ -300,6 +380,17 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                 title="Delete Event"
               >
                 <Trash2 size={15} />
+              </button>
+            )}
+
+            {onEditEvent && (
+              <button
+                className="icon-btn"
+                onClick={() => onEditEvent(selectedEvent)}
+                title="Edit Event"
+                data-testid={`edit-event-btn-${selectedEvent.id}`}
+              >
+                <Pencil size={15} />
               </button>
             )}
 

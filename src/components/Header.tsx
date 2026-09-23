@@ -1,13 +1,16 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Calendar, Layers, Plus } from 'lucide-react';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { Calendar, Layers, Plus } from "lucide-react";
 
 interface HeaderProps {
   onOpenCreateEvent?: () => void;
   onOpenCreateTask?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onOpenCreateEvent, onOpenCreateTask }) => {
+export const Header: React.FC<HeaderProps> = ({
+  onOpenCreateEvent,
+  onOpenCreateTask,
+}) => {
   return (
     <header className="app-header">
       <div className="header-left">
@@ -19,7 +22,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenCreateEvent, onOpenCreateT
           <NavLink
             to="/"
             end
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
           >
             Workspace
           </NavLink>
@@ -31,6 +36,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenCreateEvent, onOpenCreateT
           <button
             className="btn btn-secondary btn-sm"
             onClick={onOpenCreateEvent}
+            aria-label="Create event"
             data-testid="header-add-event-btn"
           >
             <Calendar size={14} />
@@ -41,6 +47,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenCreateEvent, onOpenCreateT
           <button
             className="btn btn-primary btn-sm"
             onClick={onOpenCreateTask}
+            aria-label="Create task"
             data-testid="header-add-task-btn"
           >
             <Plus size={14} />

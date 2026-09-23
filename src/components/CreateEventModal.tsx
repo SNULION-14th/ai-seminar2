@@ -1,44 +1,64 @@
-import React, { useState } from 'react';
-import { useWorkspace } from '../context/WorkspaceContext';
-import { X, Calendar as CalendarIcon } from 'lucide-react';
+import React, { useState } from "react";
+import { useWorkspace } from "../context/WorkspaceContext";
+import type { EventItem } from "../types";
+import { X, Calendar as CalendarIcon } from "lucide-react";
 
 interface CreateEventModalProps {
   onClose: () => void;
   initialDate?: string;
+  event?: EventItem;
 }
 
-export const CreateEventModal: React.FC<CreateEventModalProps> = ({ onClose, initialDate }) => {
-  const { addEvent } = useWorkspace();
-  const [title, setTitle] = useState('');
-  const [date, setDate] = useState(initialDate || new Date().toISOString().split('T')[0]);
-  const [time, setTime] = useState('14:00');
-  const [location, setLocation] = useState('');
-  const [description, setDescription] = useState('');
-  const [needsPreparation, setNeedsPreparation] = useState(true);
+export const CreateEventModal: React.FC<CreateEventModalProps> = ({
+  onClose,
+  initialDate,
+  event,
+}) => {
+  const { addEvent, updateEvent } = useWorkspace();
+  const [title, setTitle] = useState(event?.title || "");
+  const [date, setDate] = useState(
+    event?.date || initialDate || new Date().toISOString().split("T")[0],
+  );
+  const [time, setTime] = useState(event?.time || "14:00");
+  const [location, setLocation] = useState(event?.location || "");
+  const [description, setDescription] = useState(event?.description || "");
+  const [needsPreparation, setNeedsPreparation] = useState(
+    event?.needsPreparation ?? true,
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !date) return;
-    addEvent({
+    const eventData = {
       title: title.trim(),
       date,
       time: time || undefined,
       location: location.trim() || undefined,
       description: description.trim() || undefined,
-      needsPreparation
-    });
+      needsPreparation,
+    };
+    if (event) {
+      updateEvent(event.id, eventData);
+    } else {
+      addEvent(eventData);
+    }
     onClose();
   };
 
   return (
     <div className="modal-backdrop">
-      <div className="modal-content small-modal" data-testid="create-event-modal">
+      <div
+        className="modal-content small-modal"
+        data-testid="create-event-modal"
+      >
         <div className="modal-header">
           <div className="modal-title-group">
             <div className="modal-icon-badge">
               <CalendarIcon size={18} />
             </div>
-            <h3 className="modal-title">Create Calendar Event</h3>
+            <h3 className="modal-title">
+              {event ? "Edit Calendar Event" : "Create Calendar Event"}
+            </h3>
           </div>
           <button className="icon-btn" onClick={onClose}>
             <X size={18} />
@@ -112,7 +132,11 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({ onClose, ini
           </div>
 
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary btn-sm" onClick={onClose}>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={onClose}
+            >
               Cancel
             </button>
             <button
@@ -121,7 +145,7 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({ onClose, ini
               disabled={!title.trim() || !date}
               data-testid="submit-create-event-btn"
             >
-              Create Event
+              {event ? "Save Changes" : "Create Event"}
             </button>
           </div>
         </form>

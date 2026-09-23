@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useWorkspace } from '../context/WorkspaceContext';
-import type { NotionContext } from '../types';
-import { NotionContextResolverModal } from './NotionContextResolverModal';
+import React, { useState } from "react";
+import { useWorkspace } from "../context/WorkspaceContext";
+import type { NotionContext } from "../types";
+import { NotionContextResolverModal } from "./NotionContextResolverModal";
 import {
   Sparkles,
   RefreshCw,
@@ -10,8 +10,8 @@ import {
   FileText,
   CheckCircle2,
   X,
-  AlertCircle
-} from 'lucide-react';
+  AlertCircle,
+} from "lucide-react";
 
 export const ActionPlanModal: React.FC = () => {
   const {
@@ -22,19 +22,26 @@ export const ActionPlanModal: React.FC = () => {
     regeneratePlan,
     setActionContext,
     confirmActionPlan,
-    cancelPreparation
+    cancelPreparation,
   } = useWorkspace();
 
-  const [newActionTitle, setNewActionTitle] = useState('');
-  const [editingContextIndex, setEditingContextIndex] = useState<number | null>(null);
+  const [newActionTitle, setNewActionTitle] = useState("");
+  const [editingContextIndex, setEditingContextIndex] = useState<number | null>(
+    null,
+  );
 
   if (!activePlan) return null;
+
+  const hasInvalidActions =
+    !activePlan.noPreparationNeeded &&
+    (activePlan.actions.length === 0 ||
+      activePlan.actions.some((action) => !action.title.trim()));
 
   const handleAddAction = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newActionTitle.trim()) return;
     addActionToPlan(newActionTitle);
-    setNewActionTitle('');
+    setNewActionTitle("");
   };
 
   const handleSaveContext = (context: NotionContext | undefined) => {
@@ -47,7 +54,10 @@ export const ActionPlanModal: React.FC = () => {
   return (
     <>
       <div className="modal-backdrop">
-        <div className="modal-content action-plan-modal" data-testid="action-plan-modal">
+        <div
+          className="modal-content action-plan-modal"
+          data-testid="action-plan-modal"
+        >
           <div className="modal-header">
             <div className="modal-title-group">
               <div className="modal-icon-badge">
@@ -60,7 +70,11 @@ export const ActionPlanModal: React.FC = () => {
                 </p>
               </div>
             </div>
-            <button className="icon-btn" onClick={cancelPreparation} title="Close">
+            <button
+              className="icon-btn"
+              onClick={cancelPreparation}
+              title="Close"
+            >
               <X size={18} />
             </button>
           </div>
@@ -71,15 +85,18 @@ export const ActionPlanModal: React.FC = () => {
                 <AlertCircle size={28} className="text-muted mb-2" />
                 <h4>No Preparation Required</h4>
                 <p>
-                  This event does not require advance task preparation or Notion workspace setup.
-                  No tasks or external context changes will be created.
+                  This event does not require advance task preparation or Notion
+                  workspace setup. No tasks or external context changes will be
+                  created.
                 </p>
               </div>
             ) : (
               <>
                 <div className="plan-actions-toolbar">
                   <div className="toolbar-info">
-                    <span className="count-badge">{activePlan.actions.length}</span>
+                    <span className="count-badge">
+                      {activePlan.actions.length}
+                    </span>
                     <span>Review & customize the proposed actions below</span>
                   </div>
                   <button
@@ -96,13 +113,19 @@ export const ActionPlanModal: React.FC = () => {
 
                 <div className="actions-list">
                   {activePlan.actions.map((action, index) => (
-                    <div key={action.id} className="action-row" data-testid={`action-row-${index}`}>
+                    <div
+                      key={action.id}
+                      className="action-row"
+                      data-testid={`action-row-${index}`}
+                    >
                       <div className="action-index-indicator">{index + 1}</div>
                       <input
                         type="text"
                         className="action-edit-input"
                         value={action.title}
-                        onChange={(e) => updateActionInPlan(index, e.target.value)}
+                        onChange={(e) =>
+                          updateActionInPlan(index, e.target.value)
+                        }
                         placeholder="Action title"
                         data-testid={`action-input-${index}`}
                       />
@@ -118,7 +141,9 @@ export const ActionPlanModal: React.FC = () => {
                           >
                             <FileText size={12} />
                             <span>{action.notionContext.type}:</span>
-                            <span className="tag-page-title">{action.notionContext.pageTitle}</span>
+                            <span className="tag-page-title">
+                              {action.notionContext.pageTitle}
+                            </span>
                           </button>
                         ) : (
                           <button
@@ -168,10 +193,16 @@ export const ActionPlanModal: React.FC = () => {
 
                 <div className="safety-notice">
                   <span>
-                    No Google Tasks are created until you explicitly confirm. You can safely
-                    customize or cancel this plan.
+                    No Google Tasks are created until you explicitly confirm.
+                    You can safely customize or cancel this plan.
                   </span>
                 </div>
+                {hasInvalidActions && (
+                  <div className="validation-notice" role="alert">
+                    Every action needs a title before this plan can be
+                    confirmed.
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -188,6 +219,7 @@ export const ActionPlanModal: React.FC = () => {
               type="button"
               className="btn btn-primary btn-sm"
               onClick={confirmActionPlan}
+              disabled={hasInvalidActions}
               data-testid="confirm-plan-btn"
             >
               <CheckCircle2 size={15} />
@@ -199,8 +231,10 @@ export const ActionPlanModal: React.FC = () => {
 
       {editingContextIndex !== null && (
         <NotionContextResolverModal
-          currentContext={activePlan.actions[editingContextIndex]?.notionContext}
-          actionTitle={activePlan.actions[editingContextIndex]?.title || ''}
+          currentContext={
+            activePlan.actions[editingContextIndex]?.notionContext
+          }
+          actionTitle={activePlan.actions[editingContextIndex]?.title || ""}
           onSave={handleSaveContext}
           onClose={() => setEditingContextIndex(null)}
         />

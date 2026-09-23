@@ -4,6 +4,8 @@ import { CalendarGrid } from "../components/CalendarGrid";
 import { TasksSidebar } from "../components/TasksSidebar";
 import { EventActionContextView } from "../components/EventActionContextView";
 import { CreateEventModal } from "../components/CreateEventModal";
+import { CreateTaskModal } from "../components/CreateTaskModal";
+import type { EventItem, TaskItem } from "../types";
 import { Calendar as CalendarIcon, GitFork, CheckCircle2 } from "lucide-react";
 
 export const WorkspacePage: React.FC = () => {
@@ -22,6 +24,8 @@ export const WorkspacePage: React.FC = () => {
   );
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [createEventDate, setCreateEventDate] = useState<string | null>(null);
+  const [editingEvent, setEditingEvent] = useState<EventItem | undefined>();
+  const [editingTask, setEditingTask] = useState<TaskItem | undefined>();
   const [mobilePane, setMobilePane] = useState<"calendar" | "tasks">(
     "calendar",
   );
@@ -117,6 +121,7 @@ export const WorkspacePage: React.FC = () => {
                 onSelectEvent={setSelectedEventId}
                 onPrepareEvent={startPreparation}
                 onOpenCreateEvent={handleOpenCreateEventWithDate}
+                onEditEvent={setEditingEvent}
                 onDeleteEvent={deleteEvent}
               />
             </div>
@@ -129,6 +134,7 @@ export const WorkspacePage: React.FC = () => {
                 selectedEventTitle={selectedEvent?.title}
                 onClearSelectedEvent={() => setSelectedEventId(null)}
                 onToggleTask={toggleTask}
+                onEditTask={setEditingTask}
                 onDeleteTask={deleteTask}
                 onAddTask={handleAddTask}
               />
@@ -146,6 +152,18 @@ export const WorkspacePage: React.FC = () => {
         <CreateEventModal
           onClose={() => setCreateEventDate(null)}
           initialDate={createEventDate}
+        />
+      )}
+      {editingEvent && (
+        <CreateEventModal
+          event={editingEvent}
+          onClose={() => setEditingEvent(undefined)}
+        />
+      )}
+      {editingTask && (
+        <CreateTaskModal
+          task={editingTask}
+          onClose={() => setEditingTask(undefined)}
         />
       )}
     </div>

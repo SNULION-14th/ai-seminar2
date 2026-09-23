@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
-import { useWorkspace } from '../context/WorkspaceContext';
-import { TaskCard } from '../components/TaskCard';
-import { CreateTaskModal } from '../components/CreateTaskModal';
-import { CheckSquare, Plus } from 'lucide-react';
+import React, { useState } from "react";
+import { useWorkspace } from "../context/WorkspaceContext";
+import { TaskCard } from "../components/TaskCard";
+import { CreateTaskModal } from "../components/CreateTaskModal";
+import { CheckSquare, Plus } from "lucide-react";
+import type { TaskItem } from "../types";
 
 export const TasksPage: React.FC = () => {
   const { tasks, toggleTask, deleteTask } = useWorkspace();
+  const [editingTask, setEditingTask] = useState<TaskItem | undefined>();
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+  const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
 
   const filteredTasks = tasks.filter((t) => {
-    if (filter === 'active') return !t.completed;
-    if (filter === 'completed') return t.completed;
+    if (filter === "active") return !t.completed;
+    if (filter === "completed") return t.completed;
     return true;
   });
 
@@ -36,20 +38,20 @@ export const TasksPage: React.FC = () => {
 
       <div className="filter-tabs">
         <button
-          className={`tab-btn ${filter === 'all' ? 'active' : ''}`}
-          onClick={() => setFilter('all')}
+          className={`tab-btn ${filter === "all" ? "active" : ""}`}
+          onClick={() => setFilter("all")}
         >
           All ({tasks.length})
         </button>
         <button
-          className={`tab-btn ${filter === 'active' ? 'active' : ''}`}
-          onClick={() => setFilter('active')}
+          className={`tab-btn ${filter === "active" ? "active" : ""}`}
+          onClick={() => setFilter("active")}
         >
           Active ({tasks.filter((t) => !t.completed).length})
         </button>
         <button
-          className={`tab-btn ${filter === 'completed' ? 'active' : ''}`}
-          onClick={() => setFilter('completed')}
+          className={`tab-btn ${filter === "completed" ? "active" : ""}`}
+          onClick={() => setFilter("completed")}
         >
           Completed ({tasks.filter((t) => t.completed).length})
         </button>
@@ -67,6 +69,7 @@ export const TasksPage: React.FC = () => {
               key={task.id}
               task={task}
               onToggle={toggleTask}
+              onEdit={setEditingTask}
               onDelete={deleteTask}
             />
           ))
@@ -75,6 +78,12 @@ export const TasksPage: React.FC = () => {
 
       {showCreateModal && (
         <CreateTaskModal onClose={() => setShowCreateModal(false)} />
+      )}
+      {editingTask && (
+        <CreateTaskModal
+          task={editingTask}
+          onClose={() => setEditingTask(undefined)}
+        />
       )}
     </div>
   );

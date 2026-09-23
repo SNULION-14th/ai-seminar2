@@ -1,7 +1,16 @@
-import React, { useState, useMemo } from 'react';
-import type { TaskItem } from '../types';
-import { TaskCard } from './TaskCard';
-import { Plus, CheckCircle2, ListFilter, X, Calendar, Layers, AlertCircle, CheckCircle } from 'lucide-react';
+import React, { useState, useMemo } from "react";
+import type { TaskItem } from "../types";
+import { TaskCard } from "./TaskCard";
+import {
+  Plus,
+  CheckCircle2,
+  ListFilter,
+  X,
+  Calendar,
+  Layers,
+  AlertCircle,
+  CheckCircle,
+} from "lucide-react";
 
 interface TasksSidebarProps {
   tasks: TaskItem[];
@@ -9,6 +18,7 @@ interface TasksSidebarProps {
   selectedEventTitle?: string;
   onClearSelectedEvent?: () => void;
   onToggleTask: (taskId: string) => void;
+  onEditTask: (task: TaskItem) => void;
   onDeleteTask: (taskId: string) => void;
   onAddTask: (title: string, eventId?: string, eventTitle?: string) => void;
 }
@@ -19,14 +29,15 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
   selectedEventTitle,
   onClearSelectedEvent,
   onToggleTask,
+  onEditTask,
   onDeleteTask,
-  onAddTask
+  onAddTask,
 }) => {
-  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
-  const [viewMode, setViewMode] = useState<'date' | 'event'>('date');
-  const [quickTitle, setQuickTitle] = useState('');
+  const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
+  const [viewMode, setViewMode] = useState<"date" | "event">("date");
+  const [quickTitle, setQuickTitle] = useState("");
 
-  const referenceDate = '2026-10-14';
+  const referenceDate = "2026-10-14";
 
   // Tasks relevant to current selected event (or all tasks)
   const relevantTasks = useMemo(() => {
@@ -42,8 +53,8 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
   // Filtered tasks based on status
   const displayedTasks = useMemo(() => {
     return relevantTasks.filter((t) => {
-      if (filter === 'active') return !t.completed;
-      if (filter === 'completed') return t.completed;
+      if (filter === "active") return !t.completed;
+      if (filter === "completed") return t.completed;
       return true;
     });
   }, [relevantTasks, filter]);
@@ -79,8 +90,8 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
       if (t.eventId) {
         if (!groups[t.eventId]) {
           groups[t.eventId] = {
-            title: t.eventTitle || 'Linked Event',
-            tasks: []
+            title: t.eventTitle || "Linked Event",
+            tasks: [],
           };
         }
         groups[t.eventId].tasks.push(t);
@@ -95,8 +106,12 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
   const handleQuickAdd = (e: React.FormEvent) => {
     e.preventDefault();
     if (!quickTitle.trim()) return;
-    onAddTask(quickTitle.trim(), selectedEventId || undefined, selectedEventTitle || undefined);
-    setQuickTitle('');
+    onAddTask(
+      quickTitle.trim(),
+      selectedEventId || undefined,
+      selectedEventTitle || undefined,
+    );
+    setQuickTitle("");
   };
 
   return (
@@ -112,32 +127,36 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
         </div>
 
         {/* Clear High-Contrast Segmented Filter Control */}
-        <div className="segmented-filter-bar" role="tablist" aria-label="Task status filter">
+        <div
+          className="segmented-filter-bar"
+          role="tablist"
+          aria-label="Task status filter"
+        >
           <button
-            className={`segmented-filter-tab ${filter === 'all' ? 'active' : ''}`}
-            onClick={() => setFilter('all')}
+            className={`segmented-filter-tab ${filter === "all" ? "active" : ""}`}
+            onClick={() => setFilter("all")}
             role="tab"
-            aria-selected={filter === 'all'}
+            aria-selected={filter === "all"}
             data-testid="filter-all-btn"
           >
             <span>All</span>
             <span className="tab-count-badge">{allCount}</span>
           </button>
           <button
-            className={`segmented-filter-tab ${filter === 'active' ? 'active' : ''}`}
-            onClick={() => setFilter('active')}
+            className={`segmented-filter-tab ${filter === "active" ? "active" : ""}`}
+            onClick={() => setFilter("active")}
             role="tab"
-            aria-selected={filter === 'active'}
+            aria-selected={filter === "active"}
             data-testid="filter-active-btn"
           >
             <span>Active</span>
             <span className="tab-count-badge">{activeCount}</span>
           </button>
           <button
-            className={`segmented-filter-tab ${filter === 'completed' ? 'active' : ''}`}
-            onClick={() => setFilter('completed')}
+            className={`segmented-filter-tab ${filter === "completed" ? "active" : ""}`}
+            onClick={() => setFilter("completed")}
             role="tab"
-            aria-selected={filter === 'completed'}
+            aria-selected={filter === "completed"}
             data-testid="filter-done-btn"
           >
             <span>Done</span>
@@ -148,16 +167,16 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
         {/* View Mode Switcher: By Date vs By Event */}
         <div className="tasks-grouping-switcher">
           <button
-            className={`group-switch-btn ${viewMode === 'date' ? 'active' : ''}`}
-            onClick={() => setViewMode('date')}
+            className={`group-switch-btn ${viewMode === "date" ? "active" : ""}`}
+            onClick={() => setViewMode("date")}
             data-testid="group-mode-date"
           >
             <Calendar size={11} />
             <span>By Date</span>
           </button>
           <button
-            className={`group-switch-btn ${viewMode === 'event' ? 'active' : ''}`}
-            onClick={() => setViewMode('event')}
+            className={`group-switch-btn ${viewMode === "event" ? "active" : ""}`}
+            onClick={() => setViewMode("event")}
             data-testid="group-mode-event"
           >
             <Layers size={11} />
@@ -167,13 +186,16 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
 
         {/* Selected Event Filter Banner - Refined Minimal Design */}
         {selectedEventId && (
-          <div className="active-event-filter-bar" data-testid="active-event-filter">
+          <div
+            className="active-event-filter-bar"
+            data-testid="active-event-filter"
+          >
             <div className="filter-event-info">
               <span className="filter-indicator-dot" />
               <div className="filter-text-group">
                 <span className="filter-eyebrow">Filtering by event</span>
                 <span className="filter-event-name" title={selectedEventTitle}>
-                  {selectedEventTitle || 'Selected Event'}
+                  {selectedEventTitle || "Selected Event"}
                 </span>
               </div>
             </div>
@@ -200,7 +222,7 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
           placeholder={
             selectedEventTitle
               ? `+ Add task for ${selectedEventTitle}...`
-              : '+ Add a task...'
+              : "+ Add a task..."
           }
           value={quickTitle}
           onChange={(e) => setQuickTitle(e.target.value)}
@@ -222,7 +244,7 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
       <div className="sidebar-tasks-scroll">
         {displayedTasks.length === 0 ? (
           <div className="empty-state-card" data-testid="tasks-empty-state">
-            {filter === 'completed' ? (
+            {filter === "completed" ? (
               <>
                 <CheckCircle size={22} className="empty-state-icon" />
                 <p className="empty-state-title">No completed tasks yet</p>
@@ -230,9 +252,12 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
                   Check off items on your list as you accomplish them.
                 </p>
               </>
-            ) : filter === 'active' ? (
+            ) : filter === "active" ? (
               <>
-                <CheckCircle2 size={22} className="empty-state-icon text-success" />
+                <CheckCircle2
+                  size={22}
+                  className="empty-state-icon text-success"
+                />
                 <p className="empty-state-title">All tasks completed!</p>
                 <p className="empty-state-desc">
                   You are all caught up. Add a new task anytime.
@@ -241,7 +266,9 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
             ) : selectedEventId ? (
               <>
                 <ListFilter size={22} className="empty-state-icon" />
-                <p className="empty-state-title">No tasks linked to this event</p>
+                <p className="empty-state-title">
+                  No tasks linked to this event
+                </p>
                 <p className="empty-state-desc">
                   Use the input above or generate an Action Plan to add tasks.
                 </p>
@@ -256,7 +283,7 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
               </>
             )}
           </div>
-        ) : viewMode === 'date' ? (
+        ) : viewMode === "date" ? (
           /* View 1: Sorted by Due Date (Overdue first, then upcoming) */
           <div className="sidebar-tasks-list">
             {/* Overdue Section */}
@@ -272,6 +299,7 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
                       key={task.id}
                       task={task}
                       onToggle={onToggleTask}
+                      onEdit={onEditTask}
                       onDelete={onDeleteTask}
                       showEventTitle={!selectedEventId}
                     />
@@ -294,6 +322,7 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
                       key={task.id}
                       task={task}
                       onToggle={onToggleTask}
+                      onEdit={onEditTask}
                       onDelete={onDeleteTask}
                       showEventTitle={!selectedEventId}
                     />
@@ -314,6 +343,7 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
                       key={task.id}
                       task={task}
                       onToggle={onToggleTask}
+                      onEdit={onEditTask}
                       onDelete={onDeleteTask}
                       showEventTitle={!selectedEventId}
                     />
@@ -337,6 +367,7 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
                       key={task.id}
                       task={task}
                       onToggle={onToggleTask}
+                      onEdit={onEditTask}
                       onDelete={onDeleteTask}
                       showEventTitle={false}
                     />
@@ -349,7 +380,9 @@ export const TasksSidebar: React.FC<TasksSidebarProps> = ({
               <div className="task-subgroup">
                 <div className="subgroup-header event-group-header">
                   <span className="event-group-title">Other Tasks</span>
-                  <span className="subgroup-count">{eventGroups.unassigned.length}</span>
+                  <span className="subgroup-count">
+                    {eventGroups.unassigned.length}
+                  </span>
                 </div>
                 <div className="subgroup-items">
                   {eventGroups.unassigned.map((task) => (

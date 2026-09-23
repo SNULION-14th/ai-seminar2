@@ -1,10 +1,18 @@
-import React from 'react';
-import type { EventItem } from '../types';
-import { Calendar, Clock, MapPin, Sparkles, Trash2 } from 'lucide-react';
+import React from "react";
+import type { EventItem } from "../types";
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  Sparkles,
+  Trash2,
+  Pencil,
+} from "lucide-react";
 
 interface EventCardProps {
   event: EventItem;
   onPrepare: (id: string) => void;
+  onEdit?: (event: EventItem) => void;
   onDelete?: (id: string) => void;
   isSelected?: boolean;
 }
@@ -12,11 +20,15 @@ interface EventCardProps {
 export const EventCard: React.FC<EventCardProps> = ({
   event,
   onPrepare,
+  onEdit,
   onDelete,
-  isSelected
+  isSelected,
 }) => {
   return (
-    <div className={`event-card ${isSelected ? 'selected' : ''}`} data-testid={`event-card-${event.id}`}>
+    <div
+      className={`event-card ${isSelected ? "selected" : ""}`}
+      data-testid={`event-card-${event.id}`}
+    >
       <div className="event-card-header">
         <div className="event-badge">
           <Calendar size={13} />
@@ -27,18 +39,35 @@ export const EventCard: React.FC<EventCardProps> = ({
             </span>
           )}
         </div>
-        {onDelete && (
-          <button
-            className="icon-btn delete-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete(event.id);
-            }}
-            title="Delete Event"
-            data-testid={`delete-event-btn-${event.id}`}
-          >
-            <Trash2 size={14} />
-          </button>
+        {(onEdit || onDelete) && (
+          <div className="event-card-actions">
+            {onEdit && (
+              <button
+                className="icon-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(event);
+                }}
+                title="Edit Event"
+                data-testid={`edit-event-btn-${event.id}`}
+              >
+                <Pencil size={14} />
+              </button>
+            )}
+            {onDelete && (
+              <button
+                className="icon-btn delete-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(event.id);
+                }}
+                title="Delete Event"
+                data-testid={`delete-event-btn-${event.id}`}
+              >
+                <Trash2 size={14} />
+              </button>
+            )}
+          </div>
         )}
       </div>
 
@@ -64,7 +93,9 @@ export const EventCard: React.FC<EventCardProps> = ({
             <span>Prepare</span>
           </button>
         ) : (
-          <div className="no-prep-tag" data-testid={`no-prep-tag-${event.id}`}>No prep needed</div>
+          <div className="no-prep-tag" data-testid={`no-prep-tag-${event.id}`}>
+            No prep needed
+          </div>
         )}
       </div>
     </div>
