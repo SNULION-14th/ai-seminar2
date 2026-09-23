@@ -59,7 +59,13 @@ export const EventCard: React.FC<EventCardProps> = ({
                 className="icon-btn delete-btn"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDelete(event.id);
+                  if (
+                    window.confirm(
+                      `Delete "${event.title}"? Linked tasks will be kept without this event.`,
+                    )
+                  ) {
+                    onDelete(event.id);
+                  }
                 }}
                 title="Delete Event"
                 data-testid={`delete-event-btn-${event.id}`}

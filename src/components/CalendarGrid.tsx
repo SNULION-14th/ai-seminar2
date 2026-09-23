@@ -33,8 +33,14 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
   onDeleteEvent,
 }) => {
   const today = new Date();
-  const [currentYear, setCurrentYear] = useState(today.getFullYear());
-  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+  const upcomingEvent = [...events]
+    .filter((event) => event.date >= today.toISOString().slice(0, 10))
+    .sort((a, b) => a.date.localeCompare(b.date))[0];
+  const initialDate = upcomingEvent
+    ? new Date(`${upcomingEvent.date}T12:00:00`)
+    : today;
+  const [currentYear, setCurrentYear] = useState(initialDate.getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(initialDate.getMonth());
   const referenceToday = `${today.getFullYear()}-${String(
     today.getMonth() + 1,
   ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
@@ -247,6 +253,24 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
         ))}
       </div>
 
+      {mobileAgendaDays.length === 0 && (
+        <div className="calendar-empty-month">
+          <CalendarIcon size={22} />
+          <p>No events this month</p>
+          <span>
+            Use the month arrows to find upcoming events, or add one now.
+          </span>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={() => onOpenCreateEvent()}
+          >
+            <Plus size={14} />
+            <span>Add Event</span>
+          </button>
+        </div>
+      )}
+
       <div className="mobile-calendar-agenda" aria-label="Events this month">
         {mobileAgendaDays.length === 0 ? (
           <div className="mobile-agenda-empty">
@@ -374,8 +398,14 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
               <button
                 className="icon-btn delete-btn"
                 onClick={() => {
-                  onDeleteEvent(selectedEvent.id);
-                  onSelectEvent(null);
+                  if (
+                    window.confirm(
+                      `Delete "${selectedEvent.title}"? Linked tasks will be kept without this event.`,
+                    )
+                  ) {
+                    onDeleteEvent(selectedEvent.id);
+                    onSelectEvent(null);
+                  }
                 }}
                 title="Delete Event"
               >

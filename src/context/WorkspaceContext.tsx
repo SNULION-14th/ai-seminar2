@@ -118,17 +118,27 @@ const MOCK_NOTION_PAGES = [
   },
 ];
 
+const loadStoredItems = <T,>(key: string, fallback: T): T => {
+  const saved = localStorage.getItem(key);
+  if (!saved) return fallback;
+
+  try {
+    return JSON.parse(saved) as T;
+  } catch {
+    localStorage.removeItem(key);
+    return fallback;
+  }
+};
+
 export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [events, setEvents] = useState<EventItem[]>(() => {
-    const saved = localStorage.getItem("antigravity_events");
-    return saved ? JSON.parse(saved) : INITIAL_EVENTS;
+    return loadStoredItems("antigravity_events", INITIAL_EVENTS);
   });
 
   const [tasks, setTasks] = useState<TaskItem[]>(() => {
-    const saved = localStorage.getItem("antigravity_tasks");
-    return saved ? JSON.parse(saved) : INITIAL_TASKS;
+    return loadStoredItems("antigravity_tasks", INITIAL_TASKS);
   });
 
   const [activePlan, setActivePlan] = useState<ActionPlan | null>(null);

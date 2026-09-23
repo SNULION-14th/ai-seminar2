@@ -25,8 +25,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   onDelete,
   showEventTitle = true,
 }) => {
-  // Check if overdue: for semester mock, reference date is mid-October 2026 (e.g., 2026-10-14) or current date
-  const referenceDate = "2026-10-14";
+  const now = new Date();
+  const referenceDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
   const isOverdue =
     !task.completed && task.dueDate && task.dueDate < referenceDate;
 
@@ -123,7 +123,11 @@ export const TaskCard: React.FC<TaskCardProps> = ({
           {onDelete && (
             <button
               className="icon-btn delete-btn"
-              onClick={() => onDelete(task.id)}
+              onClick={() => {
+                if (window.confirm(`Delete "${task.title}"?`)) {
+                  onDelete(task.id);
+                }
+              }}
               title="Delete Task"
               data-testid={`delete-task-btn-${task.id}`}
             >

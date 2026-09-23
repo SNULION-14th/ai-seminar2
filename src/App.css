@@ -1749,6 +1749,33 @@ body {
   display: none;
 }
 
+.calendar-empty-month {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 180px;
+  padding: 24px 16px;
+  border: 1px dashed var(--border-light);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.calendar-empty-month p,
+.calendar-empty-month span {
+  margin: 0;
+}
+
+.calendar-empty-month p {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.calendar-empty-month span {
+  font-size: 11px;
+}
+
 .event-card {
   display: flex;
   flex-direction: column;
@@ -2088,6 +2115,10 @@ body {
     display: none;
   }
 
+  .calendar-empty-month {
+    display: none;
+  }
+
   .mobile-calendar-agenda {
     display: flex;
     flex-direction: column;
@@ -2289,6 +2320,16 @@ body {
   }
 }
 
+@media (min-width: 769px) and (max-width: 1100px) {
+  .calendar-workspace-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .calendar-side-pane {
+    display: none;
+  }
+}
+
 /* Extra Small Phones (<= 480px) */
 @media (max-width: 480px) {
   .app-header {
@@ -2409,5 +2450,30 @@ body {
   .icon-btn {
     min-width: 32px;
     min-height: 32px;
+  }
+}
+
+@media (max-width: 360px) {
+  .app-header {
+    gap: 6px;
+    padding-inline: 8px;
+  }
+
+  .header-left {
+    min-width: 0;
+  }
+
+  .brand-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .header-actions {
+    gap: 2px;
+  }
+
+  .header-actions .btn {
+    padding-inline: 6px;
   }
 }
