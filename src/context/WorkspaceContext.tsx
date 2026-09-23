@@ -1,10 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import type { EventItem, TaskItem, ActionPlan, NotionContext } from "../types";
+import {
+  integrationMode,
+  requestActionPlan,
+  searchPrototypeNotionPages,
+} from "../services/prototypeIntegrations";
 
 interface WorkspaceContextType {
   events: EventItem[];
   tasks: TaskItem[];
   activePlan: ActionPlan | null;
+  preparationStatus: "idle" | "loading" | "error";
+  preparationError: string | null;
+  integrationMode: "prototype";
   addEvent: (event: Omit<EventItem, "id">) => void;
   updateEvent: (id: string, event: Partial<EventItem>) => void;
   deleteEvent: (id: string) => void;
@@ -12,7 +20,7 @@ interface WorkspaceContextType {
   updateTask: (id: string, task: Partial<TaskItem>) => void;
   toggleTask: (id: string) => void;
   deleteTask: (id: string) => void;
-  startPreparation: (eventId: string) => void;
+  startPreparation: (eventId: string) => Promise<void>;
   updateActionInPlan: (index: number, title: string) => void;
   addActionToPlan: (title: string) => void;
   removeActionFromPlan: (index: number) => void;
@@ -90,34 +98,6 @@ const INITIAL_TASKS: TaskItem[] = [
   },
 ];
 
-const MOCK_NOTION_PAGES = [
-  {
-    id: "page-1",
-    title: "OS Coursework & Notes",
-    url: "https://notion.so/os-coursework",
-    snippet:
-      "Pintos synchronization primitives, thread scheduling, and kernel notes.",
-  },
-  {
-    id: "page-2",
-    title: "Operating Systems Lab Workspace",
-    url: "https://notion.so/os-lab",
-    snippet: "Code snippets, GDB test commands, and debugging diary.",
-  },
-  {
-    id: "page-3",
-    title: "Architecture Exam Prep",
-    url: "https://notion.so/arch-exam-prep",
-    snippet: "Formula sheets, past exam reviews, and flashcards.",
-  },
-  {
-    id: "page-4",
-    title: "Fall 2026 Semester Dashboard",
-    url: "https://notion.so/fall-2026",
-    snippet: "Course schedules, credit breakdown, and syllabus links.",
-  },
-];
-
 const loadStoredItems = <T,>(key: string, fallback: T): T => {
   const saved = localStorage.getItem(key);
   if (!saved) return fallback;
@@ -142,6 +122,8 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   const [activePlan, setActivePlan] = useState<ActionPlan | null>(null);
+  const [preparationStatus, setPreparationStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [preparationError, setPreparationError] = useState<string | null>(null);
 
   useEffect(() => {
     localStorage.setItem("antigravity_events", JSON.stringify(events));
@@ -207,89 +189,18 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({
     setTasks((prev) => prev.filter((t) => t.id !== id));
   };
 
-  const generatePlanForEvent = (event: EventItem): ActionPlan => {
-    if (!event.needsPreparation) {
-      return {
-        eventId: event.id,
-        eventTitle: event.title,
-        actions: [],
-        noPreparationNeeded: true,
-      };
-    }
-
-    if (
-      event.title.toLowerCase().includes("assignment") ||
-      event.title.toLowerCase().includes("project")
-    ) {
-      return {
-        eventId: event.id,
-        eventTitle: event.title,
-        actions: [
-          {
-            id: `act-${Date.now()}-1`,
-            title: "Review assignment requirements & specifications",
-          },
-          {
-            id: `act-${Date.now()}-2`,
-            title: "Implement solution and write tests",
-          },
-          {
-            id: `act-${Date.now()}-3`,
-            title: "Verify test suite and write report",
-          },
-          {
-            id: `act-${Date.now()}-4`,
-            title: "Submit code and report to portal",
-          },
-        ],
-      };
-    }
-
-    if (
-      event.title.toLowerCase().includes("midterm") ||
-      event.title.toLowerCase().includes("exam")
-    ) {
-      return {
-        eventId: event.id,
-        eventTitle: event.title,
-        actions: [
-          {
-            id: `act-${Date.now()}-1`,
-            title: "Consolidate lecture notes and lecture slides",
-          },
-          {
-            id: `act-${Date.now()}-2`,
-            title: "Solve past exam questions (2024-2025)",
-          },
-          {
-            id: `act-${Date.now()}-3`,
-            title: "Review mock questions and weak concepts",
-          },
-        ],
-      };
-    }
-
-    return {
-      eventId: event.id,
-      eventTitle: event.title,
-      actions: [
-        {
-          id: `act-${Date.now()}-1`,
-          title: `Outline agenda and materials for ${event.title}`,
-        },
-        {
-          id: `act-${Date.now()}-2`,
-          title: `Review background context and prior notes`,
-        },
-      ],
-    };
-  };
-
-  const startPreparation = (eventId: string) => {
+  const startPreparation = async (eventId: string) => {
     const event = events.find((e) => e.id === eventId);
     if (!event) return;
-    const plan = generatePlanForEvent(event);
-    setActivePlan(plan);
+    setPreparationStatus("loading");
+    setPreparationError(null);
+    try {
+      setActivePlan(await requestActionPlan(event));
+      setPreparationStatus("idle");
+    } catch {
+      setPreparationStatus("error");
+      setPreparationError("We could not generate an action plan. Please try again.");
+    }
   };
 
   const updateActionInPlan = (index: number, title: string) => {
@@ -317,12 +228,19 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({
     setActivePlan({ ...activePlan, actions: updated });
   };
 
-  const regeneratePlan = () => {
+  const regeneratePlan = async () => {
     if (!activePlan) return;
     const event = events.find((e) => e.id === activePlan.eventId);
     if (!event) return;
-    const newPlan = generatePlanForEvent(event);
-    setActivePlan(newPlan);
+    setPreparationStatus("loading");
+    try {
+      setActivePlan(await requestActionPlan(event));
+    } catch {
+      setPreparationStatus("error");
+      setPreparationError("We could not regenerate the plan. Please try again.");
+    } finally {
+      setPreparationStatus("idle");
+    }
   };
 
   const setActionContext = (
@@ -369,32 +287,7 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const searchNotionPages = (query: string): NotionContext[] => {
-    const q = query.toLowerCase().trim();
-    if (!q) {
-      return MOCK_NOTION_PAGES.map((p) => ({
-        id: `ctx-${p.id}`,
-        type: "LINK",
-        pageTitle: p.title,
-        url: p.url,
-        snippet: p.snippet,
-        pageId: p.id,
-      }));
-    }
-
-    const filtered = MOCK_NOTION_PAGES.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) ||
-        p.snippet.toLowerCase().includes(q),
-    );
-
-    return filtered.map((p) => ({
-      id: `ctx-${p.id}`,
-      type: "LINK",
-      pageTitle: p.title,
-      url: p.url,
-      snippet: p.snippet,
-      pageId: p.id,
-    }));
+    return searchPrototypeNotionPages(query);
   };
 
   return (
@@ -403,6 +296,9 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({
         events,
         tasks,
         activePlan,
+        preparationStatus,
+        preparationError,
+        integrationMode,
         addEvent,
         updateEvent,
         deleteEvent,

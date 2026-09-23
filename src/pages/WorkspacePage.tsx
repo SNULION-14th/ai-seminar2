@@ -13,6 +13,9 @@ export const WorkspacePage: React.FC = () => {
     events,
     tasks,
     startPreparation,
+    preparationStatus,
+    preparationError,
+    integrationMode,
     deleteEvent,
     toggleTask,
     deleteTask,
@@ -60,6 +63,13 @@ export const WorkspacePage: React.FC = () => {
           <p className="hero-desc">
             Organize calendar events and execute decomposed tasks linked with
             Notion.
+          </p>
+          <p className="integration-notice" data-testid="integration-mode-notice">
+            {preparationStatus === "loading"
+              ? "Generating an editable action-plan suggestion…"
+              : preparationError
+                ? preparationError
+                : `Prototype mode: ${integrationMode} Calendar, Tasks, Notion, and AI data.`}
           </p>
         </div>
 

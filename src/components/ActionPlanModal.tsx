@@ -23,6 +23,7 @@ export const ActionPlanModal: React.FC = () => {
     setActionContext,
     confirmActionPlan,
     cancelPreparation,
+    preparationStatus,
   } = useWorkspace();
 
   const [newActionTitle, setNewActionTitle] = useState("");
@@ -104,10 +105,11 @@ export const ActionPlanModal: React.FC = () => {
                     className="btn btn-secondary btn-sm"
                     onClick={regeneratePlan}
                     title="Regenerate plan"
+                    disabled={preparationStatus === "loading"}
                     data-testid="regenerate-plan-btn"
                   >
                     <RefreshCw size={14} />
-                    <span>Regenerate</span>
+                    <span>{preparationStatus === "loading" ? "Generating…" : "Regenerate"}</span>
                   </button>
                 </div>
 

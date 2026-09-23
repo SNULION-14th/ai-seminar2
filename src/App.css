@@ -2477,3 +2477,8 @@ body {
     padding-inline: 6px;
   }
 }
+.integration-notice {
+  margin: 8px 0 0;
+  color: var(--text-muted, #667085);
+  font-size: 12px;
+}
