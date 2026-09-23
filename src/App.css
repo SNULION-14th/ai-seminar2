@@ -1,184 +1,520 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+/* ==========================================================================
+   SyncStudy App Styling (Figma Design Aligned)
+   ========================================================================== */
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+/* Base Layout */
+.syncstudy-app {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 24px;
+  background-color: #f6f7f9;
+  color: #101828;
+  box-sizing: border-box;
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
-}
-
-#center {
+.syncstudy-container {
+  width: 100%;
+  max-width: 896px;
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  gap: 24px;
+  box-sizing: border-box;
 }
 
-#next-steps {
+/* --------------------------------------------------------------------------
+   Header
+   -------------------------------------------------------------------------- */
+.syncstudy-header {
   display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
-}
-
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
-
-.ticks {
-  position: relative;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
   width: 100%;
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
+.syncstudy-header-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.syncstudy-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.syncstudy-brand-logo {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.syncstudy-brand-name {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #4f46e5;
+}
+
+.syncstudy-title {
+  margin: 0 0 6px 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 35px;
+  letter-spacing: -0.025em;
+  color: #101828;
+}
+
+.syncstudy-subtitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #475467;
+}
+
+.syncstudy-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  height: 42px;
+  background-color: #ffffff;
+  border: 1px solid #e4e7ec;
+  border-radius: 8px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #b42318;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+
+.syncstudy-reset-btn:hover {
+  background-color: #fffbfa;
+  border-color: #fecdca;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+}
+
+.syncstudy-reset-btn:active {
+  background-color: #fee4e2;
+}
+
+.syncstudy-reset-btn:focus-visible {
+  outline: 2px solid #b42318;
+  outline-offset: 2px;
+}
+
+.reset-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   Best Slot Banner (Dark Indigo Theme)
+   -------------------------------------------------------------------------- */
+.syncstudy-banner {
+  background-color: #1e1b4b;
+  border-radius: 16px;
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.banner-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.banner-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-icon-wrap.is-empty {
+  opacity: 0.5;
+}
+
+.banner-trophy-img {
+  display: block;
+  width: 48px;
+  height: 48px;
+}
+
+.banner-slot-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.banner-label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #c7d2fe;
+  margin-bottom: 4px;
+}
+
+.banner-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+}
+
+.banner-stats {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.banner-stat-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #c7d2fe;
+  margin-bottom: 2px;
+}
+
+.stat-value-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+
+.stat-value {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+  color: #ffffff;
+}
+
+.stat-value.highlight {
+  color: #fcd34d;
+}
+
+.stat-unit {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #c7d2fe;
+}
+
+.stat-unit.highlight {
+  color: #fcd34d;
+}
+
+.banner-stat-divider {
+  width: 1px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   Time Grid Card
+   -------------------------------------------------------------------------- */
+.syncstudy-grid-card {
+  background-color: #ffffff;
+  border: 1px solid #e4e7ec;
+  border-radius: 16px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.grid-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.grid-card-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: #101828;
+}
+
+.grid-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-gradient-chips {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.chip {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.chip-1 { background-color: #e0e7ff; }
+.chip-2 { background-color: #c7d2fe; }
+.chip-3 { background-color: #a5b4fc; }
+.chip-4 { background-color: #818cf8; }
+
+.chip-best {
+  background-color: #fbbf24;
+}
+
+.chip-selected {
+  background-color: #ffffff;
+  box-shadow: inset 0 0 0 2px #4f46e5;
+}
+
+.legend-text {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #475467;
+}
+
+/* --------------------------------------------------------------------------
+   Grid Table & Cells
+   -------------------------------------------------------------------------- */
+.syncstudy-grid-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.syncstudy-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  min-width: 620px;
+}
+
+/* Headings */
+.syncstudy-table thead th {
+  padding: 4px 4px 12px 4px;
+  border-bottom: none;
+  user-select: none;
+}
+
+.time-header-corner {
+  width: 68px;
+}
+
+.day-header {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #475467;
+  text-align: center;
+}
+
+.day-header.weekend {
+  color: #4f46e5;
+}
+
+/* Body */
+.hour-label {
+  width: 68px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #98a2b3;
+  text-align: right;
+  padding: 0 12px 0 0;
+  vertical-align: middle;
+  background-color: transparent;
+  border: none;
+  white-space: nowrap;
+}
+
+.slot-td {
+  padding: 3px;
+  border: none;
+  vertical-align: middle;
+}
+
+/* TimeSlotCell */
+.time-slot-cell {
+  width: 100%;
+  height: 44px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px #e4e7ec;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  outline: none;
+  transition: transform 0.08s ease, filter 0.1s ease;
+  user-select: none;
+}
+
+.time-slot-cell:active {
+  transform: scale(0.97);
+}
+
+.time-slot-cell:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 1px;
+  z-index: 2;
+}
+
+/* Cell States (Vote Count Gradient) */
+.time-slot-cell.zero {
+  background-color: #ffffff;
+  color: #98a2b3;
+  font-weight: 400;
+}
+
+.time-slot-cell.tier-1 {
+  background-color: #e0e7ff;
+  color: #4338ca;
+  font-weight: 600;
+}
+
+.time-slot-cell.tier-2 {
+  background-color: #c7d2fe;
+  color: #1e1b4b;
+  font-weight: 600;
+}
+
+.time-slot-cell.tier-3 {
+  background-color: #a5b4fc;
+  color: #1e1b4b;
+  font-weight: 600;
+}
+
+/* Best Slot Highlight (1st place) */
+.time-slot-cell.is-best {
+  background-color: #fbbf24 !important;
+  color: #1e1b4b !important;
+  font-weight: 600;
+}
+
+/* User Selection (Border Highlight) */
+.time-slot-cell.is-selected {
+  box-shadow: inset 0 0 0 2px #4f46e5 !important;
+}
+
+.time-slot-cell:hover {
+  filter: brightness(0.96);
+}
+
+.cell-crown-icon {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+.cell-count-text {
+  line-height: 1;
+}
+
+/* Screen Reader Only Utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Design
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .syncstudy-app {
+    padding: 24px 16px;
   }
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
+  .syncstudy-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+
+  .syncstudy-title {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .syncstudy-banner {
+    padding: 20px;
+  }
+
+  .banner-title {
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  .banner-stats {
+    width: 100%;
+    justify-content: flex-start;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .banner-stat-group {
+    align-items: flex-start;
+  }
+
+  .syncstudy-grid-card {
+    padding: 16px;
+  }
+
+  .time-slot-cell {
+    height: 40px;
+    font-size: 13px;
   }
 }
