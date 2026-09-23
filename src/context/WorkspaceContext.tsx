@@ -1,10 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import type { EventItem, TaskItem, ActionPlan, NotionContext } from "../types";
-import {
-  integrationMode,
-  requestActionPlan,
-  searchPrototypeNotionPages,
-} from "../services/prototypeIntegrations";
+import { requestActionPlan, searchPrototypeNotionPages } from "../services/prototypeIntegrations";
 
 interface WorkspaceContextType {
   events: EventItem[];
@@ -12,7 +8,6 @@ interface WorkspaceContextType {
   activePlan: ActionPlan | null;
   preparationStatus: "idle" | "loading" | "error";
   preparationError: string | null;
-  integrationMode: "prototype";
   addEvent: (event: Omit<EventItem, "id">) => void;
   updateEvent: (id: string, event: Partial<EventItem>) => void;
   deleteEvent: (id: string) => void;
@@ -22,6 +17,7 @@ interface WorkspaceContextType {
   deleteTask: (id: string) => void;
   startPreparation: (eventId: string) => Promise<void>;
   updateActionInPlan: (index: number, title: string) => void;
+  updateActionDueDate: (index: number, dueDate: string) => void;
   addActionToPlan: (title: string) => void;
   removeActionFromPlan: (index: number) => void;
   regeneratePlan: () => void;
@@ -210,11 +206,19 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({
     setActivePlan({ ...activePlan, actions: updatedActions });
   };
 
+  const updateActionDueDate = (index: number, dueDate: string) => {
+    if (!activePlan) return;
+    const updatedActions = [...activePlan.actions];
+    updatedActions[index] = { ...updatedActions[index], dueDate };
+    setActivePlan({ ...activePlan, actions: updatedActions });
+  };
+
   const addActionToPlan = (title: string) => {
     if (!activePlan) return;
     const newAction = {
       id: `act-${Date.now()}`,
       title: title.trim() || "New Action",
+      dueDate: events.find((event) => event.id === activePlan.eventId)?.date,
     };
     setActivePlan({
       ...activePlan,
@@ -274,7 +278,7 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({
         completed: false,
         eventId: activePlan.eventId,
         eventTitle: activePlan.eventTitle,
-        dueDate: dueDate,
+        dueDate: a.dueDate || dueDate,
         notionContext: a.notionContext,
       }));
 
@@ -298,7 +302,6 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({
         activePlan,
         preparationStatus,
         preparationError,
-        integrationMode,
         addEvent,
         updateEvent,
         deleteEvent,
@@ -308,6 +311,7 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({
         deleteTask,
         startPreparation,
         updateActionInPlan,
+        updateActionDueDate,
         addActionToPlan,
         removeActionFromPlan,
         regeneratePlan,

@@ -32,6 +32,7 @@ export interface TaskItem {
 export interface ProposedAction {
   id: string;
   title: string;
+  dueDate?: string;
   notionContext?: NotionContext;
 }
 

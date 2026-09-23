@@ -5,8 +5,6 @@ import type { ActionPlan, EventItem, NotionContext, ProposedAction } from "../ty
  * Keeping this boundary means UI/state code will not need to change when a
  * server-backed integration replaces the prototype.
  */
-export const integrationMode = "prototype" as const;
-
 const notionPages = [
   { id: "page-1", title: "OS Coursework & Notes", url: "https://notion.so/os-coursework", snippet: "Pintos synchronization primitives, thread scheduling, and kernel notes." },
   { id: "page-2", title: "Operating Systems Lab Workspace", url: "https://notion.so/os-lab", snippet: "Code snippets, GDB test commands, and debugging diary." },
@@ -14,8 +12,37 @@ const notionPages = [
   { id: "page-4", title: "Fall 2026 Semester Dashboard", url: "https://notion.so/fall-2026", snippet: "Course schedules, credit breakdown, and syllabus links." },
 ];
 
-const makeActions = (titles: string[]): ProposedAction[] =>
-  titles.map((title, index) => ({ id: `act-${Date.now()}-${index}`, title }));
+const formatDate = (date: Date) =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+const getSuggestedDates = (eventDate: string, actionCount: number) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const deadline = new Date(`${eventDate}T12:00:00`);
+  const availableDays = Math.max(
+    0,
+    Math.floor((deadline.getTime() - today.getTime()) / 86_400_000),
+  );
+
+  return Array.from({ length: actionCount }, (_, index) => {
+    const offset =
+      actionCount === 1
+        ? Math.max(0, availableDays - 1)
+        : Math.round((index * Math.max(0, availableDays - 1)) / (actionCount - 1));
+    const suggestedDate = new Date(today);
+    suggestedDate.setDate(today.getDate() + offset);
+    return formatDate(suggestedDate);
+  });
+};
+
+const makeActions = (titles: string[], eventDate: string): ProposedAction[] => {
+  const suggestedDates = getSuggestedDates(eventDate, titles.length);
+  return titles.map((title, index) => ({
+    id: `act-${Date.now()}-${index}`,
+    title,
+    dueDate: suggestedDates[index],
+  }));
+};
 
 export const requestActionPlan = async (event: EventItem): Promise<ActionPlan> => {
   // Deliberate latency makes loading states testable without claiming an API call.
@@ -27,10 +54,10 @@ export const requestActionPlan = async (event: EventItem): Promise<ActionPlan> =
 
   const title = event.title.toLowerCase();
   const actions = title.includes("assignment") || title.includes("project")
-    ? makeActions(["Review assignment requirements & specifications", "Implement solution and write tests", "Verify test suite and write report", "Submit code and report to portal"])
+    ? makeActions(["Review assignment requirements & specifications", "Implement solution and write tests", "Verify test suite and write report", "Submit code and report to portal"], event.date)
     : title.includes("midterm") || title.includes("exam")
-      ? makeActions(["Consolidate lecture notes and lecture slides", "Solve past exam questions (2024-2025)", "Review mock questions and weak concepts"])
-      : makeActions([`Outline agenda and materials for ${event.title}`, "Review background context and prior notes"]);
+      ? makeActions(["Consolidate lecture notes and lecture slides", "Solve past exam questions (2024-2025)", "Review mock questions and weak concepts"], event.date)
+      : makeActions([`Outline agenda and materials for ${event.title}`, "Review background context and prior notes"], event.date);
 
   return { eventId: event.id, eventTitle: event.title, actions };
 };

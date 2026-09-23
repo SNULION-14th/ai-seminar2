@@ -17,6 +17,7 @@ export const ActionPlanModal: React.FC = () => {
   const {
     activePlan,
     updateActionInPlan,
+    updateActionDueDate,
     addActionToPlan,
     removeActionFromPlan,
     regeneratePlan,
@@ -131,6 +132,17 @@ export const ActionPlanModal: React.FC = () => {
                         placeholder="Action title"
                         data-testid={`action-input-${index}`}
                       />
+                      <input
+                        type="date"
+                        className="action-date-input"
+                        value={action.dueDate || ""}
+                        onChange={(e) =>
+                          updateActionDueDate(index, e.target.value)
+                        }
+                        aria-label={`Suggested date for action ${index + 1}`}
+                        title="Suggested task date"
+                        data-testid={`action-date-input-${index}`}
+                      />
 
                       <div className="action-context-slot">
                         {action.notionContext ? (
@@ -196,7 +208,7 @@ export const ActionPlanModal: React.FC = () => {
                 <div className="safety-notice">
                   <span>
                     No Google Tasks are created until you explicitly confirm.
-                    You can safely customize or cancel this plan.
+                    You can edit each suggested task date before confirming.
                   </span>
                 </div>
                 {hasInvalidActions && (

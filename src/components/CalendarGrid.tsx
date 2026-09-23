@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { EventItem } from "../types";
+import type { EventItem, TaskItem } from "../types";
 import {
   ChevronLeft,
   ChevronRight,
@@ -11,26 +11,31 @@ import {
   Trash2,
   X,
   Pencil,
+  CheckCircle2,
 } from "lucide-react";
 
 interface CalendarGridProps {
   events: EventItem[];
+  tasks: TaskItem[];
   selectedEventId: string | null;
   onSelectEvent: (eventId: string | null) => void;
   onPrepareEvent: (eventId: string) => void;
   onOpenCreateEvent: (dateStr?: string) => void;
   onEditEvent?: (event: EventItem) => void;
   onDeleteEvent?: (eventId: string) => void;
+  onToggleTask: (taskId: string) => void;
 }
 
 export const CalendarGrid: React.FC<CalendarGridProps> = ({
   events,
+  tasks,
   selectedEventId,
   onSelectEvent,
   onPrepareEvent,
   onOpenCreateEvent,
   onEditEvent,
   onDeleteEvent,
+  onToggleTask,
 }) => {
   const today = new Date();
   const upcomingEvent = [...events]
@@ -41,6 +46,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
     : today;
   const [currentYear, setCurrentYear] = useState(initialDate.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(initialDate.getMonth());
+  const [showEvents, setShowEvents] = useState(true);
+  const [showTasks, setShowTasks] = useState(true);
   const referenceToday = `${today.getFullYear()}-${String(
     today.getMonth() + 1,
   ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
@@ -93,6 +100,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
     isCurrentMonth: boolean;
     isToday: boolean;
     events: EventItem[];
+    tasks: TaskItem[];
   }> = [];
 
   // Prev month padding
@@ -106,7 +114,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
       dayNum: day,
       isCurrentMonth: false,
       isToday: dateStr === referenceToday,
-      events: events.filter((e) => e.date === dateStr),
+      events: showEvents ? events.filter((e) => e.date === dateStr) : [],
+      tasks: showTasks ? tasks.filter((task) => task.dueDate === dateStr) : [],
     });
   }
 
@@ -120,7 +129,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
       dayNum: day,
       isCurrentMonth: true,
       isToday: dateStr === referenceToday,
-      events: events.filter((e) => e.date === dateStr),
+      events: showEvents ? events.filter((e) => e.date === dateStr) : [],
+      tasks: showTasks ? tasks.filter((task) => task.dueDate === dateStr) : [],
     });
   }
 
@@ -135,13 +145,17 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
       dayNum: day,
       isCurrentMonth: false,
       isToday: dateStr === referenceToday,
-      events: events.filter((e) => e.date === dateStr),
+      events: showEvents ? events.filter((e) => e.date === dateStr) : [],
+      tasks: showTasks ? tasks.filter((task) => task.dueDate === dateStr) : [],
     });
   }
 
   const selectedEvent = events.find((e) => e.id === selectedEventId);
   const mobileAgendaDays = cells.filter(
-    (cell) => cell.isCurrentMonth && cell.events.length > 0,
+    (cell) => cell.isCurrentMonth && (cell.events.length > 0 || cell.tasks.length > 0),
+  );
+  const hasVisibleItems = cells.some(
+    (cell) => cell.events.length > 0 || cell.tasks.length > 0,
   );
 
   return (
@@ -176,6 +190,26 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
           <Plus size={14} />
           <span>New Event</span>
         </button>
+        <div className="calendar-display-filters" role="group" aria-label="Calendar items to display">
+          <button
+            type="button"
+            className={`calendar-display-filter ${showEvents ? "active" : ""}`}
+            aria-pressed={showEvents}
+            onClick={() => setShowEvents((visible) => !visible)}
+            data-testid="calendar-toggle-events"
+          >
+            Events
+          </button>
+          <button
+            type="button"
+            className={`calendar-display-filter ${showTasks ? "active" : ""}`}
+            aria-pressed={showTasks}
+            onClick={() => setShowTasks((visible) => !visible)}
+            data-testid="calendar-toggle-tasks"
+          >
+            Tasks
+          </button>
+        </div>
       </div>
 
       {/* Weekday Labels Header */}
@@ -196,7 +230,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
               cell.isToday ? "cell-today" : ""
             }`}
             onClick={(e) => {
-              if ((e.target as HTMLElement).closest(".calendar-event-chip"))
+              if ((e.target as HTMLElement).closest(".calendar-event-chip, .calendar-task-chip"))
                 return;
               onOpenCreateEvent(cell.dateStr);
             }}
@@ -232,7 +266,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                 return (
                   <div
                     key={evt.id}
-                    className={`calendar-event-chip ${isSelected ? "selected" : ""}`}
+                    className={`calendar-event-chip ${evt.needsPreparation ? "requires-preparation" : ""} ${isSelected ? "selected" : ""}`}
                     onClick={(e) => {
                       e.stopPropagation();
                       onSelectEvent(isSelected ? null : evt.id);
@@ -241,6 +275,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                     data-testid={`event-chip-${evt.id}`}
                   >
                     <span className="event-dot" />
+                    {evt.time && <span className="chip-time">{evt.time}</span>}
                     {evt.needsPreparation && (
                       <Sparkles size={10} className="event-prep-sparkle" />
                     )}
@@ -248,17 +283,35 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                   </div>
                 );
               })}
+              {cell.tasks.map((task) => (
+                <button
+                  type="button"
+                  key={task.id}
+                  className={`calendar-task-chip ${task.completed ? "completed" : ""}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleTask(task.id);
+                  }}
+                  title={`${task.title} — ${task.completed ? "Mark incomplete" : "Mark complete"}`}
+                  data-testid={`calendar-task-${task.id}`}
+                >
+                  <CheckCircle2 size={11} />
+                  <span className="chip-title">{task.title}</span>
+                </button>
+              ))}
             </div>
           </div>
         ))}
       </div>
 
-      {mobileAgendaDays.length === 0 && (
+      {!hasVisibleItems && (
         <div className="calendar-empty-month">
           <CalendarIcon size={22} />
-          <p>No events this month</p>
+          <p>{showEvents || showTasks ? "No calendar items this month" : "Nothing selected to display"}</p>
           <span>
-            Use the month arrows to find upcoming events, or add one now.
+            {showEvents || showTasks
+              ? "Use the month arrows to find upcoming items, or add an event now."
+              : "Turn on Events or Tasks above to see them here."}
           </span>
           <button
             type="button"
@@ -271,11 +324,11 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
         </div>
       )}
 
-      <div className="mobile-calendar-agenda" aria-label="Events this month">
+      <div className="mobile-calendar-agenda" aria-label="Calendar items this month">
         {mobileAgendaDays.length === 0 ? (
           <div className="mobile-agenda-empty">
             <CalendarIcon size={22} />
-            <p>No events this month</p>
+            <p>{showEvents || showTasks ? "No calendar items this month" : "Nothing selected to display"}</p>
             <button
               type="button"
               className="btn btn-secondary btn-sm"
@@ -346,6 +399,18 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                       </button>
                     );
                   })}
+                {day.tasks.map((task) => (
+                  <button
+                    type="button"
+                    key={task.id}
+                    className={`mobile-agenda-task ${task.completed ? "completed" : ""}`}
+                    onClick={() => onToggleTask(task.id)}
+                    data-testid={`mobile-calendar-task-${task.id}`}
+                  >
+                    <CheckCircle2 size={15} />
+                    <span>{task.title}</span>
+                  </button>
+                ))}
               </div>
             </section>
           ))

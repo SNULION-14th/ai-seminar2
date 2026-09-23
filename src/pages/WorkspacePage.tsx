@@ -15,7 +15,6 @@ export const WorkspacePage: React.FC = () => {
     startPreparation,
     preparationStatus,
     preparationError,
-    integrationMode,
     deleteEvent,
     toggleTask,
     deleteTask,
@@ -64,13 +63,13 @@ export const WorkspacePage: React.FC = () => {
             Organize calendar events and execute decomposed tasks linked with
             Notion.
           </p>
-          <p className="integration-notice" data-testid="integration-mode-notice">
-            {preparationStatus === "loading"
-              ? "Generating an editable action-plan suggestion…"
-              : preparationError
-                ? preparationError
-                : `Prototype mode: ${integrationMode} Calendar, Tasks, Notion, and AI data.`}
-          </p>
+          {(preparationStatus === "loading" || preparationError) && (
+            <p className="integration-notice" role="status">
+              {preparationStatus === "loading"
+                ? "Generating an editable action-plan suggestion…"
+                : preparationError}
+            </p>
+          )}
         </div>
 
         <div className="view-mode-tabs">
@@ -127,12 +126,14 @@ export const WorkspacePage: React.FC = () => {
             <div className="calendar-main-pane">
               <CalendarGrid
                 events={events}
+                tasks={tasks}
                 selectedEventId={selectedEventId}
                 onSelectEvent={setSelectedEventId}
                 onPrepareEvent={startPreparation}
                 onOpenCreateEvent={handleOpenCreateEventWithDate}
                 onEditEvent={setEditingEvent}
                 onDeleteEvent={deleteEvent}
+                onToggleTask={toggleTask}
               />
             </div>
 
