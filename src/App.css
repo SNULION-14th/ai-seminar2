@@ -389,13 +389,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
   margin-bottom: 14px;
+  width: 100%;
 }
 
 .cal-nav-group {
   display: flex;
   align-items: center;
   gap: 14px;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .calendar-month-heading {
@@ -404,12 +408,22 @@ body {
   color: var(--text-main);
   margin: 0;
   letter-spacing: -0.01em;
+  white-space: nowrap;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .cal-nav-btns {
   display: flex;
   align-items: center;
   gap: 4px;
+  flex-shrink: 0;
+}
+
+.cal-semester-btn {
+  min-width: 120px;
+  flex-shrink: 0;
+  justify-content: center;
 }
 
 .calendar-grid-header {
@@ -1303,6 +1317,7 @@ body {
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   padding: 20px;
+  overflow-y: auto;
 }
 
 .modal-content {
@@ -1314,7 +1329,8 @@ body {
   border: 1px solid var(--border-light);
   display: flex;
   flex-direction: column;
-  max-height: 88vh;
+  max-height: min(88vh, 720px);
+  position: relative;
 }
 
 .small-modal {
@@ -1374,6 +1390,9 @@ body {
   background: var(--bg-subtle);
   border-bottom-left-radius: var(--radius-lg);
   border-bottom-right-radius: var(--radius-lg);
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
 }
 
 .modal-footer-right {

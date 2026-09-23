@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import type { EventItem } from '../types';
+import React, { useState } from "react";
+import type { EventItem } from "../types";
 import {
   ChevronLeft,
   ChevronRight,
@@ -9,8 +9,8 @@ import {
   Clock,
   MapPin,
   Trash2,
-  X
-} from 'lucide-react';
+  X,
+} from "lucide-react";
 
 interface CalendarGridProps {
   events: EventItem[];
@@ -27,13 +27,13 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
   onSelectEvent,
   onPrepareEvent,
   onOpenCreateEvent,
-  onDeleteEvent
+  onDeleteEvent,
 }) => {
   // Default to Fall 2026 (October 2026)
   const [currentYear, setCurrentYear] = useState(2026);
   const [currentMonth, setCurrentMonth] = useState(9); // 0-indexed: 9 = October
 
-  const referenceToday = '2026-10-14';
+  const referenceToday = "2026-10-14";
 
   const handlePrevMonth = () => {
     if (currentMonth === 0) {
@@ -54,8 +54,18 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
   };
 
   const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const monthLabel = `${monthNames[currentMonth]} ${currentYear}`;
@@ -78,27 +88,27 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
     const day = daysInPrevMonth - i;
     const m = currentMonth === 0 ? 12 : currentMonth;
     const y = currentMonth === 0 ? currentYear - 1 : currentYear;
-    const dateStr = `${y}-${String(m).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const dateStr = `${y}-${String(m).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
     cells.push({
       dateStr,
       dayNum: day,
       isCurrentMonth: false,
       isToday: dateStr === referenceToday,
-      events: events.filter((e) => e.date === dateStr)
+      events: events.filter((e) => e.date === dateStr),
     });
   }
 
   // Current month
   for (let day = 1; day <= daysInMonth; day++) {
-    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(
-      day
-    ).padStart(2, '0')}`;
+    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(
+      day,
+    ).padStart(2, "0")}`;
     cells.push({
       dateStr,
       dayNum: day,
       isCurrentMonth: true,
       isToday: dateStr === referenceToday,
-      events: events.filter((e) => e.date === dateStr)
+      events: events.filter((e) => e.date === dateStr),
     });
   }
 
@@ -107,13 +117,13 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
   for (let day = 1; day <= remaining; day++) {
     const m = currentMonth === 11 ? 1 : currentMonth + 2;
     const y = currentMonth === 11 ? currentYear + 1 : currentYear;
-    const dateStr = `${y}-${String(m).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const dateStr = `${y}-${String(m).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
     cells.push({
       dateStr,
       dayNum: day,
       isCurrentMonth: false,
       isToday: dateStr === referenceToday,
-      events: events.filter((e) => e.date === dateStr)
+      events: events.filter((e) => e.date === dateStr),
     });
   }
 
@@ -126,20 +136,28 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
         <div className="cal-nav-group">
           <h2 className="calendar-month-heading">{monthLabel}</h2>
           <div className="cal-nav-btns">
-            <button className="icon-btn" onClick={handlePrevMonth} title="Previous month">
+            <button
+              className="icon-btn"
+              onClick={handlePrevMonth}
+              title="Previous month"
+            >
               <ChevronLeft size={16} />
             </button>
             <button
-              className="btn btn-secondary btn-sm"
+              className="btn btn-secondary btn-sm cal-semester-btn"
               onClick={() => {
                 setCurrentYear(2026);
                 setCurrentMonth(9);
               }}
-              title="Jump to Semester start"
+              title="Jump to current semester"
             >
-              Fall 2026
+              Current Semester
             </button>
-            <button className="icon-btn" onClick={handleNextMonth} title="Next month">
+            <button
+              className="icon-btn"
+              onClick={handleNextMonth}
+              title="Next month"
+            >
               <ChevronRight size={16} />
             </button>
           </div>
@@ -157,7 +175,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 
       {/* Weekday Labels Header */}
       <div className="calendar-grid-header">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
           <div key={d} className="calendar-header-cell">
             {d}
           </div>
@@ -169,11 +187,12 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
         {cells.map((cell, idx) => (
           <div
             key={idx}
-            className={`calendar-cell ${!cell.isCurrentMonth ? 'other-month' : ''} ${
-              cell.isToday ? 'cell-today' : ''
+            className={`calendar-cell ${!cell.isCurrentMonth ? "other-month" : ""} ${
+              cell.isToday ? "cell-today" : ""
             }`}
             onClick={(e) => {
-              if ((e.target as HTMLElement).closest('.calendar-event-chip')) return;
+              if ((e.target as HTMLElement).closest(".calendar-event-chip"))
+                return;
               onOpenCreateEvent(cell.dateStr);
             }}
             title={`Click to add event on ${cell.dateStr}`}
@@ -183,7 +202,9 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                 {cell.isToday && <span className="today-badge">Today</span>}
               </div>
               <div className="cell-top-right">
-                <span className={`cell-day-num ${cell.isToday ? 'today-day-num' : ''}`}>
+                <span
+                  className={`cell-day-num ${cell.isToday ? "today-day-num" : ""}`}
+                >
                   {cell.dayNum}
                 </span>
                 <button
@@ -206,12 +227,12 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                 return (
                   <div
                     key={evt.id}
-                    className={`calendar-event-chip ${isSelected ? 'selected' : ''}`}
+                    className={`calendar-event-chip ${isSelected ? "selected" : ""}`}
                     onClick={(e) => {
                       e.stopPropagation();
                       onSelectEvent(isSelected ? null : evt.id);
                     }}
-                    title={`${evt.title} (${evt.time || 'All day'}) - Click to view & prepare`}
+                    title={`${evt.title} (${evt.time || "All day"}) - Click to view & prepare`}
                     data-testid={`event-chip-${evt.id}`}
                   >
                     <span className="event-dot" />
@@ -229,7 +250,10 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 
       {/* Selected Event Action Card */}
       {selectedEvent && (
-        <div className="selected-event-card" data-testid="selected-event-banner">
+        <div
+          className="selected-event-card"
+          data-testid="selected-event-banner"
+        >
           <div className="selected-event-main">
             <div className="selected-event-header">
               <span className="selected-event-time">

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useWorkspace } from '../context/WorkspaceContext';
-import { CalendarGrid } from '../components/CalendarGrid';
-import { TasksSidebar } from '../components/TasksSidebar';
-import { EventActionContextView } from '../components/EventActionContextView';
-import { CreateEventModal } from '../components/CreateEventModal';
-import { Calendar as CalendarIcon, GitFork, CheckCircle2 } from 'lucide-react';
+import React, { useState } from "react";
+import { useWorkspace } from "../context/WorkspaceContext";
+import { CalendarGrid } from "../components/CalendarGrid";
+import { TasksSidebar } from "../components/TasksSidebar";
+import { EventActionContextView } from "../components/EventActionContextView";
+import { CreateEventModal } from "../components/CreateEventModal";
+import { Calendar as CalendarIcon, GitFork, CheckCircle2 } from "lucide-react";
 
 export const WorkspacePage: React.FC = () => {
   const {
@@ -14,27 +14,36 @@ export const WorkspacePage: React.FC = () => {
     deleteEvent,
     toggleTask,
     deleteTask,
-    addTask
+    addTask,
   } = useWorkspace();
 
-  const [activeTab, setActiveTab] = useState<'calendar' | 'relationship'>('calendar');
+  const [activeTab, setActiveTab] = useState<"calendar" | "relationship">(
+    "calendar",
+  );
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [createEventDate, setCreateEventDate] = useState<string | null>(null);
-  const [mobilePane, setMobilePane] = useState<'calendar' | 'tasks'>('calendar');
+  const [mobilePane, setMobilePane] = useState<"calendar" | "tasks">(
+    "calendar",
+  );
 
   const selectedEvent = events.find((e) => e.id === selectedEventId);
   const activeTaskCount = tasks.filter((t) => !t.completed).length;
 
   const handleOpenCreateEventWithDate = (dateStr?: string) => {
-    setCreateEventDate(dateStr || null);
+    const fallbackDate = new Date().toISOString().split("T")[0];
+    setCreateEventDate(dateStr || fallbackDate);
   };
 
-  const handleAddTask = (title: string, eventId?: string, eventTitle?: string) => {
+  const handleAddTask = (
+    title: string,
+    eventId?: string,
+    eventTitle?: string,
+  ) => {
     addTask({
       title,
       completed: false,
       eventId,
-      eventTitle
+      eventTitle,
     });
   };
 
@@ -45,22 +54,23 @@ export const WorkspacePage: React.FC = () => {
         <div className="hero-text">
           <h1 className="hero-title">Calendar & Tasks</h1>
           <p className="hero-desc">
-            Organize calendar events and execute decomposed tasks linked with Notion.
+            Organize calendar events and execute decomposed tasks linked with
+            Notion.
           </p>
         </div>
 
         <div className="view-mode-tabs">
           <button
-            className={`tab-pill ${activeTab === 'calendar' ? 'active' : ''}`}
-            onClick={() => setActiveTab('calendar')}
+            className={`tab-pill ${activeTab === "calendar" ? "active" : ""}`}
+            onClick={() => setActiveTab("calendar")}
             data-testid="tab-calendar-view"
           >
             <CalendarIcon size={14} />
             <span>Calendar View</span>
           </button>
           <button
-            className={`tab-pill ${activeTab === 'relationship' ? 'active' : ''}`}
-            onClick={() => setActiveTab('relationship')}
+            className={`tab-pill ${activeTab === "relationship" ? "active" : ""}`}
+            onClick={() => setActiveTab("relationship")}
             data-testid="tab-relationship-view"
           >
             <GitFork size={14} />
@@ -69,21 +79,25 @@ export const WorkspacePage: React.FC = () => {
         </div>
       </div>
 
-      {activeTab === 'calendar' ? (
+      {activeTab === "calendar" ? (
         <>
           {/* Mobile Pane Switcher (Visible only on screens <= 768px) */}
-          <div className="mobile-pane-switcher" role="tablist" aria-label="Mobile view switcher">
+          <div
+            className="mobile-pane-switcher"
+            role="tablist"
+            aria-label="Mobile view switcher"
+          >
             <button
-              className={`mobile-pane-btn ${mobilePane === 'calendar' ? 'active' : ''}`}
-              onClick={() => setMobilePane('calendar')}
+              className={`mobile-pane-btn ${mobilePane === "calendar" ? "active" : ""}`}
+              onClick={() => setMobilePane("calendar")}
               data-testid="mobile-tab-calendar"
             >
               <CalendarIcon size={14} />
               <span>Calendar</span>
             </button>
             <button
-              className={`mobile-pane-btn ${mobilePane === 'tasks' ? 'active' : ''}`}
-              onClick={() => setMobilePane('tasks')}
+              className={`mobile-pane-btn ${mobilePane === "tasks" ? "active" : ""}`}
+              onClick={() => setMobilePane("tasks")}
               data-testid="mobile-tab-tasks"
             >
               <CheckCircle2 size={14} />
@@ -92,7 +106,9 @@ export const WorkspacePage: React.FC = () => {
             </button>
           </div>
 
-          <div className={`calendar-workspace-layout mobile-view-${mobilePane}`}>
+          <div
+            className={`calendar-workspace-layout mobile-view-${mobilePane}`}
+          >
             {/* Main Calendar Grid */}
             <div className="calendar-main-pane">
               <CalendarGrid
