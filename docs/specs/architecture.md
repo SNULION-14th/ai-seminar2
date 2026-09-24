@@ -15,12 +15,12 @@
 | --- | --- | --- |
 | 프레임워크 | React 19 + TypeScript + Vite 8 | 설치됨 |
 | 아이콘 | lucide-react | 설치됨 |
-| 라우팅 | `react-router` v7 (hash router: 정적 호스팅과 공유 해시 호환) | 추가 예정 |
-| 상태 관리 | `zustand` + `persist` 미들웨어(localStorage) | 추가 예정 |
-| 지도 | `leaflet` + `react-leaflet` + OSM 타일 (확정) | 추가 예정 |
-| 공유 | `lz-string`(URL 압축), `html-to-image`(카드 PNG) | 추가 예정 |
-| 스키마 검증 | `zod` (공유 payload, 백업 import) | 추가 예정 |
-| 테스트 | `vitest` (도메인 로직 단위 테스트) + Playwright MCP (UI 검증, [mcp.md](mcp.md)) | 추가 예정 |
+| 라우팅 | `react-router` v7 (hash router: 정적 호스팅과 공유 해시 호환) | 설치됨 |
+| 상태 관리 | `zustand` + `persist` 미들웨어(localStorage) | 설치됨 |
+| 지도 | `leaflet` + `react-leaflet` + OSM 타일 (확정), `@types/leaflet`(dev, 타입 정의) | 설치됨 |
+| 공유 | `lz-string`(URL 압축), `html-to-image`(카드 PNG) | 설치됨 |
+| 스키마 검증 | `zod` (공유 payload, 백업 import) | 설치됨 |
+| 테스트 | `vitest` (도메인 로직 단위 테스트) + Playwright MCP (UI 검증, [mcp.md](mcp.md)) | 설치됨 |
 | 스타일 | 순수 CSS + CSS Modules + `tokens.css` | 기본 제공 |
 
 ## 3. 디렉터리 구조

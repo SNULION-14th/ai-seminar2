@@ -1,0 +1,91 @@
+/*
+ * 디자인 토큰 — docs/specs/design-system.md §2
+ * 컴포넌트는 이 파일의 토큰만 참조하고 hex 값을 직접 쓰지 않는다.
+ * 다크(밤 라이딩): OS 설정을 따르고, <html data-theme="light|dark">로 강제할 수 있다.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* 색상: 라이트 */
+  --c-paper: #f5f0e6; /* 한지: 배경 */
+  --c-ink: #2b2a26; /* 먹: 본문 텍스트 */
+  --c-moss: #4f6b3a; /* 이끼: 주 액션, 완료 구간 */
+  --c-river: #2f7f86; /* 강물: 경로 라인, 링크 */
+  --c-earth: #a0784f; /* 흙: 고도, 오르막 */
+  --c-sunset: #e07a3f; /* 노을: 강조, 현재 위치, 도장 잉크 */
+  --c-mist: #dce3dc; /* 물안개: 카드, 구분선 */
+
+  /* 파생 색 (위 토큰에서만 만든다) */
+  --c-ink-muted: color-mix(in srgb, var(--c-ink) 68%, var(--c-paper));
+  --c-on-accent: var(--c-paper); /* moss/river 배경 위 글자 */
+  --c-shadow: color-mix(in srgb, var(--c-ink) 14%, transparent);
+
+  /* 타이포그래피 */
+  --font-title: 'Gowun Batang', 'Nanum Myeongjo', serif;
+  --font-body: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: 2.5rem; /* 40px: 트래킹 핵심 숫자 최소 크기 */
+  --lh-tight: 1.25;
+  --lh-body: 1.6;
+
+  /* 간격 (4px 단위) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+
+  /* 형태 */
+  --r-sm: 8px;
+  --r-md: 16px;
+  --r-lg: 28px;
+  --r-pebble: var(--r-md) var(--r-lg) var(--r-md) var(--r-md); /* 비대칭 조약돌 카드 */
+  --shadow-soft: 0 12px 32px -12px var(--c-shadow);
+
+  /* 모션 */
+  --ease-flow: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --dur-slow: 600ms;
+
+  /* 레이아웃 */
+  --app-max-w: 480px; /* 데스크톱에서 가운데 정렬 최대 폭 (design-system.md §4) */
+  --tabbar-h: 64px;
+  --touch-min: 56px; /* 장갑 낀 손 기준 터치 타깃 */
+  --z-tabbar: 100;
+  --z-sheet: 200;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --c-paper: #141a17;
+  --c-ink: #e8e4da;
+  --c-moss: #8db36b;
+  --c-river: #5fb8bf;
+  --c-earth: #c49a6c;
+  --c-sunset: #f09a5e;
+  --c-mist: #26302b;
+  --c-shadow: color-mix(in srgb, black 45%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --c-paper: #141a17;
+    --c-ink: #e8e4da;
+    --c-moss: #8db36b;
+    --c-river: #5fb8bf;
+    --c-earth: #c49a6c;
+    --c-sunset: #f09a5e;
+    --c-mist: #26302b;
+    --c-shadow: color-mix(in srgb, black 45%, transparent);
+  }
+}
