@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# PR 다이제스트 봇 dry-run 출력 (실행할 때마다 생성됨)
+scripts/mcp-digest-bot/last-digest.json
