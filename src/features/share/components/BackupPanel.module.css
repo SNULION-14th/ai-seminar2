@@ -1,0 +1,31 @@
+/* 데이터 백업 (SHR-09) */
+.row {
+  display: flex;
+  gap: var(--s-3);
+}
+
+.btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: var(--touch-min);
+  padding: 0 var(--s-4);
+  background: var(--c-mist);
+  color: var(--c-ink);
+  border: none;
+  border-radius: var(--r-md);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.status {
+  min-height: var(--fs-md);
+  font-size: var(--fs-sm);
+  color: var(--c-ink-muted);
+}
+
+.statusError {
+  color: var(--c-sunset);
+}

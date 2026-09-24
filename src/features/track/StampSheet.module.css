@@ -1,0 +1,54 @@
+/* 인증센터 반경 진입 시 뜨는 도장 확인 시트 (TRK-06) */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-sheet);
+  display: flex;
+  align-items: flex-end;
+  background: color-mix(in srgb, var(--c-ink) 45%, transparent);
+}
+
+.sheet {
+  width: 100%;
+  max-width: var(--app-max-w);
+  margin: 0 auto;
+  padding: var(--s-6) var(--s-5) var(--s-7);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  background: var(--c-paper);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-4);
+  text-align: center;
+}
+
+.title {
+  font-size: var(--fs-lg);
+}
+
+.actions {
+  display: flex;
+  gap: var(--s-3);
+  width: 100%;
+}
+
+.confirmButton {
+  flex: 1;
+  min-height: var(--touch-min);
+  border: none;
+  border-radius: var(--r-md);
+  background: var(--c-moss);
+  color: var(--c-on-accent);
+  font-weight: 600;
+}
+
+.dismissButton {
+  flex: 1;
+  min-height: var(--touch-min);
+  border: none;
+  border-radius: var(--r-md);
+  background: var(--c-mist);
+  color: var(--c-ink);
+  font-weight: 600;
+}

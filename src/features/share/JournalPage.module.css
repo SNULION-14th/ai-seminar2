@@ -1,0 +1,39 @@
+/* 기록 화면 (#/journal, SHR-01) */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-6);
+  padding: var(--s-6) var(--s-5);
+}
+
+.headRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+.shareTrigger {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: var(--touch-min);
+  padding: 0 var(--s-4);
+  background: var(--c-moss);
+  color: var(--c-on-accent);
+  border: none;
+  border-radius: var(--r-full);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.sectionTitle {
+  font-size: var(--fs-lg);
+}

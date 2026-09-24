@@ -1,0 +1,132 @@
+/*
+ * 디자인 토큰 — docs/specs/design-system.md §2
+ * 컴포넌트는 이 파일의 토큰만 참조하고 hex 값을 직접 쓰지 않는다.
+ * 다크(밤 라이딩): OS 설정을 따르고, <html data-theme="light|dark">로 강제할 수 있다.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* 색상: 라이트 */
+  --c-paper: #f5f0e6; /* 한지: 배경 */
+  --c-ink: #2b2a26; /* 먹: 본문 텍스트 */
+  --c-moss: #4f6b3a; /* 이끼: 주 액션, 완료 구간 */
+  --c-river: #2c767d; /* 강물: 경로 라인, 링크. 초안 #2f7f86에서 명도만 낮춰 paper 대비 4.63:1 */
+  --c-earth: #a0784f; /* 흙: 고도, 오르막 */
+  --c-sunset: #e07a3f; /* 노을: 강조, 현재 위치, 도장 잉크 */
+  --c-mist: #dce3dc; /* 물안개: 카드, 구분선 */
+
+  /* 파생 색 (위 토큰에서만 만든다) */
+  --c-ink-muted: color-mix(in srgb, var(--c-ink) 74%, var(--c-paper)); /* paper 5.8:1, mist 5.0:1 */
+  --c-on-accent: var(--c-paper); /* moss/river 배경 위 글자 */
+  --c-on-sunset: var(--c-ink); /* sunset 배경 위 글자: 라이트 4.8:1 */
+  --c-shadow: color-mix(in srgb, var(--c-ink) 14%, transparent);
+  --c-ridge-far: color-mix(in srgb, var(--c-mist) 70%, var(--c-moss)); /* DS-02 먼 능선 */
+  --c-ridge-mid: color-mix(in srgb, var(--c-earth) 45%, var(--c-mist)); /* DS-02 중간 능선 */
+  --c-water: color-mix(in srgb, var(--c-river) 78%, var(--c-paper)); /* DS-04 물결 */
+
+  /* DS-05 시간대 하늘: 배경 위에 옅게 얹는 틴트 (본문 대비를 해치지 않게 35% 이하) */
+  --sky-dawn-top: color-mix(in srgb, color-mix(in srgb, var(--c-sunset) 45%, var(--c-river)) 30%, var(--c-paper));
+  --sky-dawn-bottom: color-mix(in srgb, var(--c-sunset) 12%, var(--c-paper));
+  --sky-day-top: color-mix(in srgb, var(--c-river) 22%, var(--c-paper));
+  --sky-day-bottom: var(--c-paper);
+  --sky-dusk-top: color-mix(in srgb, var(--c-sunset) 35%, var(--c-paper));
+  --sky-dusk-bottom: color-mix(in srgb, var(--c-earth) 14%, var(--c-paper));
+  --sky-night-top: #0b1216;
+  --sky-night-bottom: #141a17;
+
+  /* 타이포그래피 */
+  --font-title: 'Gowun Batang', 'Nanum Myeongjo', serif;
+  --font-body: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: 2.5rem; /* 40px: 트래킹 핵심 숫자 최소 크기 */
+  --lh-tight: 1.25;
+  --lh-body: 1.6;
+
+  /* 간격 (4px 단위) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+
+  /* 형태 */
+  --r-sm: 8px;
+  --r-md: 16px;
+  --r-lg: 28px;
+  --r-pebble: var(--r-md) var(--r-lg) var(--r-md) var(--r-md); /* 비대칭 조약돌 카드 */
+  --shadow-soft: 0 12px 32px -12px var(--c-shadow);
+
+  --r-full: 999px;
+
+  /* 모션 */
+  --ease-flow: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --dur-slow: 600ms;
+  --dur-sky: 4s; /* DS-05 하늘 전환 */
+
+  /* 레이아웃 */
+  --app-max-w: 480px; /* 데스크톱에서 가운데 정렬 최대 폭 (design-system.md §4) */
+  --tabbar-h: 64px;
+  --touch-min: 56px; /* 장갑 낀 손 기준 터치 타깃 */
+  --z-tabbar: 100;
+  --z-sheet: 200;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --c-paper: #141a17;
+  --c-ink: #e8e4da;
+  --c-moss: #8db36b;
+  --c-river: #5fb8bf;
+  --c-earth: #c49a6c;
+  --c-sunset: #f09a5e;
+  --c-mist: #26302b;
+  --c-shadow: color-mix(in srgb, black 45%, transparent);
+  --c-on-sunset: var(--c-paper); /* 다크: 어두운 paper 글자 8.0:1 */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --c-paper: #141a17;
+    --c-ink: #e8e4da;
+    --c-moss: #8db36b;
+    --c-river: #5fb8bf;
+    --c-earth: #c49a6c;
+    --c-sunset: #f09a5e;
+    --c-mist: #26302b;
+    --c-shadow: color-mix(in srgb, black 45%, transparent);
+    --c-on-sunset: var(--c-paper);
+  }
+}
+
+/*
+ * DS-05 밤 하늘: OS 테마와 상관없이 컨테이너 안을 밤 라이딩 색으로 바꾼다.
+ * 파생 색(color-mix)은 선언한 곳의 값으로 계산되므로 여기서 다시 선언한다.
+ */
+[data-sky='night'] {
+  color-scheme: dark;
+  --c-paper: #141a17;
+  --c-ink: #e8e4da;
+  --c-moss: #8db36b;
+  --c-river: #5fb8bf;
+  --c-earth: #c49a6c;
+  --c-sunset: #f09a5e;
+  --c-mist: #26302b;
+  --c-shadow: color-mix(in srgb, black 45%, transparent);
+  --c-ink-muted: color-mix(in srgb, var(--c-ink) 74%, var(--c-paper));
+  --c-on-accent: var(--c-paper);
+  --c-on-sunset: var(--c-paper);
+  --c-ridge-far: color-mix(in srgb, var(--c-mist) 70%, var(--c-moss));
+  --c-ridge-mid: color-mix(in srgb, var(--c-earth) 45%, var(--c-mist));
+  --c-water: color-mix(in srgb, var(--c-river) 78%, var(--c-paper));
+}

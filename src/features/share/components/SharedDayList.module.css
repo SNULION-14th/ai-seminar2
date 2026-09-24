@@ -1,0 +1,18 @@
+/* 공유 페이지의 일자별 거리 목록 (SHR-05). 메모는 담지 않는다(SHR-04 payload에 없음) */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--s-3) var(--s-4);
+  background: var(--c-mist);
+  border-radius: var(--r-sm);
+}
+
+.date {
+  color: var(--c-ink-muted);
+}

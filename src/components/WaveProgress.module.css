@@ -1,0 +1,90 @@
+/* DS-04 물결 진행률 */
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  width: 100%;
+}
+
+.md {
+  --wave-h: 28px;
+}
+
+.lg {
+  --wave-h: 40px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.track {
+  position: relative;
+  flex: 1;
+  height: var(--wave-h);
+  border-radius: var(--r-full);
+  background: var(--c-mist);
+  overflow: hidden;
+  box-shadow: inset 0 2px 6px var(--c-shadow);
+  container-type: inline-size; /* 물결 주기를 채운 폭이 아닌 전체 폭 기준으로 고정 */
+}
+
+.fill {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--r-full) var(--r-sm) var(--r-sm) var(--r-full);
+  transition: width var(--dur-slow) var(--ease-flow);
+}
+
+.waves {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* 전체 폭의 두 배. 절반만큼 흘려도 빈틈이 없다 */
+  width: 200cqw;
+  height: 100%;
+  animation: slosh 1200ms var(--ease-flow) both;
+}
+
+.back {
+  fill: var(--c-water);
+  transform: translate(-20px, -2px);
+}
+
+.front {
+  fill: var(--c-river);
+  transform: translateY(3px);
+}
+
+/* 값이 바뀌면 물결이 한 번 밀려왔다가 가라앉는다. 연속 애니메이션이 아니다. */
+@keyframes slosh {
+  0% {
+    transform: translateX(-50%) scaleY(1.35);
+  }
+  60% {
+    transform: translateX(-8%) scaleY(0.9);
+  }
+  100% {
+    transform: translateX(0) scaleY(1);
+  }
+}
+
+.value {
+  min-width: 3.5em;
+  text-align: right;
+  font-weight: 700;
+  font-size: var(--fs-lg);
+  color: var(--c-ink);
+}
+
+.lg .value {
+  font-size: var(--fs-xl);
+}
+
+.caption {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+}

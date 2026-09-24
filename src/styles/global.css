@@ -1,0 +1,123 @@
+/* 전역 스타일 — 색·간격·반경은 tokens.css 토큰만 쓴다. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background-color: var(--c-paper);
+  color: var(--c-ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  line-height: var(--lh-body);
+  word-break: keep-all;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 한지 질감: 아주 옅은 종이 노이즈 (design-system.md §2, 5% 이하) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  z-index: 0;
+}
+
+/* 모바일 우선: 데스크톱에서는 가운데 정렬 최대 폭 480px */
+#root {
+  position: relative;
+  z-index: 1;
+  max-width: var(--app-max-w);
+  margin: 0 auto;
+  min-height: 100dvh;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-title);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--c-river);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--c-river);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* 거리·속도 숫자: 값이 바뀌어도 폭이 흔들리지 않게 */
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* 기본 페이지 틀 (빈 화면용). 각 기능 화면은 CSS Module로 덮어쓴다. */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-6) var(--s-5);
+}
+
+.page-title {
+  font-size: var(--fs-xl);
+}
+
+.page-lead {
+  color: var(--c-ink-muted);
+}
+
+/* 모든 연속 애니메이션은 prefers-reduced-motion을 존중한다 (CLAUDE.md §3) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,128 @@
+/* DS-03 도장 */
+.stamp {
+  margin: 0;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-1);
+}
+
+.sm {
+  --stamp-size: 64px;
+}
+
+.md {
+  --stamp-size: 96px;
+}
+
+.lg {
+  --stamp-size: 144px;
+}
+
+.seat {
+  position: relative;
+  width: var(--stamp-size);
+  height: var(--stamp-size);
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.inked {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-8deg);
+}
+
+.ink {
+  stroke: var(--c-sunset);
+  fill: var(--c-sunset);
+  opacity: 0.92;
+}
+
+.ink text {
+  stroke: none;
+  font-family: var(--font-title);
+  font-weight: 700;
+}
+
+.arc {
+  letter-spacing: 0.1em;
+}
+
+.empty {
+  stroke: color-mix(in srgb, var(--c-ink-muted) 60%, var(--c-paper));
+  fill: var(--c-ink-muted);
+}
+
+.empty text {
+  stroke: none;
+  font-family: var(--font-title);
+}
+
+/* "쿵": 위에서 크게 내려와 눌렸다가 살짝 튕기며 자리 잡는다 */
+.thud {
+  animation: thud var(--dur-slow) var(--ease-flow) both;
+}
+
+@keyframes thud {
+  0% {
+    opacity: 0;
+    transform: translateY(-36%) scale(1.7) rotate(-22deg);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(0) scale(0.9) rotate(-6deg);
+  }
+  75% {
+    transform: scale(1.04) rotate(-9deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-8deg);
+  }
+}
+
+/* 잉크 번짐: 찍힌 뒤 종이에 스며드는 옅은 자국 */
+.bleed {
+  position: absolute;
+  inset: 4%;
+  border-radius: var(--r-full);
+  background: radial-gradient(circle, color-mix(in srgb, var(--c-sunset) 45%, transparent) 40%, transparent 70%);
+  filter: blur(4px);
+  opacity: 0;
+  animation: bleed 900ms var(--ease-flow) 280ms both;
+  pointer-events: none;
+}
+
+@keyframes bleed {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: var(--fs-xs);
+  line-height: var(--lh-tight);
+  color: var(--c-ink-muted);
+  text-align: center;
+}
+
+.captionName {
+  color: var(--c-ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}

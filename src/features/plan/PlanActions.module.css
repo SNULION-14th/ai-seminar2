@@ -1,0 +1,51 @@
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.buttonRow {
+  display: flex;
+  gap: var(--s-2);
+}
+
+.actionButton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-1);
+  min-height: var(--touch-min);
+  padding: var(--s-2);
+  border: 1px solid var(--c-ink-muted);
+  border-radius: var(--r-sm);
+  background: var(--c-paper);
+  color: var(--c-ink);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-align: center;
+}
+
+.status {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-muted);
+}
+
+.manualCopy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.manualTextarea {
+  width: 100%;
+  min-height: 140px;
+  padding: var(--s-3);
+  border: 1px solid var(--c-ink-muted);
+  border-radius: var(--r-sm);
+  background: var(--c-paper);
+  color: var(--c-ink);
+  font-size: var(--fs-xs);
+  font-family: monospace;
+  resize: vertical;
+}

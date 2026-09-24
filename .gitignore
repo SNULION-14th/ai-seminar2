@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Playwright MCP 부산물: 스크린샷(.png)과 기록 문서(.md)만 커밋한다
+docs/verification/*
+!docs/verification/*.png
+!docs/verification/*.md

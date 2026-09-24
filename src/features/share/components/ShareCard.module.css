@@ -1,0 +1,87 @@
+/* 공유 카드 — 1080×1350(4:5) PNG로 캡처할 고정 크기 카드 (SHR-02).
+   템플릿(한지 라이트/밤하늘 다크)은 ShareCardSheet가 document.documentElement의
+   data-theme을 바꿔서 이 카드가 참조하는 토큰 값 자체를 바꾼다(tokens.css 주석 참고). */
+.card {
+  width: 1080px;
+  height: 1350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(var(--s-7) * 2);
+  padding: calc(var(--s-7) * 2);
+  background: var(--c-paper);
+  color: var(--c-ink);
+  font-family: var(--font-body);
+  box-sizing: border-box;
+}
+
+.watermarkRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.watermark {
+  font-family: var(--font-title);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--c-moss);
+}
+
+.tagline {
+  color: var(--c-ink-muted);
+  font-size: 24px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--s-7) * 1.5);
+}
+
+.greeting {
+  font-family: var(--font-title);
+  font-size: 56px;
+  line-height: var(--lh-tight);
+}
+
+.percent {
+  font-size: 160px;
+  font-weight: 700;
+  color: var(--c-moss);
+  line-height: 1;
+}
+
+.percentLabel {
+  font-size: 36px;
+  color: var(--c-ink-muted);
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--s-7) * 1.5);
+  padding: calc(var(--s-7) * 1.5);
+  background: var(--c-mist);
+  border-radius: var(--r-lg);
+}
+
+.statValue {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.statLabel {
+  font-size: 24px;
+  color: var(--c-ink-muted);
+}
+
+.riverWrap {
+  padding: calc(var(--s-7) * 1.5) 0;
+}
+
+.footer {
+  text-align: center;
+  color: var(--c-ink-muted);
+  font-size: 24px;
+}

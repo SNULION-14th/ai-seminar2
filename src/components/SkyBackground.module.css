@@ -1,0 +1,52 @@
+/* DS-05 시간대 하늘. 단계별 그라데이션 레이어를 겹쳐 두고 불투명도로 서서히 전환한다. */
+.sky {
+  position: relative;
+  min-height: 100%;
+  isolation: isolate;
+  background: var(--c-paper);
+  color: var(--c-ink);
+  transition:
+    background-color var(--dur-sky) var(--ease-flow),
+    color var(--dur-sky) var(--ease-flow);
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity var(--dur-sky) var(--ease-flow);
+}
+
+.active {
+  opacity: 1;
+}
+
+.dawn {
+  background: linear-gradient(to bottom, var(--sky-dawn-top), var(--sky-dawn-bottom) 70%);
+}
+
+.day {
+  background: linear-gradient(to bottom, var(--sky-day-top), var(--sky-day-bottom) 70%);
+}
+
+.dusk {
+  background: linear-gradient(to bottom, var(--sky-dusk-top), var(--sky-dusk-bottom) 75%);
+}
+
+/* 밤: 별 몇 개는 움직이지 않는 점으로만 둔다 (모션 예산) */
+.night {
+  background:
+    radial-gradient(1.5px 1.5px at 12% 8%, var(--c-ink), transparent),
+    radial-gradient(1px 1px at 28% 16%, var(--c-ink), transparent),
+    radial-gradient(1.5px 1.5px at 47% 6%, var(--c-ink), transparent),
+    radial-gradient(1px 1px at 66% 13%, var(--c-ink), transparent),
+    radial-gradient(1.5px 1.5px at 83% 5%, var(--c-ink), transparent),
+    radial-gradient(1px 1px at 91% 19%, var(--c-ink), transparent),
+    linear-gradient(to bottom, var(--sky-night-top), var(--sky-night-bottom) 65%);
+}
+
+.content {
+  position: relative;
+}

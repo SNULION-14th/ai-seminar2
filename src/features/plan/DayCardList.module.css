@@ -1,0 +1,84 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-4);
+  background: var(--c-paper);
+  border: 1px solid var(--c-mist);
+  border-radius: var(--r-pebble);
+}
+
+.cardHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.dayLabel {
+  font-family: var(--font-title);
+  font-weight: 700;
+  color: var(--c-river);
+}
+
+.date {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-muted);
+}
+
+.route {
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  font-size: var(--fs-sm);
+  color: var(--c-ink-muted);
+}
+
+.num {
+  color: var(--c-ink);
+  font-weight: 600;
+}
+
+.stay {
+  color: var(--c-ink-muted);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  padding: 2px var(--s-2);
+  border-radius: var(--r-full);
+  background: var(--c-mist);
+  color: var(--c-ink);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+/* 아이콘 색만 뱃지 종류에 따라 바꾼다(그래픽 전용). 글자색은 항상 --c-ink다:
+   의미 있는 상태를 색으로만 구분하지 않는다 (design-system.md §2) */
+.badgeFlat {
+  color: var(--c-moss);
+}
+
+.badgeClimb {
+  color: var(--c-earth);
+}
+
+.badgePass {
+  color: var(--c-sunset);
+}

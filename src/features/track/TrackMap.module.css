@@ -1,0 +1,71 @@
+/* 지도 (TRK-08). 디자인 톤은 타일에 CSS 필터를 걸어 맞춘다 (feature-track.md 결정 로그) */
+.wrap {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+/* 타일 레이어 톤 맞추기: 채도를 낮추고 한지색에 가깝게 */
+.map :global(.leaflet-tile-pane) {
+  filter: saturate(0.75) brightness(1.03) sepia(0.06);
+}
+
+.currentDot {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.currentDot::before,
+.currentDot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-full);
+  background: var(--c-sunset);
+}
+
+.currentDot::before {
+  animation: pulse 2s var(--ease-flow) infinite;
+}
+
+.currentDot::after {
+  box-shadow: 0 0 0 2px var(--c-paper);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.centerDot {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--r-full);
+  border: 2px solid var(--c-paper);
+  box-shadow: 0 0 0 1px var(--c-ink-muted);
+  background: var(--c-mist);
+}
+
+.centerDotStamped {
+  background: var(--c-moss);
+  box-shadow: 0 0 0 1px var(--c-moss);
+}

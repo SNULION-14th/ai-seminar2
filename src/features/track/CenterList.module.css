@@ -1,0 +1,47 @@
+/* 인증센터 목록 — 수동으로 도장 찍기 (TRK-06, TRK-13 대체 흐름) */
+.details {
+  border-radius: var(--r-md);
+  background: var(--c-mist);
+  padding: var(--s-3) var(--s-4);
+}
+
+.summary {
+  cursor: pointer;
+  font-weight: 600;
+  min-height: var(--touch-min);
+  display: flex;
+  align-items: center;
+}
+
+.list {
+  list-style: none;
+  margin: var(--s-3) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.name {
+  flex: 1;
+  font-size: var(--fs-sm);
+}
+
+.manualButton {
+  min-height: var(--touch-min);
+  padding: 0 var(--s-4);
+  border: none;
+  border-radius: var(--r-md);
+  background: var(--c-paper);
+  color: var(--c-ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}

@@ -1,0 +1,14 @@
+/* 도장판 — 전체 인증센터 격자에 ui-kit의 DS-03 Stamp를 늘어놓는다 (SHR-01) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: var(--s-3);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.grid li {
+  display: flex;
+  justify-content: center;
+}
