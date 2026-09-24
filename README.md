@@ -1,75 +1,39 @@
-# React + TypeScript + Vite
+# Weather All
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+여러 예보의 **24시간 날씨 · 기온 · 강수확률**을 한 화면에서 나란히 비교하는 웹서비스.
 
-Currently, two official plugins are available:
+- 소스: 기상청 단기예보, ECMWF(IFS), NOAA GFS, DWD ICON
+- 날씨 아이콘과 용어는 소스와 관계없이 하나로 통일(맑음 · 구름많음 · 흐림 · 비 · 눈), 기온은 섭씨
+- 강수확률은 모든 소스를 한 그래프에 꺾은선으로 겹쳐 표시
+- 24시간 영역만 좌우로 스크롤
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 실행
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+cp .env.example .env.local   # 기상청 키를 넣을 경우
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+### 기상청 API 키
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+[공공데이터포털](https://www.data.go.kr)에서 **기상청_단기예보 ((구)_동네예보) 조회서비스**를 활용신청하고, 발급된 일반 인증키를 `.env.local`의 `KMA_SERVICE_KEY`에 넣는다.
+키가 없으면 기상청 행에 "API 키 필요"가 표시되고 나머지 소스는 그대로 동작한다.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+키는 브라우저에 노출되지 않도록 Vite 서버 미들웨어(`vite.config.ts`의 `/api/kma`)가 대신 호출한다.
+이 미들웨어는 `npm run dev` / `npm run preview`에서만 동작하므로, 정적 호스팅(Vercel, Netlify 등)에 배포할 때는 같은 역할의 서버리스 함수를 만들어야 한다.
+
+ECMWF · GFS · ICON은 [Open-Meteo](https://open-meteo.com)에서 키 없이 받아온다.
+
+## 구조
 
 ```
+src/
+  config.ts             위치, 소스 목록(로고 · 구분색)
+  useForecast.ts        소스별 병렬 로딩, 30분마다 갱신
+  sources/kma.ts        기상청: 격자 변환, 발표시각 계산, SKY/PTY → 공통 상태
+  sources/openMeteo.ts  Open-Meteo: WMO 코드 → 공통 상태
+  components/           WeatherIcon, SourceLabel, PrecipChart
+```
+
+디자인: [Figma](https://www.figma.com/design/JD3AHY8bHkObaK3MI5H6gN)
