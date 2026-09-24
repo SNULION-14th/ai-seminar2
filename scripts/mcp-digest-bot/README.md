@@ -49,7 +49,5 @@ DISCORD_WEBHOOK_URL이 설정되지 않아 dry-run으로 동작했습니다. las
 --- 전송한 메시지 미리보기 ---
 📋 **SNULION-14th/ai-seminar2** 열린 PR 5건
 
-#12 week3-hw-jw — @imwo05
-https://github.com/SNULION-14th/ai-seminar2/pull/12
 ...
 ```
