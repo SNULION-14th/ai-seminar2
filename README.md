@@ -1,75 +1,32 @@
-# React + TypeScript + Vite
+# StudyinHogwart
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+StudyinHogwart is a Hogwarts-academic-life-inspired productivity planner that combines date-based assignments, a lightweight timetable, and Pomodoro study sessions. The visual system uses Great Hall depth, parchment information surfaces, ink typography, brass controls, candlelight, and house-colour personalisation without using film imagery or official crests.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- local mock authentication: sign up, login, logout, and recovery confirmation
+- clickable Student Record with house, year, subjects, weekly stats, and Library Card number
+- monthly assignment calendar with subject markers, subject creation, priorities, due times, and CRUD
+- anti-farming House Points awards: `+5` once per assignment and `+10` per completed study session
+- seven-day timetable with schedule creation, editing, deletion, and Today navigation
+- Study/Break Pomodoro with Start, Pause, Resume, Reset, End Session, stable digits, and ambient motion
+- separate localStorage persistence for auth, profile, subjects, assignments, schedules, study stats, and House Points
+- responsive layouts for desktop, tablet, and mobile, including reduced-motion support
 
-## React Compiler
+## Run locally
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Validation
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run build
+npm run lint
 ```
+
+## Design source
+
+[StudyinHogwart Figma design](https://www.figma.com/design/je5JgeCa8sDRAmMOErweG8/Hogwarts-Focus-%E2%80%94-Pomodoro---Todo?node-id=11-3714&m=dev)
