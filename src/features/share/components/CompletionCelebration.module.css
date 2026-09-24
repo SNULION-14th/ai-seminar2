@@ -1,0 +1,74 @@
+/* 완주 연출 — 마지막 도장을 찍으면 강줄기가 바다로 흘러든다 (SHR-08).
+   한 화면에 동시에 도는 연속 애니메이션은 1개(.pulse)까지만 둔다(design-system.md §4). */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-sheet);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-6);
+  padding: var(--s-6) var(--s-5);
+  text-align: center;
+  background: linear-gradient(180deg, var(--sky-dusk-top), var(--sky-dusk-bottom));
+}
+
+.title {
+  font-size: var(--fs-2xl);
+}
+
+.subtitle {
+  color: var(--c-ink-muted);
+}
+
+.riverWrap {
+  position: relative;
+  width: 100%;
+  max-width: 220px;
+}
+
+/* 경로 남동쪽 끝(부산/낙동강하굿둑) 언저리에 두는 장식용 점이라 정확한 좌표는 아니다 */
+.mouth {
+  position: absolute;
+  right: 6%;
+  bottom: 6%;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--r-full);
+  background: var(--c-sunset);
+}
+
+.pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-full);
+  border: 2px solid var(--c-sunset);
+  animation: pulse var(--dur-sky) var(--ease-flow) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--touch-min);
+  padding: 0 var(--s-6);
+  background: var(--c-moss);
+  color: var(--c-on-accent);
+  border: none;
+  border-radius: var(--r-pebble);
+  font-weight: 600;
+  font-size: var(--fs-md);
+  box-shadow: var(--shadow-soft);
+}

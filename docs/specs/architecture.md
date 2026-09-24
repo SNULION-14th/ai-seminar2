@@ -1,6 +1,6 @@
 # 아키텍처 & 기술 스택
 
-> Status: **Approved** (2026-09-24) · 마일스톤: M0
+> Status: **Implemented** (2026-09-24) · 마일스톤: M0
 
 ## 1. 원칙
 
@@ -80,8 +80,8 @@ src/
 
 ## 6. 수용 기준 (M0)
 
-- [ ] `npm run dev`로 4개 탭 라우트가 빈 화면으로 이동된다
-- [ ] `npm run test`(vitest)가 동작하고 [domain-data.md](domain-data.md) §6 테스트가 통과한다
-- [ ] `npm run build`, `npm run lint`가 통과한다
-- [ ] 기존 Vite 템플릿 데모 코드(카운터, hero 이미지 등)가 제거되어 있다
-- [ ] `index.html`이 `lang="ko"`이고 제목이 "강따라 633"이다
+- [x] `npm run dev`로 4개 탭 라우트가 빈 화면으로 이동된다
+- [x] `npm run test`(vitest)가 동작하고 [domain-data.md](domain-data.md) §6 테스트가 통과한다
+- [x] `npm run build`, `npm run lint`가 통과한다
+- [x] 기존 Vite 템플릿 데모 코드(카운터, hero 이미지 등)가 제거되어 있다
+- [x] `index.html`이 `lang="ko"`이고 제목이 "강따라 633"이다

@@ -1,6 +1,6 @@
 # 디자인 시스템 — "강을 따라 흐르는 한 줄"
 
-> Status: **Approved** (2026-09-24) · 관련: [cross-country-tour.md](cross-country-tour.md)
+> Status: **Implemented** (2026-09-24) · 관련: [cross-country-tour.md](cross-country-tour.md)
 
 ## 1. 콘셉트
 
@@ -21,12 +21,14 @@ CSS custom properties로 `src/styles/tokens.css`에 정의한다. 컴포넌트�
 | `--c-paper` | `#F5F0E6` (한지) | `#141A17` | 배경 |
 | `--c-ink` | `#2B2A26` (먹) | `#E8E4DA` | 본문 텍스트 |
 | `--c-moss` | `#4F6B3A` (이끼) | `#8DB36B` | 주 액션, 완료 구간 |
-| `--c-river` | `#2F7F86` (강물) | `#5FB8BF` | 경로 라인, 링크 |
+| `--c-river` | `#2C767D` (강물) | `#5FB8BF` | 경로 라인, 링크 |
 | `--c-earth` | `#A0784F` (흙) | `#C49A6C` | 고도, 오르막 |
 | `--c-sunset` | `#E07A3F` (노을) | `#F09A5E` | 강조, 현재 위치, 도장 잉크 |
 | `--c-mist` | `#DCE3DC` (물안개) | `#26302B` | 카드, 구분선 |
 
 - 텍스트/배경 대비는 WCAG AA(4.5:1) 이상이어야 한다. 구현 시 검증한다.
+- 라이트 모드에서 `--c-earth`, `--c-sunset`은 paper 위 대비가 4.5:1 미만이라 텍스트 색으로 쓰지 않는다(그래픽 전용). sunset 배경 위 글자는 `--c-on-sunset`(라이트 ink 4.81:1, 다크 paper 7.97:1)을 쓰고, 도장 여부처럼 의미 있는 상태는 색만으로 구분하지 않는다.
+- 보조 텍스트는 `--c-ink-muted`(ink 74% + paper 혼합, paper 위 5.77:1, mist 위 5.01:1)를 쓴다. 그 밖의 파생 토큰(`--sky-*`, `--c-ridge-*`, `--c-water` 등)은 위 팔레트에서 `color-mix`로 만들고 `tokens.css`에만 둔다.
 - **시간대 틴트**(트래킹 화면): 새벽/낮/노을/밤 4단계로 배경 그라데이션이 서서히 바뀐다. 기기 시계 기준.
 
 ### 타이포그래피
@@ -67,14 +69,17 @@ CSS custom properties로 `src/styles/tokens.css`에 정의한다. 컴포넌트�
 
 ## 5. 수용 기준
 
-- [ ] 모든 색은 `tokens.css`의 토큰으로만 참조한다 (`src/` 전체에서 컴포넌트 CSS에 hex 리터럴을 grep하면 0건)
-- [ ] 라이트/다크 모두에서 본문 대비 4.5:1 이상
-- [ ] DS-01부터 DS-06까지 각각 390×844 스크린샷으로 확인한다 (Playwright MCP, [mcp.md](mcp.md) 참고)
-- [ ] reduced-motion 에뮬레이션에서 연속 애니메이션이 멈춘다
+- [x] 모든 색은 `tokens.css`의 토큰으로만 참조한다 (`src/` 전체에서 컴포넌트 CSS에 hex 리터럴을 grep하면 0건)
+- [x] 라이트/다크 모두에서 본문 대비 4.5:1 이상
+- [x] DS-01부터 DS-06까지 각각 390×844 스크린샷으로 확인한다 (Playwright MCP, [mcp.md](mcp.md) 참고)
+- [x] reduced-motion 에뮬레이션에서 연속 애니메이션이 멈춘다
 
 ## 6. 결정 로그
 
 | 날짜 | 결정 |
 | --- | --- |
 | 2026-09-24 | §2 색 팔레트는 초안 값으로 시작한다. 대비 기준을 못 맞추면 명도만 조정한다 |
+| 2026-09-24 | 라이트 `--c-river`를 `#2F7F86` → `#2C767D`로 명도만 낮췄다 (paper 대비 4.11 → 4.63:1, ui-kit 측정) |
+| 2026-09-24 | 텍스트용 파생 토큰 `--c-ink-muted`(74% 혼합), `--c-on-sunset`(다크에서 ink는 1.74:1이라 paper 사용)을 둔다 (ui-kit 측정, Lead 재계산) |
+| 2026-09-24 | 홈의 `#/?ds=1`은 DS-01부터 DS-06을 한 화면에 모은 검증용 미리보기다. 탭 바나 링크로 노출하지 않는다 |
 | 2026-09-24 | 애니메이션은 CSS/SVG로만 구현한다. DS-06 드래그도 Pointer Events로 직접 구현하고, 라이브러리가 꼭 필요하면 [architecture.md](architecture.md)부터 갱신한다 |

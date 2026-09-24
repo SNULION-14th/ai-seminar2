@@ -1,0 +1,188 @@
+/* 트래킹 화면 — feature-track.md §4 */
+/* DS-05 시간대 하늘(ui-kit SkyBackground) 래퍼: 탭 바를 뺀 높이만큼 채운다 */
+.sky {
+  min-height: calc(100dvh - var(--tabbar-h));
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  padding: var(--s-6) var(--s-5) var(--s-7);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+}
+
+.headerTitle {
+  font-size: var(--fs-lg);
+}
+
+.headerSub {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.nextCenter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+}
+
+.nextCenterLabel {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.nextCenterValue {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+}
+
+.nextCenterName {
+  font-size: var(--fs-md);
+  font-weight: 400;
+  color: var(--c-ink-muted);
+}
+
+.statsRow {
+  display: flex;
+  gap: var(--s-5);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.statValue {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+}
+
+.statLabel {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-xs);
+}
+
+.simPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  border-radius: var(--r-pebble);
+  background: var(--c-mist);
+}
+
+.simRow {
+  display: flex;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+
+.simSelect {
+  flex: 1;
+  min-height: var(--touch-min);
+  padding: 0 var(--s-3);
+  border-radius: var(--r-md);
+  border: 1px solid var(--c-mist);
+  background: var(--c-paper);
+}
+
+.simSpeedButton {
+  min-height: var(--touch-min);
+  min-width: var(--touch-min);
+  padding: 0 var(--s-4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--c-mist);
+  background: var(--c-paper);
+  font-weight: 600;
+}
+
+.simSpeedButtonActive {
+  border-color: var(--c-moss);
+  background: var(--c-moss);
+  color: var(--c-on-accent);
+}
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--c-sunset) 16%, var(--c-paper));
+  color: var(--c-ink);
+}
+
+.controls {
+  display: flex;
+  gap: var(--s-3);
+}
+
+.controlButton {
+  flex: 1;
+  min-height: var(--touch-min);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  border: none;
+  border-radius: var(--r-md);
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+
+.startButton {
+  background: var(--c-moss);
+  color: var(--c-on-accent);
+}
+
+.pauseButton {
+  background: var(--c-mist);
+  color: var(--c-ink);
+}
+
+.finishButton {
+  background: var(--c-sunset);
+  color: var(--c-on-accent);
+}
+
+/* TRK-12 첫 사용 안내 */
+.firstUseBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-sheet);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-5);
+  background: color-mix(in srgb, var(--c-ink) 45%, transparent);
+}
+
+.firstUseCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  max-width: var(--app-max-w);
+  padding: var(--s-6) var(--s-5);
+  border-radius: var(--r-lg);
+  background: var(--c-paper);
+  box-shadow: var(--shadow-soft);
+}
+
+.firstUseButton {
+  min-height: var(--touch-min);
+  border: none;
+  border-radius: var(--r-md);
+  background: var(--c-moss);
+  color: var(--c-on-accent);
+  font-weight: 600;
+}

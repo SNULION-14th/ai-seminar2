@@ -2,6 +2,8 @@
 // foundation이 골격을 만들었고, 2단계부터 track 담당이다.
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
+import type { GpsCandidate } from '../domain/tracking'
+import { movingTimeSec as computeMovingTimeSec, sampleTrackPoint, trackDistanceKm } from '../domain/tracking'
 import type { Ride, TrackPoint } from '../domain/types'
 
 // ---- 완료된 라이드 (일지) ----
@@ -62,7 +64,16 @@ export interface ActiveRideData {
 
 export interface ActiveRideState extends ActiveRideData {
   reset: () => void
-  // TODO(track): start, pause, resume, finish, addPoint 등 상태 전이 (TRK-01, TRK-02)
+  /** idle에서만 시작한다. 새 rideId를 만들고 riding으로 전이한다 (TRK-01) */
+  start: (source: Ride['source']) => void
+  /** riding에서만 paused로 전이한다 */
+  pause: () => void
+  /** paused에서만 riding으로 전이한다 */
+  resume: () => void
+  /** riding/paused에서 finished로 전이한다. 요약 시트(TRK-11) 확인 전까지 데이터는 남아 있다 */
+  finish: () => void
+  /** GPS/시뮬레이터가 만든 후보 점을 필터링해 받아들이고 거리·이동시간을 다시 계산한다 (TRK-02, TRK-03) */
+  addPoint: (candidate: GpsCandidate) => void
 }
 
 export const INITIAL_ACTIVE_RIDE: ActiveRideData = {
@@ -77,9 +88,34 @@ export const INITIAL_ACTIVE_RIDE: ActiveRideData = {
 
 export const useActiveRideStore = create<ActiveRideState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       ...INITIAL_ACTIVE_RIDE,
       reset: () => set({ ...INITIAL_ACTIVE_RIDE }),
+      start: (source) =>
+        set((s) =>
+          s.status === 'idle'
+            ? {
+                status: 'riding',
+                rideId: crypto.randomUUID(),
+                startedAt: new Date().toISOString(),
+                source,
+                track: [],
+                distanceKm: 0,
+                movingTimeSec: 0,
+              }
+            : s,
+        ),
+      pause: () => set((s) => (s.status === 'riding' ? { status: 'paused' } : s)),
+      resume: () => set((s) => (s.status === 'paused' ? { status: 'riding' } : s)),
+      finish: () =>
+        set((s) => (s.status === 'riding' || s.status === 'paused' ? { status: 'finished' } : s)),
+      addPoint: (candidate) => {
+        const s = get()
+        if (s.status !== 'riding') return
+        const track = sampleTrackPoint(s.track, candidate)
+        if (track === s.track) return
+        set({ track, distanceKm: trackDistanceKm(track), movingTimeSec: computeMovingTimeSec(track) })
+      },
     }),
     {
       name: ACTIVE_RIDE_STORAGE_KEY,
@@ -101,3 +137,18 @@ export const useActiveRideStore = create<ActiveRideState>()(
 )
 
 export const selectRideStatus = (s: ActiveRideState) => s.status
+export const selectActiveTrack = (s: ActiveRideState) => s.track
+/**
+ * ⚠️ 호출할 때마다 새 객체를 만든다. `useActiveRideStore(selectActiveRide)`처럼 그냥 쓰면
+ * zustand가 매 렌더마다 "값이 바뀌었다"고 오인해 무한 리렌더에 빠진다(실제로 겪은 버그, TRK-01).
+ * 반드시 `useActiveRideStore(useShallow(selectActiveRide))`(zustand/react/shallow)로 감싸서 쓴다.
+ */
+export const selectActiveRide = (s: ActiveRideState): ActiveRideData => ({
+  status: s.status,
+  rideId: s.rideId,
+  startedAt: s.startedAt,
+  source: s.source,
+  track: s.track,
+  distanceKm: s.distanceKm,
+  movingTimeSec: s.movingTimeSec,
+})

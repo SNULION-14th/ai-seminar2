@@ -1,0 +1,339 @@
+/* 홈 (DS-01 강줄기 스크롤) */
+.home {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-7) var(--s-5) var(--s-6);
+}
+
+.kicker {
+  color: var(--c-moss);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.title {
+  font-size: var(--fs-2xl);
+}
+
+.lead {
+  color: var(--c-ink-muted);
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  margin-top: var(--s-3);
+  color: var(--c-river);
+  font-size: var(--fs-sm);
+}
+
+/* ---- 스크롤 이야기: 5개 구간 × 약 한 화면 ---- */
+.story {
+  --p: 0;
+  position: relative;
+  height: 520svh;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: calc(100svh - var(--tabbar-h));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scenes {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 36%;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-flow);
+}
+
+.sceneActive {
+  opacity: 1;
+}
+
+/* 좌우로 25% 넉넉하게 그려 패럴랙스로 밀려도 가장자리가 비지 않게 한다 */
+.layer {
+  fill: var(--c-ridge-far);
+  transform-box: view-box;
+  transform-origin: 50% 100%;
+}
+
+.far {
+  fill: var(--c-ridge-far);
+  opacity: 0.55;
+  transform: translate(calc(var(--p) * -16px), calc(var(--p) * 10px)) scaleX(1.25);
+}
+
+.mid {
+  fill: var(--c-ridge-mid);
+  opacity: 0.75;
+  transform: translate(calc(var(--p) * -32px), calc(var(--p) * 6px)) scaleX(1.25);
+}
+
+.near {
+  fill: color-mix(in srgb, var(--c-moss) 55%, var(--c-mist));
+  transform: translateX(calc(var(--p) * -56px)) scaleX(1.25);
+}
+
+.water {
+  fill: var(--c-water);
+  opacity: 0.8;
+}
+
+.ripple,
+.bridge,
+.road,
+.reed {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.ripple {
+  stroke: var(--c-paper);
+  stroke-width: 2;
+  opacity: 0.8;
+}
+
+.bridge {
+  stroke: var(--c-ink-muted);
+  stroke-width: 2;
+  opacity: 0.45;
+}
+
+.road {
+  stroke: var(--c-paper);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.reed {
+  stroke: var(--c-earth);
+  stroke-width: 2;
+}
+
+.structure {
+  fill: var(--c-ink-muted);
+  opacity: 0.5;
+}
+
+.sun {
+  fill: var(--c-sunset);
+  opacity: 0.55;
+}
+
+.meter {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: var(--s-4) var(--s-5) 0;
+}
+
+.meterLabel {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.meterKm {
+  font-family: var(--font-title);
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--c-ink);
+}
+
+.meterKm small {
+  margin-left: 2px;
+  font-size: var(--fs-md);
+  color: var(--c-ink-muted);
+}
+
+.map {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 340px;
+  padding: var(--s-2) var(--s-4) 0;
+  overflow: visible;
+}
+
+.mapBank,
+.mapBase,
+.mapDrawn {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mapBank {
+  stroke: var(--c-mist);
+  stroke-width: 14;
+}
+
+.mapBase {
+  stroke: color-mix(in srgb, var(--c-river) 25%, var(--c-mist));
+  stroke-width: 2;
+  stroke-dasharray: 2 5;
+}
+
+.mapDrawn {
+  stroke: var(--c-river);
+  stroke-width: 5;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+}
+
+.dot {
+  fill: var(--c-paper);
+  stroke: color-mix(in srgb, var(--c-river) 40%, var(--c-mist));
+  stroke-width: 1.5;
+  transition:
+    fill var(--dur-base) var(--ease-flow),
+    stroke var(--dur-base) var(--ease-flow);
+}
+
+.dotPassed {
+  fill: var(--c-sunset);
+  stroke: var(--c-paper);
+}
+
+.mapLabel {
+  fill: var(--c-ink-muted);
+  font-family: var(--font-title);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bike circle {
+  fill: var(--c-paper);
+  stroke: var(--c-sunset);
+  stroke-width: 2.5;
+  filter: drop-shadow(0 3px 5px var(--c-shadow));
+}
+
+.bike svg {
+  color: var(--c-sunset);
+}
+
+.card {
+  position: relative;
+  width: calc(100% - var(--s-5) * 2);
+  margin: var(--s-3) var(--s-5) var(--s-5);
+  padding: var(--s-4) var(--s-5);
+  border-radius: var(--r-pebble);
+  background: color-mix(in srgb, var(--c-paper) 90%, transparent);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(6px);
+}
+
+.cardTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-2);
+  margin-bottom: var(--s-1);
+  font-size: var(--fs-lg);
+}
+
+.cardTitle small {
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-moss);
+}
+
+.card p {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+/* ---- 시작 버튼 ---- */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-7) var(--s-5) var(--s-6);
+}
+
+.actionsTitle {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--s-2);
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  min-height: var(--touch-min);
+  padding: var(--s-4);
+  border-radius: var(--r-pebble);
+  background: var(--c-mist);
+  color: var(--c-ink);
+  text-decoration: none;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--dur-fast) var(--ease-flow);
+}
+
+.action:active {
+  transform: scale(0.98);
+}
+
+.actionIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-full);
+  background: var(--c-moss);
+  color: var(--c-on-accent);
+}
+
+.actionText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.actionText strong {
+  font-size: var(--fs-md);
+}
+
+.actionText span {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-tight);
+}
+
+/* DS-01 연속 모션 끄기: 패럴랙스와 전환을 멈추고 즉시 상태로 바꾼다 */
+@media (prefers-reduced-motion: reduce) {
+  .far,
+  .mid,
+  .near {
+    transform: scaleX(1.25);
+  }
+}

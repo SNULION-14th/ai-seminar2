@@ -1,0 +1,104 @@
+/* 디자인 시스템 미리보기 (#/?ds=1) */
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-6);
+  padding: var(--s-6) var(--s-5) var(--s-7);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.block h2 {
+  font-size: var(--fs-lg);
+}
+
+.sub {
+  margin-top: var(--s-3);
+  font-size: var(--fs-sm);
+  font-family: var(--font-body);
+  color: var(--c-ink-muted);
+}
+
+.note {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.ridge {
+  padding-bottom: var(--s-5);
+}
+
+.stampRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: var(--s-4);
+  min-height: 200px;
+}
+
+.stampGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s-3);
+  justify-items: center;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.button {
+  min-height: var(--touch-min);
+  padding: 0 var(--s-5);
+  border: 0;
+  border-radius: var(--r-full);
+  background: var(--c-moss);
+  color: var(--c-on-accent);
+  font-weight: 600;
+}
+
+.button[aria-pressed='false'] {
+  background: var(--c-mist);
+  color: var(--c-ink);
+}
+
+.sky {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  min-height: 240px;
+}
+
+.skyInner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-6) var(--s-5);
+}
+
+.skyLabel {
+  color: var(--c-ink-muted);
+}
+
+.skyNumber {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.river {
+  max-width: 300px;
+  margin: 0 auto;
+  width: 100%;
+}

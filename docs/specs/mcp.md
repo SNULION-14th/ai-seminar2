@@ -1,6 +1,6 @@
 # MCP 활용 계획
 
-> Status: **Approved** (2026-09-24) · 마일스톤: 셋업 (등록), M1-M3 (상시 사용), M1 이후 (Calendar 데모)
+> Status: **Implemented** (2026-09-25) · 마일스톤: 셋업 (등록), M1-M3 (상시 사용), M1 이후 (Calendar 데모)
 > 과제 조건: MCP 2개 이상 사용, **Figma MCP와 GitHub MCP는 개수에서 제외**
 
 ## 1. 요약
@@ -72,9 +72,9 @@
 
 ## 5. 수용 기준
 
-- [ ] `.mcp.json`이 커밋되어 있고 `claude mcp list`에서 context7, playwright가 Connected로 나온다
-- [ ] Playwright MCP로 `npm run dev` 화면을 390×844로 캡처할 수 있다
-- [ ] Calendar MCP로 계획 일수만큼 이벤트가 생성되고 `calendar-demo.md`에 기록되어 있다
+- [x] `.mcp.json`이 커밋되어 있고 `claude mcp list`에서 context7, playwright가 Connected로 나온다
+- [x] Playwright MCP로 `npm run dev` 화면을 390×844로 캡처할 수 있다
+- [x] Calendar MCP로 계획 일수만큼 이벤트가 생성되고 `calendar-demo.md`에 기록되어 있다
 
 ## 6. 결정 로그
 

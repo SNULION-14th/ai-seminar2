@@ -1,0 +1,43 @@
+/* 일지 타임라인 — 일자별 거리·메모 (SHR-01) */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  padding: var(--s-4);
+  background: var(--c-mist);
+  border-radius: var(--r-pebble);
+}
+
+.entryHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+
+.date {
+  font-weight: 600;
+}
+
+.stats {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.memo {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.empty {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+  padding: var(--s-4);
+  text-align: center;
+}

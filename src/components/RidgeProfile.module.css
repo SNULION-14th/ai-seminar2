@@ -1,0 +1,152 @@
+/* DS-02 능선 고도 프로필 */
+.root {
+  position: relative;
+  width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.plot {
+  position: relative;
+  width: 100%;
+  border-radius: var(--r-md) var(--r-md) var(--r-sm) var(--r-sm);
+  overflow: hidden;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--c-mist) 55%, var(--c-paper)), var(--c-paper));
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.far {
+  fill: var(--c-ridge-far);
+  opacity: 0.45;
+}
+
+.mid {
+  fill: var(--c-ridge-mid);
+  opacity: 0.55;
+}
+
+.front {
+  fill: var(--c-earth);
+}
+
+.done {
+  fill: var(--c-moss);
+}
+
+.boundary {
+  stroke: var(--c-ink);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+  opacity: 0.55;
+}
+
+.cursor {
+  stroke: var(--c-sunset);
+  stroke-width: 2;
+}
+
+.center {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: var(--r-full);
+  background: var(--c-paper);
+  border: 2px solid var(--c-river);
+  pointer-events: none;
+}
+
+.current,
+.tipDot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: var(--r-full);
+  background: var(--c-sunset);
+  border: 3px solid var(--c-paper);
+  box-shadow: var(--shadow-soft);
+  pointer-events: none;
+}
+
+.boundaryLabel {
+  position: absolute;
+  top: var(--s-1);
+  transform: translateX(-50%);
+  padding: 0 var(--s-1);
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--c-paper) 85%, transparent);
+  color: var(--c-ink);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-body);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.tip {
+  position: absolute;
+  top: var(--s-2);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-pebble);
+  background: var(--c-paper);
+  color: var(--c-ink);
+  box-shadow: var(--shadow-soft);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-tight);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tip strong {
+  font-size: var(--fs-sm);
+}
+
+.tip span {
+  color: var(--c-ink-muted);
+}
+
+.tipStart {
+  transform: translateX(-12px);
+}
+
+.tipEnd {
+  transform: translateX(calc(-100% + 12px));
+}
+
+.axis {
+  display: flex;
+  justify-content: space-between;
+  padding-top: var(--s-1);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-xs);
+}
+
+.surface {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  touch-action: pan-y;
+  cursor: crosshair;
+  border-radius: var(--r-md);
+  z-index: 1;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* 자식이 필요한 곳만 pointer-events: auto로 켠다 */
+  z-index: 3;
+}

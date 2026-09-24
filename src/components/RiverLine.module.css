@@ -1,0 +1,42 @@
+/* 강줄기 라인아트 */
+.river {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.bank,
+.base,
+.done {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.bank {
+  stroke: var(--c-mist);
+  stroke-width: 12;
+}
+
+.base {
+  stroke: color-mix(in srgb, var(--c-river) 35%, var(--c-mist));
+  stroke-width: 3;
+}
+
+.done {
+  stroke: var(--c-river);
+  stroke-width: 5;
+}
+
+.dot {
+  fill: var(--c-paper);
+  stroke: color-mix(in srgb, var(--c-river) 45%, var(--c-mist));
+  stroke-width: 1.5;
+}
+
+.dotOn {
+  fill: var(--c-sunset);
+  stroke: var(--c-paper);
+  stroke-width: 1.5;
+}

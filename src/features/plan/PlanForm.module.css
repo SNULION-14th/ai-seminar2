@@ -1,0 +1,93 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  padding: var(--s-5);
+  background: var(--c-mist);
+  border-radius: var(--r-pebble);
+  box-shadow: var(--shadow-soft);
+}
+
+.title {
+  font-size: var(--fs-lg);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.label {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-muted);
+}
+
+.input {
+  height: var(--touch-min);
+  padding: 0 var(--s-4);
+  border: 1px solid var(--c-ink-muted);
+  border-radius: var(--r-sm);
+  background: var(--c-paper);
+  color: var(--c-ink);
+  font-size: var(--fs-md);
+}
+
+.inputWithSuffix {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.inputWithSuffix .input {
+  flex: 1;
+}
+
+.suffix {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.segmented {
+  display: flex;
+  gap: var(--s-2);
+}
+
+.segment {
+  flex: 1;
+  height: var(--touch-min);
+  border: 1px solid var(--c-ink-muted);
+  border-radius: var(--r-sm);
+  background: var(--c-paper);
+  color: var(--c-ink);
+  font-size: var(--fs-sm);
+}
+
+.segmentActive {
+  background: var(--c-moss);
+  border-color: var(--c-moss);
+  color: var(--c-on-accent);
+}
+
+.error {
+  color: var(--c-ink);
+  background: color-mix(in srgb, var(--c-sunset) 22%, var(--c-mist));
+  border-radius: var(--r-sm);
+  padding: var(--s-3);
+  font-size: var(--fs-sm);
+}
+
+.submit {
+  height: var(--touch-min);
+  border: none;
+  border-radius: var(--r-full);
+  background: var(--c-moss);
+  color: var(--c-on-accent);
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

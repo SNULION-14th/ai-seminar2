@@ -1,0 +1,142 @@
+/* 공유 카드 시트 — 닉네임/개인정보 옵션/템플릿을 고르고 미리보기 후 공유한다 (SHR-02, 06, 07) */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-sheet);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: color-mix(in srgb, var(--c-ink) 45%, transparent);
+}
+
+.sheet {
+  width: 100%;
+  max-width: var(--app-max-w);
+  max-height: 92dvh;
+  overflow-y: auto;
+  background: var(--c-paper);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  box-shadow: var(--shadow-soft);
+  padding: var(--s-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+}
+
+.headRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  background: none;
+  border: none;
+  color: var(--c-ink-muted);
+  border-radius: var(--r-full);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.label {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-muted);
+}
+
+.input {
+  min-height: var(--touch-min);
+  padding: 0 var(--s-4);
+  border: 1px solid var(--c-mist);
+  border-radius: var(--r-sm);
+  background: var(--c-paper);
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: var(--touch-min);
+}
+
+.checkboxRow input {
+  width: 24px;
+  height: 24px;
+}
+
+.templateRow {
+  display: flex;
+  gap: var(--s-3);
+}
+
+.templateBtn {
+  flex: 1;
+  min-height: var(--touch-min);
+  border-radius: var(--r-md);
+  border: 2px solid var(--c-mist);
+  background: var(--c-paper);
+  color: var(--c-ink);
+}
+
+.templateBtnActive {
+  border-color: var(--c-moss);
+  color: var(--c-moss);
+  font-weight: 600;
+}
+
+.previewFrame {
+  align-self: center;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.status {
+  min-height: var(--fs-md);
+  font-size: var(--fs-sm);
+  color: var(--c-ink-muted);
+  text-align: center;
+}
+
+.statusError {
+  color: var(--c-sunset);
+}
+
+.shareBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: var(--touch-min);
+  background: var(--c-moss);
+  color: var(--c-on-accent);
+  border: none;
+  border-radius: var(--r-pebble);
+  font-weight: 600;
+  font-size: var(--fs-md);
+}
+
+.shareBtn:disabled {
+  opacity: 0.6;
+}
+
+.spin {
+  animation: spin var(--dur-slow) linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

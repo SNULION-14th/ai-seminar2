@@ -152,10 +152,10 @@ Lead가 팀 시작 시 아래 작업을 `TaskCreate`로 만들고 의존관계�
 
 ## 8. 수용 기준
 
-- [ ] 2단계에서 팀원 5명이 동시에 작업했다
-- [ ] `docs/verification/a2a-log.md`에 `[CONTRACT]`, `[READY-FOR-QA]`, `[QA-FAIL]` 또는 `[QA-PASS]` 메시지가 각각 1건 이상 기록되어 있다
+- [x] 2단계에서 팀원 5명이 동시에 작업했다
+- [x] `docs/verification/a2a-log.md`에 `[CONTRACT]`, `[READY-FOR-QA]`, `[QA-FAIL]` 또는 `[QA-PASS]` 메시지가 각각 1건 이상 기록되어 있다
 - [ ] 기능 스펙 4개(design-system, feature-plan, feature-track, feature-share)의 Status가 `Implemented`이다
-- [ ] 최종 상태에서 `npm run build`, `npm run lint`, `npm run test`가 통과한다
+- [x] 최종 상태에서 `npm run build`, `npm run lint`, `npm run test`가 통과한다
 
 ## 9. 리스크와 대응
 
@@ -166,3 +166,4 @@ Lead가 팀 시작 시 아래 작업을 `TaskCreate`로 만들고 의존관계�
 | 토큰 비용이 팀원 수에 비례해서 늘어난다 | 구현 팀원은 sonnet으로 시작한다. 1단계는 foundation 1명만 띄운다 |
 | 여러 팀원이 동시에 고친 코드 때문에 빌드가 깨진다 | §3 담당 범위를 지키고, §6 게이트에서 막힌 경우 `[BLOCKED]`로 담당자에게 알린다 |
 | Playwright 브라우저 세션이 하나뿐이다 | Playwright MCP는 qa만 사용한다 |
+| 게이트가 작업 트리 전체를 검사해서, 한 팀원의 lint 에러가 모든 팀원의 완료 표시를 막는다 | 팀원은 자기 파일을 저장한 채 다른 작업으로 넘어가기 전에 `npm run lint` 0건을 유지한다. 원인이 남의 파일이면 `[BLOCKED]`를 보내고 기다린다 |

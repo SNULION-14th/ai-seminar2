@@ -1,0 +1,81 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  background: var(--c-mist);
+  border-radius: var(--r-pebble);
+}
+
+.title {
+  font-size: var(--fs-md);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  min-height: var(--touch-min);
+  padding: 0 var(--s-2);
+  background: var(--c-paper);
+  border-radius: var(--r-sm);
+}
+
+.itemLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  flex: 1;
+}
+
+.itemLabel input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--c-moss);
+}
+
+.remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  border: none;
+  background: transparent;
+  color: var(--c-ink-muted);
+}
+
+.addForm {
+  display: flex;
+  gap: var(--s-2);
+}
+
+.addInput {
+  flex: 1;
+  height: var(--touch-min);
+  padding: 0 var(--s-3);
+  border: 1px solid var(--c-ink-muted);
+  border-radius: var(--r-sm);
+  background: var(--c-paper);
+  color: var(--c-ink);
+}
+
+.addButton {
+  height: var(--touch-min);
+  padding: 0 var(--s-4);
+  border: none;
+  border-radius: var(--r-sm);
+  background: var(--c-moss);
+  color: var(--c-on-accent);
+  font-weight: 600;
+}
